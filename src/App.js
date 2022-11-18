@@ -1,13 +1,14 @@
-import './App.css';
-import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { usersRef } from './Database/Firebase';
-
+import "./App.css";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { usersRef } from "./Database/Firebase";
 
 function App() {
-
-  const [allUser, isLoadingAllUser, isErrorAllUser] = useCollectionData(usersRef, {
-    idField: 'id',
-  });
+  const [allUser, isLoadingAllUser, isErrorAllUser] = useCollectionData(
+    usersRef,
+    {
+      idField: "id",
+    }
+  );
 
   return (
     <div className="App">
