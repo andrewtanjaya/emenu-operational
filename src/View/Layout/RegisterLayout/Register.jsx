@@ -9,8 +9,16 @@ import {
 } from "../../../Controller/UserController";
 import { User } from "../../../Model/User";
 import { RoleTypes } from "../../../Enum/RoleTypes";
+import { generateRandomId } from "../../../Helper/Helper";
+import { IdTypes } from "../../../Enum/IdTypes";
+import { addRestaurant } from "../../../Controller/RestaurantController";
+import { Restaurant } from "../../../Model/Restaurant";
+import { Menu } from "../../../Model/Menu";
+import { addMenu } from "../../../Controller/MenuController";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
   const [allUser, isLoadingAllUser, isErrorAllUser] = useCollectionData(
     usersRef,
     {
@@ -18,14 +26,27 @@ function Register() {
     }
   );
 
-  const error = (title, content) => {
+  const errorModal = (title, content) => {
     Modal.error({
       title: title,
       content: content,
     });
   };
 
+  const successModal = (title, content) => {
+    Modal.success({
+      onOk: () => {
+        navigate("/login");
+      },
+      title: title,
+      content: content,
+    });
+  };
+
   const onFinish = (values) => {
+    const getRestoId = generateRandomId(IdTypes.RESTAURANT);
+    const getMenuId = generateRandomId(IdTypes.MENU);
+
     let newUser = new User(
       values.firstName,
       values.lastName,
@@ -33,18 +54,39 @@ function Register() {
       values.email,
       RoleTypes.MANAGER,
       "profilePicture:)",
-      values.restaurantName,
+      "",
       values.password
     );
 
     getUserByEmail(newUser.email).then((user) => {
       if (user !== null) {
-        error(
+        errorModal(
           "Account Exists",
           `Account with ${newUser.email} already exists try to login into your account instead`
         );
       } else {
-        registerUser(newUser);
+        getMenuId.then((menuId) => {
+          const newMenu = new Menu(menuId, [], []);
+          addMenu(newMenu);
+          getRestoId.then((id) => {
+            const newResto = new Restaurant(
+              id,
+              values.restaurantName,
+              menuId,
+              [],
+              "",
+              "",
+              0,
+              0,
+              []
+            );
+            addRestaurant(newResto);
+            newUser.restaurantId = id;
+            registerUser(newUser).then(() => {
+              successModal("Success", "Your account successfully created!");
+            });
+          });
+        });
       }
     });
   };
