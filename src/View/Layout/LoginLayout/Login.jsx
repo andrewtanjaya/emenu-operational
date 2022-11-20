@@ -2,9 +2,9 @@ import React from "react";
 import "./Login.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal } from "antd";
-import { getUserByEmail } from "../../Controller/UserController";
+import { getUserByEmail } from "../../../Controller/UserController";
 import { useNavigate } from "react-router-dom";
-import AuthConsumer from "../../hooks/auth";
+import AuthConsumer from "../../../hooks/auth";
 
 function Login() {
   const navigate = useNavigate();
@@ -39,8 +39,9 @@ function Login() {
       };
 
       dispatch({ type: "LOGIN" });
-      window.sessionStorage.setItem("userData", userData);
-      navigate("/", { replace: true });
+      window.sessionStorage.setItem("userData", JSON.stringify(userData));
+
+      navigate("/admin", { replace: true });
     } else {
       error("Wrong Password");
     }

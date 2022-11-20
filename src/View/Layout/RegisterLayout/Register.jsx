@@ -2,10 +2,13 @@ import React from "react";
 import "./Register.css";
 import { Button, Form, Input, Modal } from "antd";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { usersRef } from "../../Database/Firebase";
-import { getUserByEmail, registerUser } from "../../Controller/UserController";
-import { User } from "../../Model/User";
-import { RoleTypes } from "../../Enum/RoleTypes";
+import { usersRef } from "../../../Database/Firebase";
+import {
+  getUserByEmail,
+  registerUser,
+} from "../../../Controller/UserController";
+import { User } from "../../../Model/User";
+import { RoleTypes } from "../../../Enum/RoleTypes";
 
 function Register() {
   const [allUser, isLoadingAllUser, isErrorAllUser] = useCollectionData(
