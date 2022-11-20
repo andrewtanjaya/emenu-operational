@@ -1,4 +1,4 @@
-.registerContainer {
+.loginContainer {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -6,6 +6,6 @@
   justify-content: center;
   align-items: center;
 }
-.registerContainer Form {
-  width: 100%;
-}/*# sourceMappingURL=Register.css.map */
+.loginContainer Form {
+  width: 30%;
+}/*# sourceMappingURL=Login.css.map */

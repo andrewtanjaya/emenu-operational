@@ -15,3 +15,5 @@ const firebase = initializeApp(firebaseConfig);
 const firestore = getFirestore(firebase);
 
 export const usersRef = collection(firestore, "users");
+export const restaurantsRef = collection(firestore, "restaurants");
+export const menusRef = collection(firestore, "menus");
