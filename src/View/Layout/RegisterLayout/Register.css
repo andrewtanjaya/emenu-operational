@@ -1,0 +1,11 @@
+.registerContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.registerContainer Form {
+  width: 100%;
+}/*# sourceMappingURL=Register.css.map */
