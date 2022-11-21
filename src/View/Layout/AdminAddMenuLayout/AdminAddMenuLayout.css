@@ -1,0 +1,6 @@
+.menu-photos-input-container {
+  display: flex;
+  flex-direction: row;
+  -moz-column-gap: 12px;
+       column-gap: 12px;
+}/*# sourceMappingURL=AdminAddMenuLayout.css.map */

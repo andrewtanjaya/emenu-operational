@@ -1,4 +1,4 @@
-import { usersRef } from "../Database/Firebase";
+import { usersRef } from "../Config/Firebase";
 import { doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { User } from "../Model/User";
 

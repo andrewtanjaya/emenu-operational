@@ -1,4 +1,4 @@
-import { menusRef } from "../Database/Firebase";
+import { menusRef } from "../Config/Firebase";
 import { doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 export const addMenu = async (menu) => {

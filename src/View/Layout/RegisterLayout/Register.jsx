@@ -2,7 +2,7 @@ import React from "react";
 import "./Register.css";
 import { Button, Form, Input, Modal } from "antd";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { usersRef } from "../../../Database/Firebase";
+import { usersRef } from "../../../Config/Firebase";
 import {
   getUserByEmail,
   registerUser,
