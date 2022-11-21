@@ -27,15 +27,8 @@ function App() {
           <Route path="/admin/setting" element={<Setting />} />
         </Route>
         <Route path="/cashier" element={<CashierAuth><AdminLayout /></CashierAuth>} >
-          <Route index element={<AdminDashboard />} />
-          <Route path="/cashier/transactionReport" element={<TransactionReport />} />
-          <Route path="/cashier/employee" element={<Employees />} />
-          <Route path="/cashier/food" element={<Foods />} />
-          <Route path="/cashier/setting" element={<Setting />} />
         </Route>
         <Route path="/kitchen" element={<KitchenAuth><AdminLayout /></KitchenAuth>} >
-          <Route index element={<AdminDashboard />} />
-          <Route path="/kitchen/transactionReport" element={<TransactionReport />} />
         </Route>
       </Routes>
     </>
