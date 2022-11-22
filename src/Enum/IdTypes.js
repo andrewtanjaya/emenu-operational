@@ -1,4 +1,5 @@
 export const IdTypes = {
     RESTAURANT : "RESTO",
-    MENU : "MENU"
+    MENU : "MENU",
+    FOOD : "FOOD"
 }

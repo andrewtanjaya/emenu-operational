@@ -17,10 +17,8 @@ function AdminMenuPhoto({
 
   useEffect(() => {
     let objectUrl;
-    console.log(file)
     console.log(photosData[index].file)
     if (!file && !photosData[index].file) {
-        console.log("no data at all")
       setPreview(undefined);
       return;
     }
@@ -47,7 +45,6 @@ function AdminMenuPhoto({
         type="file"
         className="admin-menu-hidden-input"
         onChange={(event) => {
-          console.log(photosData);
           if (isMain !== true && photosData.length <= 4) {
             setPhotosData((prev) => {
               return [

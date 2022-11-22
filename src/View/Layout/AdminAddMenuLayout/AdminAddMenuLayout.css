@@ -3,4 +3,8 @@
   flex-direction: row;
   -moz-column-gap: 12px;
        column-gap: 12px;
+}
+
+.add-menu-container {
+  margin-left: 40px;
 }/*# sourceMappingURL=AdminAddMenuLayout.css.map */

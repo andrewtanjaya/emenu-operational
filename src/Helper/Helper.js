@@ -5,8 +5,9 @@ import { IdTypes } from "../Enum/IdTypes";
 
 const RESTO_PREFIX = "RESTO-";
 const MENU_PREFIX = "MENU-";
+const FOOD_PREFIX = "FOOD-";
 
-export const generateRandomId = async (type) => {
+export const generateRandomId = async (type, menuId) => {
   let unique_id = uuid().slice(0, 8);
 
   switch (type) {
@@ -17,7 +18,7 @@ export const generateRandomId = async (type) => {
             console.log(unique_id)
           return unique_id;
         } else {
-          generateRandomId(IdTypes.RESTAURANT);
+          generateRandomId(IdTypes.RESTAURANT, "");
         }
       });
       return unique_id;
@@ -27,7 +28,17 @@ export const generateRandomId = async (type) => {
         if (menu === null) {
             return unique_id;
         } else {
-            generateRandomId(IdTypes.MENU);
+            generateRandomId(IdTypes.MENU, "");
+        }
+      });
+      return unique_id;
+    case IdTypes.FOOD:
+      unique_id = FOOD_PREFIX + unique_id;
+    await getMenuById(unique_id).then((menu) => {
+        if (menu === null) {
+            return unique_id;
+        } else {
+            generateRandomId(IdTypes.MENU, "");
         }
       });
       return unique_id;

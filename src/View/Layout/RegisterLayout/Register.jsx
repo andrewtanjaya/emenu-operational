@@ -44,8 +44,8 @@ function Register() {
   };
 
   const onFinish = (values) => {
-    const getRestoId = generateRandomId(IdTypes.RESTAURANT);
-    const getMenuId = generateRandomId(IdTypes.MENU);
+    const getRestoId = generateRandomId(IdTypes.RESTAURANT, "");
+    const getMenuId = generateRandomId(IdTypes.MENU, "");
 
     let newUser = new User(
       values.firstName,
