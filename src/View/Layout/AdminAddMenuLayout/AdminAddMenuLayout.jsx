@@ -15,11 +15,13 @@ import { IdTypes } from "../../../Enum/IdTypes";
 import { generateRandomId } from "../../../Helper/Helper";
 import { Food } from "../../../Model/Food";
 import AdminMenuPhoto from "../../Component/AdminMenuPhoto/AdminMenuPhoto";
+import AdminOptionGroup from "../../Component/AdminOptionGroup/AdminOptionGroup";
 import "./AdminAddMenuLayout.css";
 
 function AdminAddMenuLayout() {
   const [menuId, setMenuId] = useState(null);
   const [menuData, setMenuData] = useState(null);
+  const [optionGroups, setOptionGroups] = useState([]);
   const [photosData, setPhotosData] = useState([
     { keyId: 1, isMain: true, file: null },
     { keyId: 2, isMain: false, file: null },
@@ -93,7 +95,7 @@ function AdminAddMenuLayout() {
         );
       }
     }
-  }
+  };
 
   const deletePhoto = (keyId) => {
     setPhotosData((prev) => {
@@ -129,96 +131,99 @@ function AdminAddMenuLayout() {
   return (
     <div className="add-menu-container">
       <h1>Add Menu</h1>
-      <div className="menu-photos-input-container">
-        {photosData.map((item, index) => {
-          return (
-            <AdminMenuPhoto
-              isMain={item.isMain}
-              key={item.keyId}
-              keyId={item.keyId}
-              index={index}
-              setPhotosData={setPhotosData}
-              photosData={photosData}
-              deletePhoto={deletePhoto}
-            />
-          );
-        })}
-      </div>
-      {/* <button className="admin-menu-button" onClick={uploadImage}>
-        Upload Image
-      </button> */}
-
-      <Form
-        layout="vertical"
-        name="basic"
-        labelCol={{
-          span: 6,
-        }}
-        wrapperCol={{
-          span: 12,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-      >
-        <Form.Item
-          label="Menu Name"
-          name="foodName"
-          rules={[
-            {
-              required: true,
-              message: "Menu Name must be filled!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item name="category" label="Category">
-              <Select
-            mode="multiple"
-            allowClear
-            style={{
-              width: '100%',
+      <div className="add-menu-form-container">
+        <div className="menu-photos-input-container">
+          {photosData.map((item, index) => {
+            return (
+              <AdminMenuPhoto
+                isMain={item.isMain}
+                key={item.keyId}
+                keyId={item.keyId}
+                index={index}
+                setPhotosData={setPhotosData}
+                photosData={photosData}
+                deletePhoto={deletePhoto}
+              />
+            );
+          })}
+        </div>
+        <div className="add-menu-form">
+          <Form
+            layout="vertical"
+            name="basic"
+            labelCol={{
+              span: 6,
             }}
-            placeholder="Select Category"
-            options={options}
-          />
-        </Form.Item>
-        <Form.Item label="Description" name="description">
-          <TextArea rows={4} />
-        </Form.Item>
+            wrapperCol={{
+              span: 24,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+          >
+            <Form.Item
+              label="Menu Name"
+              name="foodName"
+              rules={[
+                {
+                  required: true,
+                  message: "Menu Name must be filled!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
 
-        <Form.Item
-          label="Price"
-          name="price"
-          rules={[
-            {
-              required: true,
-              message: "Price must be filled!",
-            },
-            {
-              message: "Price must be numeric!",
-              type: "number",
-            },
-          ]}
-        >
-          <InputNumber />
-        </Form.Item>
+            <Form.Item name="category" label="Category">
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                placeholder="Select Category"
+                options={options}
+              />
+            </Form.Item>
+            <Form.Item label="Description" name="description">
+              <TextArea rows={4} />
+            </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 6,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-      {isUploading ? <p>Uploading image</p> : <></>}
+            <Form.Item
+              label="Price"
+              name="price"
+              rules={[
+                {
+                  required: true,
+                  message: "Price must be filled!",
+                },
+                {
+                  message: "Price must be numeric!",
+                  type: "number",
+                },
+              ]}
+            >
+              <InputNumber />
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                offset: 6,
+                span: 16,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <AdminOptionGroup />
+        </div>
+
+        {isUploading ? <p>Uploading image</p> : <></>}
+      </div>
     </div>
   );
 }
