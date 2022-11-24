@@ -2,14 +2,43 @@ import { Button, Form, Input, InputNumber } from "antd";
 import React, { useEffect, useState } from "react";
 import "./AdminOptionForm.css";
 
-function AdminOptionForm({ optionName, addedValue, isEditable }) {
+function AdminOptionForm({
+  setOptionGroups,
+  groupId,
+  isFromGroup,
+  optionGroup,
+  setTempOptions,
+  optionId,
+  optionName,
+  addedValue,
+  isEditable,
+  setIsModalOpen,
+  setEditGroupData,
+}) {
   const [editable, setEditable] = useState(false);
+  const [form] = Form.useForm();
+
   useEffect(() => {
     setEditable(isEditable);
   }, []);
+
   const onFinish = (values) => {
-    console.log(values);
-    setEditable(false);
+    if (!isEditable) setEditable(false);
+    if (isEditable && setTempOptions) {
+      setTempOptions((tempOption) => {
+        values.optionId = tempOption ? tempOption.length + 1 : 1;
+        return tempOption ? [...tempOption, values] : [values];
+      });
+      form.resetFields();
+    } else if (!isEditable && setTempOptions) {
+      setTempOptions((tempOption) => {
+        tempOption.splice(optionId - 1, 1);
+        values.optionId = optionId;
+        tempOption = [...tempOption, values];
+        tempOption.sort((a, b) => a.optionId - b.optionId);
+        return tempOption;
+      });
+    }
   };
   return (
     <div
@@ -20,6 +49,7 @@ function AdminOptionForm({ optionName, addedValue, isEditable }) {
       }
     >
       <Form
+        form={form}
         layout="vertical"
         name="basic"
         labelCol={{
@@ -43,17 +73,17 @@ function AdminOptionForm({ optionName, addedValue, isEditable }) {
                 },
               ]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
           ) : (
             optionName
           )}
         </div>
 
-        {(editable && addedValue) || isEditable ? (
+        {(editable && (addedValue || addedValue === 0)) || isEditable ? (
           <Form.Item
             label="Price"
-            name="price"
+            name="addedValue"
             initialValue={addedValue}
             rules={[
               {
@@ -66,11 +96,15 @@ function AdminOptionForm({ optionName, addedValue, isEditable }) {
               },
             ]}
           >
-            <InputNumber/>
+            <InputNumber />
           </Form.Item>
         ) : (
           <div className="option-price">
-            {addedValue && !editable ? <p>+ IDR. {addedValue}</p> : <></>}
+            {(addedValue || addedValue === 0) && !editable ? (
+              <p>+ IDR. {addedValue}</p>
+            ) : (
+              <></>
+            )}
           </div>
         )}
 
@@ -88,8 +122,38 @@ function AdminOptionForm({ optionName, addedValue, isEditable }) {
         ) : (
           <div className="option-form-action">
             {" "}
-            <button onClick={() => setEditable(true)}>E</button>
-            <button>D</button>
+            <button
+              onClick={() => {
+                if (!isFromGroup) setEditable(true);
+                else {
+                  setEditGroupData(optionGroup);
+                  setIsModalOpen(true);
+                }
+              }}
+            >
+              E
+            </button>
+            <button
+              onClick={() => {
+                if (isFromGroup) {
+                  setOptionGroups((optionGroups) => {
+                    return optionGroups.filter(
+                      (optionGroup) =>
+                        optionGroup.groupId !== groupId
+                    );
+                  });
+                } else {
+                  setTempOptions((tempOption) => {
+                    return tempOption.filter(
+                      (option) =>
+                        option.optionId !== optionId
+                    );
+                  });
+                }
+              }}
+            >
+              D
+            </button>
           </div>
         )}
       </Form>

@@ -15,7 +15,6 @@ export const generateRandomId = async (type, menuId) => {
       unique_id = RESTO_PREFIX + unique_id;
     await getRestaurantById(unique_id).then((resto) => {
         if (resto === null) {
-            console.log(unique_id)
           return unique_id;
         } else {
           generateRandomId(IdTypes.RESTAURANT, "");

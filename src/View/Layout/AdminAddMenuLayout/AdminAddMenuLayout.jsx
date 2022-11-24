@@ -48,11 +48,11 @@ function AdminAddMenuLayout() {
   }, [menuId]);
 
   const addFood = async (values) => {
-    // TODO: groupId logic, and tag logic
+    // TODO: tag logic
     let newFood = new Food(
       "",
       values.category,
-      ["-"],
+      optionGroups,
       values.foodName,
       true,
       "",
@@ -219,7 +219,7 @@ function AdminAddMenuLayout() {
             </Form.Item>
           </Form>
 
-          <AdminOptionGroup />
+          <AdminOptionGroup setOptionGroups={setOptionGroups} optionGroups={optionGroups}/>
         </div>
 
         {isUploading ? <p>Uploading image</p> : <></>}

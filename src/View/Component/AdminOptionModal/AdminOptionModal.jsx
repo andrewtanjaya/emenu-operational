@@ -1,30 +1,79 @@
 import { Button, Form, Input, Modal, Switch } from "antd";
-import React, { useState } from "react";
+import { useForm } from "antd/es/form/Form";
+import React, { useEffect, useState } from "react";
 import AdminOptionForm from "../AdminOptionForm/AdminOptionForm";
 import "./AdminOptionModal.css";
 
-function AdminOptionModal({ setIsModalOpen, isModalOpen }) {
+function AdminOptionModal({
+  setIsModalOpen,
+  isModalOpen,
+  setOptionGroups,
+  optionGroups,
+  editGroupData,
+  setEditGroupData,
+}) {
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-//   const [form] = Form.useForm();
+  const [required, setRequired] = useState(true);
   const [optionGroupName, setOptionGroupName] = useState("");
+  const [tempOptions, setTempOptions] = useState([]);
 
-  const handleOk = () => {
-    
+  useEffect(() => {
+    if (editGroupData) {
+      setOptionGroupName(editGroupData.groupName);
+      setTempOptions(editGroupData.option);
+    } else {
+      setOptionGroupName("");
+      setTempOptions([]);
+    }
+  }, [editGroupData]);
+
+  const handleAdd = () => {
     if (optionGroupName !== "") {
-        setHasError(false);
+      setHasError(false);
       setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
+      setOptionGroups((optionGroup) => {
+        let newOptionGroup = {};
+        newOptionGroup.groupId = optionGroup ? optionGroup.length + 1 : 1;
+        newOptionGroup.groupName = optionGroupName;
+        newOptionGroup.isRequired = required;
+        newOptionGroup.option = tempOptions;
         setIsModalOpen(false);
-      }, 3000);
-    }else{
-        setHasError(true);
+        setLoading(false);
+        setTempOptions([]);
+        setOptionGroupName("");
+        return [...optionGroup, newOptionGroup];
+      });
+    } else {
+      setHasError(true);
+    }
+  };
+
+  const handleUpdate = () => {
+    if (optionGroupName !== "") {
+      setHasError(false);
+      setLoading(true);
+      setEditGroupData(null);
+      setOptionGroups((optionGroup) => {
+        for (let i = 0; i < optionGroup.length; i++) {
+          if (optionGroup[i].groupId === editGroupData.groupId) {
+            optionGroup[i].groupName = optionGroupName;
+            optionGroup[i].isRequired = required;
+            optionGroup[i].option = tempOptions;
+            setIsModalOpen(false);
+            setLoading(false);
+          }
+        }
+        return optionGroup;
+      });
+    } else {
+      setHasError(true);
     }
   };
 
   const onSwitchChanged = (checked) => {
-    console.log(`switch to ${checked}`);
+    setRequired(checked);
+    if (editGroupData) editGroupData.required = checked;
   };
 
   return (
@@ -32,53 +81,110 @@ function AdminOptionModal({ setIsModalOpen, isModalOpen }) {
       <Modal
         centered
         open={isModalOpen}
-        onOk={() => setIsModalOpen(false)}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={() => {
+          setEditGroupData(null);
+          setIsModalOpen(false);
+        }}
         footer={[
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-          >
-            Add Option Group
-          </Button>,
+          <div className="admin-option-modal-button">
+            {editGroupData ? (
+              <Button
+                key="submit"
+                type="primary"
+                loading={loading}
+                onClick={handleUpdate}
+              >
+                Update Option Group
+              </Button>
+            ) : (
+              <Button
+                key="submit"
+                type="primary"
+                loading={loading}
+                onClick={handleAdd}
+              >
+                Add Option Group
+              </Button>
+            )}
+          </div>,
         ]}
         width={600}
       >
-          <Form.Item
-            labelCol={{ span: 24 }}
-            label="Option Group Name"
-            name="groupName"
-            rules={[
-              {
-                required: true,
-                message: "Option Group Name must be filled!",
-              },
-            ]}
-          >
-            <Input
-              placeholder="Option Group Name"
-              onChange={(e) => {
-                setHasError(false);
-                setOptionGroupName(e.target.value);
-              }}
+        {/* <Form
+        form={form}
+        >
+        <Form.Item
+          labelCol={{ span: 24 }}
+          label={"Option Group Name"}
+          name="groupName"
+          rules={[
+            {
+              required: true,
+              message: "Option Group Name must be filled!",
+            },
+          ]}
+        > */}
+        <div className="admin-option-group-name-input">
+          <label>Option Group Name</label>
+          <input
+            value={
+              optionGroupName
+            }
+            placeholder="Option Group Name"
+            onChange={(e) => {
+              setHasError(false);
+              setOptionGroupName(e.target.value);
+            }}
+          />
+        </div>
+        {/* </Form.Item>
+        </Form> */}
+        {hasError ? (
+          <p className="option-group-name-error">
+            Option Group Name must be filled!
+          </p>
+        ) : (
+          <></>
+        )}
+        <div className="required-switch-container">
+          <label>Required </label>
+          <Switch
+            checked={
+              editGroupData && editGroupData.required
+                ? editGroupData.required
+                : required
+            }
+            onChange={onSwitchChanged}
+          />
+        </div>
+        <div className="option-container">
+          <div className="option-title">
+            <p>Option</p>
+          </div>
+          <div className="option-form-container">
+            {tempOptions ? (
+              tempOptions.map((option) => {
+                return (
+                  <AdminOptionForm
+                  setOptionGroups={setOptionGroups}
+                    setTempOptions={setTempOptions}
+                    optionId={option.optionId}
+                    optionName={option.optionName}
+                    addedValue={option.addedValue}
+                    key={option.optionId}
+                  />
+                );
+              })
+            ) : (
+              <></>
+            )}
+
+            <AdminOptionForm
+              setTempOptions={setTempOptions}
+              isEditable={true}
             />
-          </Form.Item>
-          {hasError ?<p className="option-group-name-error">Option Group Name must be filled!</p> : <></>}
-          <div className="required-switch-container">
-            <label>Required </label>
-            <Switch defaultChecked onChange={onSwitchChanged} />
           </div>
-          <div className="option-container">
-            <div className="option-title">
-              <p>Option</p>
-            </div>
-            <div className="option-form-container">
-              <AdminOptionForm optionName={"Spicyness"} addedValue="3000" key="1"/>
-              <AdminOptionForm isEditable={true} key="2"/>
-            </div>
-          </div>
+        </div>
       </Modal>
     </div>
   );

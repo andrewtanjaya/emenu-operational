@@ -18,7 +18,6 @@ export const updateMenuById = async (
   for (let i = 0; i < updatedFoodList.length; i++) {
     updatedFoodList[i] = Object.assign({}, updatedFoodList[i]);
   }
-  console.log(updatedCategoryList, updatedFoodList);
   await updateDoc(doc(menusRef, menuId), {
     categoryList: updatedCategoryList,
     foodList: updatedFoodList,

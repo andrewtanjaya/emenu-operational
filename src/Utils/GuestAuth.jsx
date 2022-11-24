@@ -17,7 +17,6 @@ export default function GuestAuth({ children }) {
       pathName = "/admin";
     }
   }
-  console.log(authed.auth);
   if (authed.auth === false) {
     authed.auth = sessionStorage.getItem("userData") !== null ? true : false;
   }

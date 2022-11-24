@@ -5,7 +5,6 @@ export default function RequireAuth({ children }) {
   const [authed] = AuthConsumer();
   const location = useLocation();
 
-  console.log(authed.auth);
   if (authed.auth === false) {
     authed.auth = sessionStorage.getItem("userData") !== null ? true : false;
   }

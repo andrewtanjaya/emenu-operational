@@ -1,8 +1,8 @@
 export class Food{
-    constructor(foodId, categoryId, groupId, foodName, availability, mainPicture, foodPrice, addedPicture, foodDescription, tags, orderCount, totalSales){
+    constructor(foodId, categoryId, groups, foodName, availability, mainPicture, foodPrice, addedPicture, foodDescription, tags, orderCount, totalSales){
         this.foodId = foodId;
         this.categoryId = categoryId;
-        this.groupId = groupId;
+        this.groups = groups;
         this.foodName = foodName;
         this.availability = availability;
         this.mainPicture = mainPicture;

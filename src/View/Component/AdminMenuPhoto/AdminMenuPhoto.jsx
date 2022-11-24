@@ -17,7 +17,6 @@ function AdminMenuPhoto({
 
   useEffect(() => {
     let objectUrl;
-    console.log(photosData[index].file)
     if (!file && !photosData[index].file) {
       setPreview(undefined);
       return;
