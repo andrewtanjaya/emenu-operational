@@ -1,0 +1,35 @@
+.option-group-container {
+  border: 1px solid #CACACA;
+  width: 50%;
+  height: 450px;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+.option-group-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #CACACA;
+  width: 100%;
+  padding: 0px 20px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.add-option-button {
+  border: 1px solid #36AB27;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.option-group-form-container {
+  width: 100%;
+}/*# sourceMappingURL=AdminOptionGroup.css.map */

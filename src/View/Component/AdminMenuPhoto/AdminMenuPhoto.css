@@ -1,0 +1,42 @@
+.admin-menu-photo-container {
+  width: 200px;
+  height: 150px;
+  position: relative;
+}
+
+.menu-photo-placeholder {
+  width: 200px;
+  height: 150px;
+  background-color: #CACACA;
+  border-radius: 10px;
+}
+
+.menu-photo-preview {
+  width: 200px;
+  height: 150px;
+  border-radius: 10px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.admin-menu-hidden-input {
+  display: none;
+}
+
+.admin-menu-input-file {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid #36AB27;
+  background-color: #FFFFFF;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}/*# sourceMappingURL=AdminMenuPhoto.css.map */

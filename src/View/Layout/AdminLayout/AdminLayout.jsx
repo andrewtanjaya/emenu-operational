@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import AuthConsumer from "../../../hooks/auth";
+import './AdminLayout.css'
 
 function AdminLayout() {
   const navigate = useNavigate();
@@ -24,7 +25,9 @@ function AdminLayout() {
         Logout
       </button>
       <br />
-      <Outlet />
+      <div className="admin-layout-container">
+        <Outlet />
+      </div>
     </div>
   );
 }
