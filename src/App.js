@@ -12,6 +12,8 @@ import AdminAuth from "./Utils/AdminAuth";
 import KitchenAuth from "./Utils/KitchenAuth";
 import GuestAuth from "./Utils/GuestAuth";
 import AdminLayout from "./View/Layout/AdminLayout/AdminLayout";
+import AddEmployeeLayout from "./View/Layout/AddEmployeeLayout/AddEmployeeLayout";
+import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLayout";
 
 function App() {
   return (
@@ -22,7 +24,8 @@ function App() {
         <Route path="/admin" element={<AdminAuth><AdminLayout /></AdminAuth>} >
           <Route index element={<AdminDashboard />} />
           <Route path="/admin/transactionReport" element={<TransactionReport />} />
-          <Route path="/admin/employee" element={<Employees />} />
+          <Route path="/admin/employee" element={<ViewEmployeeLayout />} />
+          <Route path="/admin/employee/addEmployee" element={<AddEmployeeLayout />} />
           <Route path="/admin/food" element={<Foods />} />
           <Route path="/admin/setting" element={<Setting />} />
         </Route>
