@@ -7,7 +7,6 @@ export default function AdminAuth({ children }) {
   const location = useLocation();
   const currentUser = JSON.parse(sessionStorage.getItem("userData"));
   let pathName;
-  console.log(JSON.stringify(currentUser));
   if (currentUser) {
     if (currentUser.roleType === RoleTypes.CASHIER) {
       pathName = "/cashier";

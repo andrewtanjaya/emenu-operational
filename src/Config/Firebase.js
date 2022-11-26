@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection } from "@firebase/firestore";
+import { getFirestore, collection, query, where} from "@firebase/firestore";
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,6 +15,15 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 const firestore = getFirestore(firebase);
 
+export const storage = getStorage(firebase);
 export const usersRef = collection(firestore, "users");
 export const restaurantsRef = collection(firestore, "restaurants");
 export const menusRef = collection(firestore, "menus");
+
+export function userQuery(firstName, roleType){
+  if(roleType!==""){
+    return query(collection(firestore, "users"), where("roleType", "==", roleType));
+  }
+  return query(collection(firestore, "users"), where("firstName", ">=", firstName), where("firstName", "<", firstName+'\uf8ff'));
+}; 
+

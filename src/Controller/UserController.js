@@ -1,7 +1,8 @@
-import { usersRef } from "../Database/Firebase";
-import { deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { usersRef } from "../Config/Firebase";
 import { User } from "../Model/User";
 import { async } from "@firebase/util";
+import { RoleTypes } from "../Enum/RoleTypes";
 
 export const getAllUsers = async () => {
   const userSnap = await getDocs(usersRef);
@@ -20,4 +21,13 @@ export const getUserByEmail = async (email) => {
 export const deleteUserByEmail = async (email) => {
   const userSnap = await deleteDoc(doc(usersRef, email));
   return userSnap;
+}
+
+export const updateUserByEmail = async (user) => {
+  await updateDoc(doc(usersRef, user.email), {
+    firstName:user.firstName, 
+    lastName:user.lastName, 
+    userName:user.userName,
+    password:user.password,
+    roleType:user.roleType});
 }

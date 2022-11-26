@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Space, Table, Modal } from "antd";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { usersRef } from "../../../Database/Firebase";
+import { Space, Table, Modal, Select, Button } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { userQuery } from "../../../Config/Firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { deleteUserByEmail } from "../../../Controller/UserController";
+import "./ViewEmployeeLayout.css";
+import Search from "antd/es/input/Search";
 
 function ViewEmployeeLayout() {
   const columns = [
@@ -30,10 +32,9 @@ function ViewEmployeeLayout() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link to={"/admin"}>Edit</Link>
+          <Link to={`/admin/editEmployee/${record.email}`}>Edit</Link>
           <Link
             onClick={() => {
-              console.log(record.email);
               confirmModal(record.email);
             }}
           >
@@ -44,9 +45,14 @@ function ViewEmployeeLayout() {
     },
   ];
 
-  const [users, isLoading, error] = useCollectionData(usersRef, {
-    idField: "id",
-  });
+  const [keyword, setKeyword] = useState("");
+  const [roleType, setRoleType] = useState("");
+  const [users, isLoading, error] = useCollectionData(
+    userQuery(keyword, roleType),
+    {
+      idField: "email",
+    }
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const confirmModal = (email) => {
@@ -59,17 +65,65 @@ function ViewEmployeeLayout() {
     });
   };
   return (
-    <div>
-      <h1>Employee</h1>
-      <button
-        onClick={() => {
-          navigate("/admin/employee/addEmployee");
-        }}
-      >
-        Add Employee
-      </button>
-      <Table columns={columns} loading={isLoading} dataSource={users} />
-    </div>
+    <>
+      <div className="view-employee-container">
+        <h1>Employee</h1>
+        <div className="header-container">
+          <Button
+            type="primary"
+            onClick={() => {
+              navigate("/admin/addEmployee");
+            }}
+          >
+            Add Employee
+          </Button>
+          <div className="filter-container">
+            <Select
+              placeholder="Filter"
+              style={{
+                width: 120,
+              }}
+              allowClear
+              options={[
+                {
+                  value: "MANAGER",
+                  label: "Manager",
+                },
+                {
+                  value: "CASHIER",
+                  label: "Cashier",
+                },
+                {
+                  value: "KITCHEN",
+                  label: "Kitchen",
+                },
+              ]}
+              onSelect={(value) => {
+                setRoleType(value);
+              }}
+            />
+            <Search
+              placeholder="input search text"
+              style={{
+                width: 200,
+              }}
+              onChange={(e) => {
+                setKeyword(e.target.value);
+                setRoleType("");
+              }}
+            />
+          </div>
+        </div>
+        <div className="table-employee-container">
+          <Table
+            columns={columns}
+            loading={isLoading}
+            dataSource={users}
+            rowKey="email"
+          />
+        </div>
+      </div>
+    </>
   );
 }
 export default ViewEmployeeLayout;

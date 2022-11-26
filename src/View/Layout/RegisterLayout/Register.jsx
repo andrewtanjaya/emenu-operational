@@ -2,7 +2,7 @@ import React from "react";
 import "./Register.css";
 import { Button, Form, Input, Modal } from "antd";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { usersRef } from "../../../Database/Firebase";
+import { usersRef } from "../../../Config/Firebase";
 import {
   getUserByEmail,
   registerUser,
@@ -44,8 +44,8 @@ function Register() {
   };
 
   const onFinish = (values) => {
-    const getRestoId = generateRandomId(IdTypes.RESTAURANT);
-    const getMenuId = generateRandomId(IdTypes.MENU);
+    const getRestoId = generateRandomId(IdTypes.RESTAURANT, "");
+    const getMenuId = generateRandomId(IdTypes.MENU, "");
 
     let newUser = new User(
       values.firstName,

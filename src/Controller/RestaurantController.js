@@ -1,4 +1,4 @@
-import { restaurantsRef } from "../Database/Firebase";
+import { restaurantsRef } from "../Config/Firebase";
 import { doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 export const getRestaurantById = async (restaurantId) => {
