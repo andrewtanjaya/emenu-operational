@@ -3,7 +3,7 @@ import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { storage } from "../../../Config/Firebase";
 import {
@@ -31,11 +31,14 @@ function AdminAddMenuLayout() {
   ]);
   const [isUploading, setIsUploading] = useState(false);
   const [form] = useForm();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     let foodId = urlParam.get("foodId"); 
     if(foodId && menuData){
       let data = menuData.foodList.filter((food) => food.foodId === foodId)[0];
+
+      if(data === null) navigate("*");
       setEditFoodData(data);
       setPhotosData((photosData) => {
         let newData = [{keyId: 1, isMain:true, file: data.mainPicture }];
