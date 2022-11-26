@@ -1,9 +1,11 @@
 import { Button, Form, Input, InputNumber, Select } from "antd";
+import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import { Option } from "antd/es/mentions";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useSearchParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { menusRef, storage } from "../../../Config/Firebase";
 import {
@@ -19,14 +21,47 @@ import AdminOptionGroup from "../../Component/AdminOptionGroup/AdminOptionGroup"
 import "./AdminAddMenuLayout.css";
 
 function AdminAddMenuLayout() {
+  const [urlParam, setUrlParam] = useSearchParams();
   const [menuId, setMenuId] = useState(null);
   const [menuData, setMenuData] = useState(null);
   const [optionGroups, setOptionGroups] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editFoodData, setEditFoodData] = useState(null);
   const [photosData, setPhotosData] = useState([
     { keyId: 1, isMain: true, file: null },
     { keyId: 2, isMain: false, file: null },
   ]);
   const [isUploading, setIsUploading] = useState(false);
+  const [form] = useForm();
+
+  useEffect(()=>{
+    let foodId = urlParam.get("id"); 
+    if(foodId && menuData){
+      let data = menuData.foodList.filter((food) => food.foodId === foodId)[0];
+      setEditFoodData(data);
+      setPhotosData((photosData) => {
+        let newData = [{keyId: 1, isMain:true, file: data.mainPicture }];
+        if(data.addedPicture.length === 1){
+          newData.push({keyId: 2, isMain: false, file: data.addedPicture[0]});
+        }else if (data.addedPicture.length > 1){
+          for(let i = 0; i< data.addedPicture.length;i++){
+            newData.push({keyId: i+2,isMain:false, file: data.addedPicture[i]})
+          }
+        }
+        newData.push({keyId: newData.length+1, isMain:false, file:null});
+        return newData;
+      });
+      form.setFieldValue("foodName", data.foodName);
+      form.setFieldValue("category", data.categoryId);
+      form.setFieldValue("description", data.foodDescription);
+      form.setFieldValue("price", data.foodPrice);
+      setOptionGroups(data.groups);
+      setIsEditMode(true);
+    }else{
+      setEditFoodData(null);
+      setIsEditMode(false);
+    }
+  },[urlParam, menuData])
 
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("userData"));
@@ -74,9 +109,38 @@ function AdminAddMenuLayout() {
     });
   };
 
+  const editFood = async (values) => {
+    // TODO: tag logic
+    setIsUploading(true);
+    let updatedFood = new Food(
+      editFoodData.foodId,
+      values.category,
+      optionGroups,
+      values.foodName,
+      editFoodData.availability,
+      editFoodData.mainPicture,
+      values.price,
+      editFoodData.addedPicture,
+      values.description,
+      editFoodData.tags,
+      editFoodData.orderCount,
+      editFoodData.totalSales
+    );
+    await uploadImage(updatedFood);
+      let updatedFoodList = menuData.foodList;
+      for(let i = 0 ;i< updatedFoodList.length; i++){
+        if(updatedFoodList[i].foodId === updatedFood.foodId){
+          updatedFoodList[i] = updatedFood;
+        }
+      }
+      updateMenuById(values.category, updatedFoodList, menuId).finally(() => {
+        setIsUploading(false);
+      });
+  };
+
   const uploadImage = async (newFood) => {
     for (let i = 0; i < photosData.length; i++) {
-      if (photosData[i].file !== null) {
+      if (photosData[i].file !== null && typeof(photosData[i].file) !== "string") {
         const foodImageRef = ref(
           storage,
           `Food-Images/${photosData[i].file.name + uuid()}`
@@ -87,8 +151,10 @@ function AdminAddMenuLayout() {
             await getDownloadURL(response.ref).then(async (url) => {
               if (i === 0) {
                 newFood.mainPicture = url;
-              } else {
+              } else if(!isEditMode && i !== 0){
                 newFood.addedPicture = [...newFood.addedPicture, url];
+              } else if(isEditMode && i !== 0){
+                newFood.addedPicture[i-1] = url;
               }
             });
           }
@@ -98,6 +164,9 @@ function AdminAddMenuLayout() {
   };
 
   const deletePhoto = (keyId) => {
+    if(isEditMode){
+      editFoodData.addedPicture.splice(keyId-2, 1);
+    }
     setPhotosData((prev) => {
       prev = prev.filter((p) => {
         return p.keyId !== keyId;
@@ -116,7 +185,8 @@ function AdminAddMenuLayout() {
   };
 
   const onFinish = (values) => {
-    addFood(values);
+    if(!isEditMode)addFood(values);
+    else editFood(values);
   };
 
   const options = [];
@@ -132,6 +202,7 @@ function AdminAddMenuLayout() {
     <div className="add-menu-container">
       <h1>Add Menu</h1>
       <div className="add-menu-form-container">
+        <p>Menu Photos</p>
         <div className="menu-photos-input-container">
           {photosData.map((item, index) => {
             return (
@@ -151,14 +222,12 @@ function AdminAddMenuLayout() {
           <Form
             layout="vertical"
             name="basic"
+            form={form}
             labelCol={{
-              span: 6,
+              span: 24,
             }}
             wrapperCol={{
               span: 24,
-            }}
-            initialValues={{
-              remember: true,
             }}
             onFinish={onFinish}
           >
@@ -172,7 +241,7 @@ function AdminAddMenuLayout() {
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Menu Name" />
             </Form.Item>
 
             <Form.Item name="category" label="Category">
@@ -187,7 +256,7 @@ function AdminAddMenuLayout() {
               />
             </Form.Item>
             <Form.Item label="Description" name="description">
-              <TextArea rows={4} />
+              <TextArea rows={4} placeholder="Menu Description"/>
             </Form.Item>
 
             <Form.Item
@@ -204,17 +273,18 @@ function AdminAddMenuLayout() {
                 },
               ]}
             >
-              <InputNumber />
+              <InputNumber placeholder="0"/>
             </Form.Item>
 
             <Form.Item
               wrapperCol={{
-                offset: 6,
+                offset: 0,
                 span: 16,
               }}
             >
-              <Button type="primary" htmlType="submit">
-                Submit
+              <Button 
+                loading={isUploading} type="primary" htmlType="submit">
+                Save
               </Button>
             </Form.Item>
           </Form>
@@ -222,7 +292,6 @@ function AdminAddMenuLayout() {
           <AdminOptionGroup setOptionGroups={setOptionGroups} optionGroups={optionGroups}/>
         </div>
 
-        {isUploading ? <p>Uploading image</p> : <></>}
       </div>
     </div>
   );

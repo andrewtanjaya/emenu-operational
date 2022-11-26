@@ -27,6 +27,7 @@ function App() {
           <Route path="/admin/employee" element={<Employees />} />
           <Route path="/admin/food" element={<Foods />} />
           <Route path="/admin/addFood" element={<AdminAddMenuLayout/>}/>
+          <Route path="/admin/editFood" element={<AdminAddMenuLayout/>}/>
           <Route path="/admin/setting" element={<Setting />} />
         </Route>
         <Route path="/cashier" element={<CashierAuth><AdminLayout /></CashierAuth>} >

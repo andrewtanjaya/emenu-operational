@@ -1,7 +1,4 @@
-import { ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
-import { storage } from "../../../Config/Firebase";
 import "./AdminMenuPhoto.css";
 
 function AdminMenuPhoto({
@@ -21,16 +18,27 @@ function AdminMenuPhoto({
       setPreview(undefined);
       return;
     }
-    if(!file && photosData[index].file){
+    if(!file && photosData[index].file && typeof(photosData[index].file) !== "string"){
         setFile(photosData[index].file);
         objectUrl = URL.createObjectURL(photosData[index].file);
-    }else{
+    }else if(typeof(photosData[index].file) !== "string"){
         objectUrl = URL.createObjectURL(file);
     }
     
-    setPreview(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
+    if(typeof(photosData[index].file) !== "string")setPreview(objectUrl);
+    return () => {
+      if(typeof(photosData[index].file) !== "string"){
+        URL.revokeObjectURL(objectUrl)
+      }
+    };
   }, [file]);
+
+  useEffect(()=>{
+    if(typeof(photosData[index].file) === "string"){
+      setFile(photosData[index].file)
+      setPreview(photosData[index].file)
+    }
+  }, [photosData])
 
   return (
     <div className="admin-menu-photo-container">
@@ -42,19 +50,24 @@ function AdminMenuPhoto({
       <input
         id={`img-photo-` + keyId}
         type="file"
+        accept="image/png, image/gif, image/jpeg"
         className="admin-menu-hidden-input"
         onChange={(event) => {
           if (isMain !== true && photosData.length <= 4) {
-            setPhotosData((prev) => {
-              return [
-                ...prev,
-                {
-                  keyId: prev[prev.length - 1].keyId + 1,
-                  isMain: false,
-                  file: null,
-                },
-              ];
-            });
+            let nullFile = photosData.filter((data) => data.file === null);
+            if(nullFile.length === 0){
+              setPhotosData((prev) => {
+              
+                return [
+                  ...prev,
+                  {
+                    keyId: prev[prev.length - 1].keyId + 1,
+                    isMain: false,
+                    file: null,
+                  },
+                ];
+              });
+            }
           }
           setPhotosData((prev) => {
             prev[index].file = event.target.files[0];
