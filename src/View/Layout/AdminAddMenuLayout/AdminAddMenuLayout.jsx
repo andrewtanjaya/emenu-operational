@@ -1,13 +1,11 @@
 import { Button, Form, Input, InputNumber, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
-import { Option } from "antd/es/mentions";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useSearchParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { menusRef, storage } from "../../../Config/Firebase";
+import { storage } from "../../../Config/Firebase";
 import {
   getMenuById,
   updateMenuById,

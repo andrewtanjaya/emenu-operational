@@ -1,5 +1,4 @@
-import { Button, Form, Input, Modal, Switch } from "antd";
-import { useForm } from "antd/es/form/Form";
+import { Button, Modal, Switch } from "antd";
 import React, { useEffect, useState } from "react";
 import AdminOptionForm from "../AdminOptionForm/AdminOptionForm";
 import "./AdminOptionModal.css";
@@ -110,20 +109,6 @@ function AdminOptionModal({
         ]}
         width={600}
       >
-        {/* <Form
-        form={form}
-        >
-        <Form.Item
-          labelCol={{ span: 24 }}
-          label={"Option Group Name"}
-          name="groupName"
-          rules={[
-            {
-              required: true,
-              message: "Option Group Name must be filled!",
-            },
-          ]}
-        > */}
         <div className="admin-option-group-name-input">
           <label>Option Group Name</label>
           <input
@@ -137,8 +122,6 @@ function AdminOptionModal({
             }}
           />
         </div>
-        {/* </Form.Item>
-        </Form> */}
         {hasError ? (
           <p className="option-group-name-error">
             Option Group Name must be filled!

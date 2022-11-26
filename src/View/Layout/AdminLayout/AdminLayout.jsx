@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import AuthConsumer from "../../../hooks/auth";
 import './AdminLayout.css'
 
