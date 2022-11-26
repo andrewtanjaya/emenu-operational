@@ -1,0 +1,29 @@
+.view-employee-container {
+  width: 90vw;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 3px solid inactive;
+  border-radius: 16px;
+  box-shadow: 0px 0px 15px rgb(134, 134, 134);
+  padding: 2%;
+}
+
+.table-employee-container {
+  background-color: #FFFFFF;
+  margin-top: 2%;
+  border: 3px solid inactive;
+  border-radius: 16px;
+  box-shadow: 0px 0px 15px rgb(134, 134, 134);
+}
+
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15%;
+}/*# sourceMappingURL=ViewEmployeeLayout.css.map */

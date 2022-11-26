@@ -12,7 +12,10 @@ import AdminAuth from "./Utils/AdminAuth";
 import KitchenAuth from "./Utils/KitchenAuth";
 import GuestAuth from "./Utils/GuestAuth";
 import AdminLayout from "./View/Layout/AdminLayout/AdminLayout";
+import AddEmployeeLayout from "./View/Layout/AddEmployeeLayout/AddEmployeeLayout";
+import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLayout";
 import AdminAddMenuLayout from "./View/Layout/AdminAddMenuLayout/AdminAddMenuLayout";
+import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLayout";
 
 function App() {
   return (
@@ -24,7 +27,9 @@ function App() {
         <Route path="/admin" element={<AdminAuth><AdminLayout /></AdminAuth>} >
           <Route index element={<AdminDashboard />} />
           <Route path="/admin/transactionReport" element={<TransactionReport />} />
-          <Route path="/admin/employee" element={<Employees />} />
+          <Route path="/admin/employee" element={<ViewEmployeeLayout />} />
+          <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />
+          <Route path="/admin/editEmployee/:userId" element={<EditEmployeeLayout />} />
           <Route path="/admin/food" element={<Foods />} />
           <Route path="/admin/addFood" element={<AdminAddMenuLayout/>}/>
           <Route path="/admin/setting" element={<Setting />} />
@@ -33,6 +38,7 @@ function App() {
         </Route>
         <Route path="/kitchen" element={<KitchenAuth><AdminLayout /></KitchenAuth>} >
         </Route>
+        <Route path="*" element={(<h1>Page Not Found</h1>)}/>
       </Routes>
     </>
   );
