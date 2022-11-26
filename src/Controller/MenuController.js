@@ -1,5 +1,5 @@
 import { menusRef } from "../Config/Firebase";
-import { doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 export const addMenu = async (menu) => {
   await setDoc(doc(menusRef, menu.menuId), Object.assign({}, menu));
