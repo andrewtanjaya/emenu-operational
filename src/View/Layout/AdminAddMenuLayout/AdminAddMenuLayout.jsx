@@ -33,7 +33,7 @@ function AdminAddMenuLayout() {
   const [form] = useForm();
 
   useEffect(()=>{
-    let foodId = urlParam.get("id"); 
+    let foodId = urlParam.get("foodId"); 
     if(foodId && menuData){
       let data = menuData.foodList.filter((food) => food.foodId === foodId)[0];
       setEditFoodData(data);
