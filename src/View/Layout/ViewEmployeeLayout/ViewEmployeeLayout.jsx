@@ -79,6 +79,11 @@ function ViewEmployeeLayout() {
           return firstNameAndEmail.includes(keyword.toLowerCase());
         })
       );
+      // for (let i = 0; i < 100; i++) {
+      //   setUsersFiltered((usersFiltered) => {
+      //     return [...usersFiltered, usersFiltered[0]];
+      //   });
+      // }
       setIsLoad(false);
     }
   }, [users, keyword, roleType]);
@@ -153,11 +158,19 @@ function ViewEmployeeLayout() {
         </div>
         <div className="table-employee-container">
           <Table
+            style={{}}
             columns={columns}
             loading={isLoad}
             dataSource={usersFiltered}
             rowKey="email"
-            pagination={false}
+            pagination={{
+              defaultPageSize: 2,
+              showSizeChanger: true,
+              pageSizeOptions: ["10", "20", "30"],
+            }}
+            scroll={{
+              x: "1920px",
+            }}
           />
         </div>
       </div>
