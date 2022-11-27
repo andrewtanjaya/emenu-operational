@@ -19,11 +19,19 @@ export const storage = getStorage(firebase);
 export const usersRef = collection(firestore, "users");
 export const restaurantsRef = collection(firestore, "restaurants");
 export const menusRef = collection(firestore, "menus");
+export const categoriesRef = collection(firestore, "categories");
 
 export function userQuery(firstName, roleType){
   if(roleType!==""){
     return query(collection(firestore, "users"), where("roleType", "==", roleType));
   }
   return query(collection(firestore, "users"), where("firstName", ">=", firstName), where("firstName", "<", firstName+'\uf8ff'));
-}; 
+};
+
+export function categoryQuery(categoryId, categoryName){
+  if(categoryName!==""){
+    return query(collection(firestore, "categories"), where("categoryName", "==", categoryName));
+  }
+  return query(collection(firestore, "categories"), where("categoryId", ">=", categoryId), where("categoryId", "<", categoryId+'\uf8ff'));
+};
 
