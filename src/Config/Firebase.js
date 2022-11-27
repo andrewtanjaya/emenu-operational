@@ -20,10 +20,3 @@ export const usersRef = collection(firestore, "users");
 export const restaurantsRef = collection(firestore, "restaurants");
 export const menusRef = collection(firestore, "menus");
 
-export function userQuery(firstName, roleType){
-  if(roleType!==""){
-    return query(collection(firestore, "users"), where("roleType", "==", roleType));
-  }
-  return query(collection(firestore, "users"), where("firstName", ">=", firstName), where("firstName", "<", firstName+'\uf8ff'));
-}; 
-

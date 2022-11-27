@@ -33,23 +33,29 @@ function AdminAddMenuLayout() {
   const [form] = useForm();
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    let foodId = urlParam.get("foodId"); 
-    if(foodId && menuData){
+  useEffect(() => {
+    let foodId = urlParam.get("foodId");
+    if (foodId && menuData) {
       let data = menuData.foodList.filter((food) => food.foodId === foodId)[0];
-
-      if(data === null) navigate("*");
+      if (!data) {
+        navigate("404");
+        return;
+      }
       setEditFoodData(data);
       setPhotosData((photosData) => {
-        let newData = [{keyId: 1, isMain:true, file: data.mainPicture }];
-        if(data.addedPicture.length === 1){
-          newData.push({keyId: 2, isMain: false, file: data.addedPicture[0]});
-        }else if (data.addedPicture.length > 1){
-          for(let i = 0; i< data.addedPicture.length;i++){
-            newData.push({keyId: i+2,isMain:false, file: data.addedPicture[i]})
+        let newData = [{ keyId: 1, isMain: true, file: data.mainPicture }];
+        if (data.addedPicture.length === 1) {
+          newData.push({ keyId: 2, isMain: false, file: data.addedPicture[0] });
+        } else if (data.addedPicture.length > 1) {
+          for (let i = 0; i < data.addedPicture.length; i++) {
+            newData.push({
+              keyId: i + 2,
+              isMain: false,
+              file: data.addedPicture[i],
+            });
           }
         }
-        newData.push({keyId: newData.length+1, isMain:false, file:null});
+        newData.push({ keyId: newData.length + 1, isMain: false, file: null });
         return newData;
       });
       form.setFieldValue("foodName", data.foodName);
@@ -58,11 +64,11 @@ function AdminAddMenuLayout() {
       form.setFieldValue("price", data.foodPrice);
       setOptionGroups(data.groups);
       setIsEditMode(true);
-    }else{
+    } else {
       setEditFoodData(null);
       setIsEditMode(false);
     }
-  },[urlParam, menuData])
+  }, [urlParam, menuData]);
 
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("userData"));
@@ -128,20 +134,23 @@ function AdminAddMenuLayout() {
       editFoodData.totalSales
     );
     await uploadImage(updatedFood);
-      let updatedFoodList = menuData.foodList;
-      for(let i = 0 ;i< updatedFoodList.length; i++){
-        if(updatedFoodList[i].foodId === updatedFood.foodId){
-          updatedFoodList[i] = updatedFood;
-        }
+    let updatedFoodList = menuData.foodList;
+    for (let i = 0; i < updatedFoodList.length; i++) {
+      if (updatedFoodList[i].foodId === updatedFood.foodId) {
+        updatedFoodList[i] = updatedFood;
       }
-      updateMenuById(values.category, updatedFoodList, menuId).finally(() => {
-        setIsUploading(false);
-      });
+    }
+    updateMenuById(values.category, updatedFoodList, menuId).finally(() => {
+      setIsUploading(false);
+    });
   };
 
   const uploadImage = async (newFood) => {
     for (let i = 0; i < photosData.length; i++) {
-      if (photosData[i].file !== null && typeof(photosData[i].file) !== "string") {
+      if (
+        photosData[i].file !== null &&
+        typeof photosData[i].file !== "string"
+      ) {
         const foodImageRef = ref(
           storage,
           `Food-Images/${photosData[i].file.name + uuid()}`
@@ -152,10 +161,10 @@ function AdminAddMenuLayout() {
             await getDownloadURL(response.ref).then(async (url) => {
               if (i === 0) {
                 newFood.mainPicture = url;
-              } else if(!isEditMode && i !== 0){
+              } else if (!isEditMode && i !== 0) {
                 newFood.addedPicture = [...newFood.addedPicture, url];
-              } else if(isEditMode && i !== 0){
-                newFood.addedPicture[i-1] = url;
+              } else if (isEditMode && i !== 0) {
+                newFood.addedPicture[i - 1] = url;
               }
             });
           }
@@ -165,8 +174,8 @@ function AdminAddMenuLayout() {
   };
 
   const deletePhoto = (keyId) => {
-    if(isEditMode){
-      editFoodData.addedPicture.splice(keyId-2, 1);
+    if (isEditMode) {
+      editFoodData.addedPicture.splice(keyId - 2, 1);
     }
     setPhotosData((prev) => {
       prev = prev.filter((p) => {
@@ -186,7 +195,7 @@ function AdminAddMenuLayout() {
   };
 
   const onFinish = (values) => {
-    if(!isEditMode)addFood(values);
+    if (!isEditMode) addFood(values);
     else editFood(values);
   };
 
@@ -257,7 +266,7 @@ function AdminAddMenuLayout() {
               />
             </Form.Item>
             <Form.Item label="Description" name="description">
-              <TextArea rows={4} placeholder="Menu Description"/>
+              <TextArea rows={4} placeholder="Menu Description" />
             </Form.Item>
 
             <Form.Item
@@ -274,7 +283,7 @@ function AdminAddMenuLayout() {
                 },
               ]}
             >
-              <InputNumber placeholder="0"/>
+              <InputNumber placeholder="0" />
             </Form.Item>
 
             <Form.Item
@@ -283,16 +292,17 @@ function AdminAddMenuLayout() {
                 span: 16,
               }}
             >
-              <Button 
-                loading={isUploading} type="primary" htmlType="submit">
+              <Button loading={isUploading} type="primary" htmlType="submit">
                 Save
               </Button>
             </Form.Item>
           </Form>
 
-          <AdminOptionGroup setOptionGroups={setOptionGroups} optionGroups={optionGroups}/>
+          <AdminOptionGroup
+            setOptionGroups={setOptionGroups}
+            optionGroups={optionGroups}
+          />
         </div>
-
       </div>
     </div>
   );

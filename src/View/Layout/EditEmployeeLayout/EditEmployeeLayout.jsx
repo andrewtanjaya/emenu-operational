@@ -20,7 +20,6 @@ function EditEmployeeLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userId);
     getUserByEmail(userId).then((result) => {
       if (!result) {
         navigate("not found page");
@@ -41,13 +40,24 @@ function EditEmployeeLayout() {
       userSession.restaurantId,
       isChangePassword ? values.password : userData.password
     );
-
-    updateUserByEmail(newUser).then(() => {
-      successModal("Success", "Employee Data Updated");
-    });
+    if (isChangePassword) {
+      if (values.oldPassword !== userData.password) {
+        errorModal("Invalid Old Password", "");
+      } else if (values.oldPassword === values.password) {
+        errorModal("Invalid Password", "Cannot use the same password!");
+      } else {
+        updateUserByEmail(newUser).then(() => {
+          successModal("Success", "Employee Data Updated");
+        });
+      }
+    } else {
+      updateUserByEmail(newUser).then(() => {
+        successModal("Success", "Employee Data Updated");
+      });
+    }
   };
 
-  const successModal = (title, content) => {
+  function successModal(title, content) {
     Modal.success({
       onOk: () => {
         navigate("/admin/employee", { replace: true });
@@ -55,7 +65,14 @@ function EditEmployeeLayout() {
       title: title,
       content: content,
     });
-  };
+  }
+
+  function errorModal(title, content) {
+    Modal.error({
+      title: title,
+      content: content,
+    });
+  }
 
   function handleChecklist() {
     if (isChangePassword) {
@@ -92,6 +109,7 @@ function EditEmployeeLayout() {
                 email: userData.email,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
+                roleType: userData.roleType,
               }}
             >
               <Form.Item label="Email Address" name="email">
@@ -133,10 +151,7 @@ function EditEmployeeLayout() {
                   },
                 ]}
               >
-                <Select
-                  placeholder="Please select a role"
-                  defaultValue={userData.roleType}
-                >
+                <Select placeholder="Please select a role">
                   <Option value={RoleTypes.MANAGER}>Manager</Option>
                   <Option value={RoleTypes.CASHIER}>Cashier</Option>
                   <Option value={RoleTypes.KITCHEN}>Kitchen</Option>
@@ -208,7 +223,7 @@ function EditEmployeeLayout() {
                   </Button>
                 </Form.Item>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button id="saveButton" type="primary" htmlType="submit">
                     Save
                   </Button>
                 </Form.Item>

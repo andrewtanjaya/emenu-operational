@@ -16,6 +16,7 @@ import AddEmployeeLayout from "./View/Layout/AddEmployeeLayout/AddEmployeeLayout
 import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLayout";
 import AdminAddMenuLayout from "./View/Layout/AdminAddMenuLayout/AdminAddMenuLayout";
 import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLayout";
+import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantSetting";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
           <Route path="/admin/food" element={<Foods />} />
           <Route path="/admin/addFood" element={<AdminAddMenuLayout/>}/>
           <Route path="/admin/editFood" element={<AdminAddMenuLayout/>}/>
-          <Route path="/admin/setting" element={<Setting />} />
+          <Route path="/admin/setting" element={<RestaurantSetting />} />
         </Route>
         <Route path="/cashier" element={<CashierAuth><AdminLayout /></CashierAuth>} >
         </Route>
