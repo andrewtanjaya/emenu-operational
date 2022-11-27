@@ -24,9 +24,21 @@ function ViewEmployeeLayout() {
       render: (text) => <a>{text}</a>,
     },
     {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      render: (text) => <a>{text}</a>,
+    },
+    {
       title: "Email Address",
       dataIndex: "email",
       key: "email",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
       render: (text) => <a>{text}</a>,
     },
     {
@@ -34,7 +46,7 @@ function ViewEmployeeLayout() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link to={`/admin/editEmployee/${record.email}`}>Edit</Link>
+          <Link to={`/admin/editEmployee?id=${record.email}`}>Edit</Link>
           <Link
             onClick={() => {
               confirmModal(record.email);
@@ -134,9 +146,6 @@ function ViewEmployeeLayout() {
                   label: "Kitchen",
                 },
               ]}
-              // onSelect={(value) => {
-              //   setRoleType(value);
-              // }}
               onChange={(e) => {
                 if (!e) {
                   setRoleType("");
@@ -158,15 +167,15 @@ function ViewEmployeeLayout() {
         </div>
         <div className="table-employee-container">
           <Table
-            style={{}}
             columns={columns}
             loading={isLoad}
             dataSource={usersFiltered}
             rowKey="email"
+            bordered
             pagination={{
-              defaultPageSize: 2,
+              defaultPageSize: 5,
               showSizeChanger: true,
-              pageSizeOptions: ["10", "20", "30"],
+              pageSizeOptions: ["5", "10", "20"],
             }}
             scroll={{
               x: "1920px",

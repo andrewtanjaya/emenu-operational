@@ -1,6 +1,6 @@
 import React from "react";
 import "./Register.css";
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, Modal, Radio } from "antd";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { usersRef } from "../../../Config/Firebase";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../../Controller/UserController";
 import { User } from "../../../Model/User";
 import { RoleTypes } from "../../../Enum/RoleTypes";
+import { Gender } from "../../../Enum/Gender";
 import { generateRandomId } from "../../../Helper/Helper";
 import { IdTypes } from "../../../Enum/IdTypes";
 import { addRestaurant } from "../../../Controller/RestaurantController";
@@ -55,7 +56,9 @@ function Register() {
       RoleTypes.MANAGER,
       "profilePicture:)",
       "",
-      values.password
+      values.password,
+      values.phoneNumber,
+      values.gender
     );
 
     getUserByEmail(newUser.email).then((user) => {
@@ -162,7 +165,41 @@ function Register() {
         >
           <Input />
         </Form.Item>
-
+        <Form.Item
+          label="Phone Number"
+          name="phoneNumber"
+          rules={[
+            {
+              required: true,
+              message: "Phone Number must be filled!",
+            },
+            () => ({
+              validator(_, value) {
+                if (!value || !isNaN(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error("Invalid Phone Number"));
+              },
+            }),
+          ]}
+        >
+          <Input t />
+        </Form.Item>
+        <Form.Item
+          label="Gender"
+          name="gender"
+          rules={[
+            {
+              required: true,
+              message: "Gender must be choosen!",
+            },
+          ]}
+        >
+          <Radio.Group>
+            <Radio value={Gender.MALE}> Male </Radio>
+            <Radio value={Gender.FEMALE}> Female </Radio>
+          </Radio.Group>
+        </Form.Item>
         <Form.Item
           label="Password"
           name="password"

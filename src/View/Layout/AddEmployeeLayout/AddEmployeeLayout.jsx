@@ -5,9 +5,10 @@ import {
   getUserByEmail,
   registerUser,
 } from "../../../Controller/UserController";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Modal, Radio, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./AddEmployeeLayout.css";
+import { Gender } from "../../../Enum/Gender";
 const { Option } = Select;
 
 const AddEmployeeLayout = () => {
@@ -22,7 +23,9 @@ const AddEmployeeLayout = () => {
       values.roleType,
       "profilePicture:)",
       userSession.restaurantId,
-      values.password
+      values.password,
+      values.phoneNumber,
+      values.gender
     );
 
     getUserByEmail(newUser.email).then((user) => {
@@ -69,6 +72,12 @@ const AddEmployeeLayout = () => {
             name="register"
             onFinish={onFinish}
             scrollToFirstError
+            labelCol={{
+              span: 4,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
           >
             <Form.Item
               label="First Name"
@@ -126,6 +135,42 @@ const AddEmployeeLayout = () => {
                 <Option value={RoleTypes.CASHIER}>Cashier</Option>
                 <Option value={RoleTypes.KITCHEN}>Kitchen</Option>
               </Select>
+            </Form.Item>
+            <Form.Item
+              label="Phone Number"
+              name="phoneNumber"
+              rules={[
+                {
+                  required: true,
+                  message: "Phone Number must be filled!",
+                },
+                () => ({
+                  validator(_, value) {
+                    if (!value || !isNaN(value)) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Invalid Phone Number"));
+                  },
+                }),
+              ]}
+            >
+              <Input t />
+            </Form.Item>
+
+            <Form.Item
+              label="Gender"
+              name="gender"
+              rules={[
+                {
+                  required: true,
+                  message: "Gender must be choosen!",
+                },
+              ]}
+            >
+              <Radio.Group>
+                <Radio value={Gender.MALE}> Male </Radio>
+                <Radio value={Gender.FEMALE}> Female </Radio>
+              </Radio.Group>
             </Form.Item>
             <Form.Item
               name="password"
