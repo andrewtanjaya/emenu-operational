@@ -192,7 +192,7 @@ function AdminAddMenuLayout() {
 
   const options = [];
   for (let i = 10; i < 36; i++) {
-    // TODO: when category data is ready, loop through category's names here
+    // TODO: when category data is ready, loop through category's names here 
     options.push({
       label: i.toString(36) + i, // categoryname
       value: i.toString(36) + i, // categoryId
