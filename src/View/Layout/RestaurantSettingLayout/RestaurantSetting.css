@@ -1,4 +1,4 @@
-.edit-employee-layout {
+.setting-layout-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,7 +6,7 @@
   width: 90vw;
 }
 
-.edit-employee-form {
+.setting-form-container {
   display: flex;
   justify-content: center;
   width: 60%;
@@ -17,19 +17,6 @@
   padding: 3%;
 }
 
-.button-container {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  padding: 2%;
-}
-
-.header {
-  width: 60%;
-  padding-left: 3%;
-  padding-right: 3%;
-}
-
-#editForm {
+#settingForm {
   width: 80%;
-}/*# sourceMappingURL=EditEmployeeLayout.css.map */
+}/*# sourceMappingURL=RestaurantSetting.css.map */

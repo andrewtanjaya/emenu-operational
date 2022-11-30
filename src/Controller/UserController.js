@@ -9,6 +9,11 @@ export const getAllUsers = async () => {
   return userSnap;
 };
 
+export const getAllUsersByRestaurantId = (restaurantId) => {
+  const userSnap = query(usersRef, where("restaurantId", "==", restaurantId));
+  return userSnap;
+};
+
 export const registerUser = async (user) => {
   await setDoc(doc(usersRef, user.email), Object.assign({}, user));
 };

@@ -2,4 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#saveButton, #addButton {
+  background-color: #36AB27;
 }/*# sourceMappingURL=AdminLayout.css.map */

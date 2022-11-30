@@ -1,14 +1,13 @@
 @import "../../../Utils/variables";
 
-.add-employee-layout{
+.setting-layout-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 90vw;
 }
-
-.add-employee-form{
+.setting-form-container{
     display: flex;
     justify-content: center;
     width: 60%;
@@ -19,12 +18,6 @@
     padding: 3%;
 }
 
-.header{
-    width: 60%;
-    padding-left: 3%;
-    padding-right: 3%;
-}
-
-#addForm{
+#settingForm{
     width: 80%;
 }
