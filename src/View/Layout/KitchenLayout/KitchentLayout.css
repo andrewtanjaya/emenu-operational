@@ -1,0 +1,15 @@
+.kitchen-layout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.kitchen-layout-content-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#saveButton, #addButton {
+  background-color: #36AB27;
+}/*# sourceMappingURL=KitchentLayout.css.map */

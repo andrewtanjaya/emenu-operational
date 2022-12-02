@@ -1,38 +1,26 @@
-import { deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
-import { usersRef } from "../Config/Firebase";
 import { User } from "../Model/User";
-import { async } from "@firebase/util";
-import { RoleTypes } from "../Enum/RoleTypes";
+import { Database } from "../Model/Database";
 
-export const getAllUsers = async () => {
-  const userSnap = await getDocs(usersRef);
-  return userSnap;
-};
+export class UserController {
+  constructor() {}
 
-export const getAllUsersByRestaurantId = (restaurantId) => {
-  const userSnap = query(usersRef, where("restaurantId", "==", restaurantId));
-  return userSnap;
-};
+  static async getUserByEmail(email) {
+    return User.getUserByEmail(email);
+  }
 
-export const registerUser = async (user) => {
-  await setDoc(doc(usersRef, user.email), Object.assign({}, user));
-};
+  static async addUser(user) {
+    return User.addUser(user);
+  }
 
-export const getUserByEmail = async (email) => {
-  const userSnap = await getDoc(doc(usersRef, email));
-  return userSnap.exists() ? userSnap.data() : null;
-};
+  static async deleteUserByEmail(email) {
+    return User.deleteUserByEmail(email);
+  }
 
-export const deleteUserByEmail = async (email) => {
-  const userSnap = await deleteDoc(doc(usersRef, email));
-  return userSnap;
-}
+  static async updateUser(user) {
+    return User.updateUser(user);
+  }
 
-export const updateUserByEmail = async (user) => {
-  await updateDoc(doc(usersRef, user.email), {
-    firstName:user.firstName, 
-    lastName:user.lastName, 
-    userName:user.userName,
-    password:user.password,
-    roleType:user.roleType});
+  static getAllUsersByRestaurantId(restaurantId) {
+    return Database.getAllUsersByRestaurantId(restaurantId);
+  }
 }

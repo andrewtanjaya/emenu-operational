@@ -1,14 +1,15 @@
 .add-employee-layout {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90vw;
+  flex-direction: column;
+  width: 100%;
 }
 
 .add-employee-form {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 60%;
   border: 3px solid inactive;
   border-radius: 16px;
@@ -16,13 +17,12 @@
   margin-top: 20px;
   padding: 3%;
 }
+.add-employee-form Form {
+  width: 80%;
+}
 
 .header {
   width: 60%;
   padding-left: 3%;
   padding-right: 3%;
-}
-
-#addForm {
-  width: 80%;
 }/*# sourceMappingURL=AddEmployeeLayout.css.map */

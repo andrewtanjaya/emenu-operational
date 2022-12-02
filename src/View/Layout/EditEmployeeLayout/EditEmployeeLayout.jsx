@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { User } from "../../../Model/User";
 import { RoleTypes } from "../../../Enum/RoleTypes";
-import {
-  deleteUserByEmail,
-  getUserByEmail,
-  updateUserByEmail,
-} from "../../../Controller/UserController";
+import { UserController } from "../../../Controller/UserController";
 import { Button, Checkbox, Form, Input, Modal, Radio, Select } from "antd";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./EditEmployeeLayout.css";
@@ -16,14 +12,13 @@ function EditEmployeeLayout() {
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [searchParams, setSearchParams] = useSearchParams();
   const userId = searchParams.get("id");
-  // let foodId = urlParam.get("foodId");
   const [userData, setUserData] = useState(new User());
   const [isLoadData, setIsLoadData] = useState(true);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUserByEmail(userId).then((result) => {
+    UserController.getUserByEmail(userId).then((result) => {
       if (!result) {
         navigate("not found page");
       }
@@ -36,10 +31,9 @@ function EditEmployeeLayout() {
     let newUser = new User(
       values.firstName,
       values.lastName,
-      values.firstName + values.lastName,
+      values.firstName.concat(".", values.lastName),
       userData.email,
       values.roleType,
-      "profilePicture:)",
       userSession.restaurantId,
       isChangePassword ? values.password : userData.password,
       values.phoneNumber,
@@ -49,12 +43,12 @@ function EditEmployeeLayout() {
       if (values.oldPassword !== userData.password) {
         errorModal("Invalid Old Password", "");
       } else {
-        updateUserByEmail(newUser).then(() => {
+        UserController.updateUser(newUser).then(() => {
           successModal("Success", "Employee Data Updated");
         });
       }
     } else {
-      updateUserByEmail(newUser).then(() => {
+      UserController.updateUser(newUser).then(() => {
         successModal("Success", "Employee Data Updated");
       });
     }
@@ -88,7 +82,7 @@ function EditEmployeeLayout() {
   function confirmDeleteModal() {
     Modal.confirm({
       onOk: () => {
-        deleteUserByEmail(userId);
+        UserController.deleteUserByEmail(userId);
         navigate("/admin/employee");
       },
       title: "Delete",
@@ -120,7 +114,7 @@ function EditEmployeeLayout() {
                 span: 4,
               }}
               wrapperCol={{
-                span: 24,
+                span: 18,
               }}
             >
               <Form.Item label="Email Address" name="email">
@@ -273,19 +267,19 @@ function EditEmployeeLayout() {
               >
                 <Input.Password />
               </Form.Item>
-
-              <div className="button-container">
-                <Form.Item>
-                  <Button type="primary" danger onClick={confirmDeleteModal}>
-                    Delete
-                  </Button>
-                </Form.Item>
-                <Form.Item>
-                  <Button id="saveButton" type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </Form.Item>
-              </div>
+              <Form.Item wrapperCol={{ offset: 4, span: 18 }}>
+                <Button
+                  type="primary"
+                  danger
+                  htmlType="button"
+                  onClick={confirmDeleteModal}
+                >
+                  Delete
+                </Button>
+                <Button id="saveButton" type="primary" htmlType="submit">
+                  Save
+                </Button>
+              </Form.Item>
             </Form>
           </div>
         </div>

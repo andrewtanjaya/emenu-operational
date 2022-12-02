@@ -2,7 +2,7 @@ import React from "react";
 import "./Login.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal } from "antd";
-import { getUserByEmail } from "../../../Controller/UserController";
+import { UserController } from "../../../Controller/UserController";
 import { useNavigate } from "react-router-dom";
 import AuthConsumer from "../../../hooks/auth";
 
@@ -18,7 +18,7 @@ function Login() {
   };
 
   const onFinish = (values) => {
-    getUserByEmail(values.email).then((user) => {
+    UserController.getUserByEmail(values.email).then((user) => {
       if (user) {
         validateUser(values, user);
       } else {
@@ -51,59 +51,67 @@ function Login() {
     console.log("Failed:", errorInfo);
   };
   return (
-    <div className="loginContainer">
+    <div className="login-container">
       <h1>Login</h1>
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Username!",
-            },
-          ]}
+      <div className="login-form-container">
+        <Form
+          name="normal_login"
+          className="login-form"
+          labelCol={{
+            span: 6,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Email"
-          />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Password!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Username!",
+              },
+            ]}
           >
-            Log in
-          </Button>
-          Or <a href="/register">register now!</a>
-        </Form.Item>
-      </Form>
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Email"
+            />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Password!",
+              },
+            ]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <div className="button-container">
+            <Form.Item>
+              <Button
+                id="loginButton"
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+              >
+                Log in
+              </Button>
+            </Form.Item>
+            Or <a href="/register">register now!</a>
+          </div>
+        </Form>
+      </div>
     </div>
   );
 }

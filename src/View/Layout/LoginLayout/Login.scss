@@ -1,12 +1,36 @@
+@import "../../../Utils/variables";
 
-.loginContainer{
+.login-container {
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    Form{
-        width: 30%;
+}
+
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    border: 3px solid inactive;
+    border-radius: 16px;
+    box-shadow: 0px 0px 15px rgb(134, 134, 134);
+    margin-top: 20px;
+    padding: 50px 75px;
+
+    Form {
+        width: 100%;
     }
+
+}
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#loginButton {
+    background-color: $primary-color;
 }

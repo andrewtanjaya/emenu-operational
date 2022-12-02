@@ -1,10 +1,7 @@
 import React from "react";
 import { User } from "../../../Model/User";
 import { RoleTypes } from "../../../Enum/RoleTypes";
-import {
-  getUserByEmail,
-  registerUser,
-} from "../../../Controller/UserController";
+import { UserController } from "../../../Controller/UserController";
 import { Button, Form, Input, Modal, Radio, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./AddEmployeeLayout.css";
@@ -18,24 +15,23 @@ const AddEmployeeLayout = () => {
     let newUser = new User(
       values.firstName,
       values.lastName,
-      values.firstName + values.lastName,
+      values.firstName.concat(".", values.lastName),
       values.email,
       values.roleType,
-      "profilePicture:)",
       userSession.restaurantId,
       values.password,
       values.phoneNumber,
       values.gender
     );
 
-    getUserByEmail(newUser.email).then((user) => {
+    UserController.getUserByEmail(newUser.email).then((user) => {
       if (user) {
         errorModal(
           "Account Exists",
           `Account with ${newUser.email} already exists!`
         );
       } else {
-        registerUser(newUser).then(() => {
+        UserController.addUser(newUser).then(() => {
           successModal("Success", "New Employee Added");
         });
       }
@@ -76,7 +72,7 @@ const AddEmployeeLayout = () => {
               span: 4,
             }}
             wrapperCol={{
-              span: 16,
+              span: 18,
             }}
           >
             <Form.Item
@@ -213,7 +209,7 @@ const AddEmployeeLayout = () => {
               <Input.Password />
             </Form.Item>
 
-            <Form.Item>
+            <Form.Item wrapperCol={{ offset: 4, span: 24 }}>
               <Button id="saveButton" type="primary" htmlType="submit">
                 Save
               </Button>

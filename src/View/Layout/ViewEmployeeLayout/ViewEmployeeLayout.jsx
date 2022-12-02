@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Space, Table, Modal, Select, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import {
-  deleteUserByEmail,
-  getAllUsersByRestaurantId,
-} from "../../../Controller/UserController";
+import { UserController } from "../../../Controller/UserController";
 import "./ViewEmployeeLayout.css";
 import Search from "antd/es/input/Search";
 
@@ -64,9 +61,9 @@ function ViewEmployeeLayout() {
   const [isLoad, setIsLoad] = useState(true);
   const [usersFiltered, setUsersFiltered] = useState(null);
   const [users, isLoading, error] = useCollectionData(
-    getAllUsersByRestaurantId(userSession.restaurantId),
+    UserController.getAllUsersByRestaurantId(userSession.restaurantId),
     {
-      idField: "email",
+      idField: "id",
     }
   );
   const navigate = useNavigate();
@@ -91,11 +88,6 @@ function ViewEmployeeLayout() {
           return firstNameAndEmail.includes(keyword.toLowerCase());
         })
       );
-      // for (let i = 0; i < 100; i++) {
-      //   setUsersFiltered((usersFiltered) => {
-      //     return [...usersFiltered, usersFiltered[0]];
-      //   });
-      // }
       setIsLoad(false);
     }
   }, [users, keyword, roleType]);
@@ -103,7 +95,7 @@ function ViewEmployeeLayout() {
   const confirmModal = (email) => {
     Modal.confirm({
       onOk: () => {
-        deleteUserByEmail(email);
+        UserController.deleteUserByEmail(email);
       },
       title: "Delete",
       content: "Are you sure want to delete this employee?",
@@ -177,8 +169,10 @@ function ViewEmployeeLayout() {
               showSizeChanger: true,
               pageSizeOptions: ["5", "10", "20"],
             }}
+            size="middle"
             scroll={{
-              x: "1920px",
+              x: 1000,
+              y: 500,
             }}
           />
         </div>
