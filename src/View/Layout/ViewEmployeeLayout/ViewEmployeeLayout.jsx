@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table, Modal, Select, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { userQuery } from "../../../Config/Firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { deleteUserByEmail } from "../../../Controller/UserController";
+import { UserController } from "../../../Controller/UserController";
 import "./ViewEmployeeLayout.css";
 import Search from "antd/es/input/Search";
 
@@ -22,9 +21,21 @@ function ViewEmployeeLayout() {
       render: (text) => <a>{text}</a>,
     },
     {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      render: (text) => <a>{text}</a>,
+    },
+    {
       title: "Email Address",
       dataIndex: "email",
       key: "email",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
       render: (text) => <a>{text}</a>,
     },
     {
@@ -32,7 +43,7 @@ function ViewEmployeeLayout() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link to={`/admin/editEmployee/${record.email}`}>Edit</Link>
+          <Link to={`/admin/editEmployee?id=${record.email}`}>Edit</Link>
           <Link
             onClick={() => {
               confirmModal(record.email);
@@ -44,32 +55,60 @@ function ViewEmployeeLayout() {
       ),
     },
   ];
-
+  const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [keyword, setKeyword] = useState("");
   const [roleType, setRoleType] = useState("");
+  const [isLoad, setIsLoad] = useState(true);
+  const [usersFiltered, setUsersFiltered] = useState(null);
   const [users, isLoading, error] = useCollectionData(
-    userQuery(keyword, roleType),
+    UserController.getAllUsersByRestaurantId(userSession.restaurantId),
     {
-      idField: "email",
+      idField: "id",
     }
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoad(true);
+    if (!isLoading) {
+      console.log(keyword);
+      setUsersFiltered(
+        users.filter((u) => {
+          const firstNameAndEmail =
+            u.firstName.toLowerCase() + u.email.toLowerCase();
+          if (roleType !== "") {
+            if (keyword !== "") {
+              return (
+                u.roleType == roleType &&
+                firstNameAndEmail.includes(keyword.toLowerCase())
+              );
+            }
+            return u.roleType == roleType;
+          }
+          return firstNameAndEmail.includes(keyword.toLowerCase());
+        })
+      );
+      setIsLoad(false);
+    }
+  }, [users, keyword, roleType]);
+
   const confirmModal = (email) => {
     Modal.confirm({
       onOk: () => {
-        deleteUserByEmail(email);
+        UserController.deleteUserByEmail(email);
       },
       title: "Delete",
       content: "Are you sure want to delete this employee?",
     });
   };
+
   return (
     <>
       <div className="view-employee-container">
         <h1>Employee</h1>
         <div className="header-container">
           <Button
+            id="addButton"
             type="primary"
             onClick={() => {
               navigate("/admin/addEmployee");
@@ -79,9 +118,10 @@ function ViewEmployeeLayout() {
           </Button>
           <div className="filter-container">
             <Select
+              autoFocus
               placeholder="Filter"
               style={{
-                width: 120,
+                width: 200,
               }}
               allowClear
               options={[
@@ -98,18 +138,21 @@ function ViewEmployeeLayout() {
                   label: "Kitchen",
                 },
               ]}
-              onSelect={(value) => {
-                setRoleType(value);
+              onChange={(e) => {
+                if (!e) {
+                  setRoleType("");
+                } else {
+                  setRoleType(e);
+                }
               }}
             />
             <Search
               placeholder="input search text"
               style={{
-                width: 200,
+                width: 300,
               }}
               onChange={(e) => {
                 setKeyword(e.target.value);
-                setRoleType("");
               }}
             />
           </div>
@@ -117,9 +160,20 @@ function ViewEmployeeLayout() {
         <div className="table-employee-container">
           <Table
             columns={columns}
-            loading={isLoading}
-            dataSource={users}
+            loading={isLoad}
+            dataSource={usersFiltered}
             rowKey="email"
+            bordered
+            pagination={{
+              defaultPageSize: 5,
+              showSizeChanger: true,
+              pageSizeOptions: ["5", "10", "20"],
+            }}
+            size="middle"
+            scroll={{
+              x: 1000,
+              y: 500,
+            }}
           />
         </div>
       </div>

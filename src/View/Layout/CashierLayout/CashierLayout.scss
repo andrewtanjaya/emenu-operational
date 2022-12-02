@@ -1,0 +1,17 @@
+@import "../../../Utils/variables";
+
+.cashier-layout-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cashier-layout-content-container{
+    width: 100vw;
+    height: 100vh;
+}
+
+#saveButton, #addButton{
+    background-color: $primary-color;
+  }

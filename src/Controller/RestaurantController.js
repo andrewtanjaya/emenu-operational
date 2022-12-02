@@ -1,11 +1,16 @@
-import { restaurantsRef } from "../Config/Firebase";
-import { doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { Restaurant } from "../Model/Restaurant";
 
-export const getRestaurantById = async (restaurantId) => {
-  const restoSnap = await getDoc(doc(restaurantsRef, restaurantId));
-  return restoSnap.exists() ? restoSnap.data() : null;
-};
+export class RestaurantController {
+  constructor() {}
+  static async getRestaurantById(restaurantId) {
+    return Restaurant.getRestaurantById(restaurantId);
+  }
 
-export const addRestaurant = async (restaurant) => {
-  await setDoc(doc(restaurantsRef, restaurant.restaurantId), Object.assign({}, restaurant));
-};
+  static async addRestaurant(restaurant) {
+    return Restaurant.addRestaurant(restaurant);
+  }
+
+  static async updateRestaurant(restaurant) {
+    return Restaurant.updateRestaurant(restaurant);
+  }
+}

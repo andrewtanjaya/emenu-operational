@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { User } from "../../../Model/User";
 import { RoleTypes } from "../../../Enum/RoleTypes";
-import {
-  deleteUserByEmail,
-  getUserByEmail,
-  updateUserByEmail,
-} from "../../../Controller/UserController";
-import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
-import { useNavigate, useParams } from "react-router-dom";
+import { UserController } from "../../../Controller/UserController";
+import { Button, Checkbox, Form, Input, Modal, Radio, Select } from "antd";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./EditEmployeeLayout.css";
+import { Gender } from "../../../Enum/Gender";
 const { Option } = Select;
 
 function EditEmployeeLayout() {
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
-  const { userId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const userId = searchParams.get("id");
   const [userData, setUserData] = useState(new User());
   const [isLoadData, setIsLoadData] = useState(true);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userId);
-    getUserByEmail(userId).then((result) => {
+    UserController.getUserByEmail(userId).then((result) => {
       if (!result) {
         navigate("not found page");
       }
@@ -34,20 +31,30 @@ function EditEmployeeLayout() {
     let newUser = new User(
       values.firstName,
       values.lastName,
-      values.firstName + values.lastName,
+      values.firstName.concat(".", values.lastName),
       userData.email,
       values.roleType,
-      "profilePicture:)",
       userSession.restaurantId,
-      isChangePassword ? values.password : userData.password
+      isChangePassword ? values.password : userData.password,
+      values.phoneNumber,
+      values.gender
     );
-
-    updateUserByEmail(newUser).then(() => {
-      successModal("Success", "Employee Data Updated");
-    });
+    if (isChangePassword) {
+      if (values.oldPassword !== userData.password) {
+        errorModal("Invalid Old Password", "");
+      } else {
+        UserController.updateUser(newUser).then(() => {
+          successModal("Success", "Employee Data Updated");
+        });
+      }
+    } else {
+      UserController.updateUser(newUser).then(() => {
+        successModal("Success", "Employee Data Updated");
+      });
+    }
   };
 
-  const successModal = (title, content) => {
+  function successModal(title, content) {
     Modal.success({
       onOk: () => {
         navigate("/admin/employee", { replace: true });
@@ -55,7 +62,14 @@ function EditEmployeeLayout() {
       title: title,
       content: content,
     });
-  };
+  }
+
+  function errorModal(title, content) {
+    Modal.error({
+      title: title,
+      content: content,
+    });
+  }
 
   function handleChecklist() {
     if (isChangePassword) {
@@ -68,7 +82,7 @@ function EditEmployeeLayout() {
   function confirmDeleteModal() {
     Modal.confirm({
       onOk: () => {
-        deleteUserByEmail(userId);
+        UserController.deleteUserByEmail(userId);
         navigate("/admin/employee");
       },
       title: "Delete",
@@ -92,6 +106,15 @@ function EditEmployeeLayout() {
                 email: userData.email,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
+                roleType: userData.roleType,
+                phoneNumber: userData.phoneNumber,
+                gender: userData.gender,
+              }}
+              labelCol={{
+                span: 4,
+              }}
+              wrapperCol={{
+                span: 18,
               }}
             >
               <Form.Item label="Email Address" name="email">
@@ -133,16 +156,48 @@ function EditEmployeeLayout() {
                   },
                 ]}
               >
-                <Select
-                  placeholder="Please select a role"
-                  defaultValue={userData.roleType}
-                >
+                <Select placeholder="Please select a role">
                   <Option value={RoleTypes.MANAGER}>Manager</Option>
                   <Option value={RoleTypes.CASHIER}>Cashier</Option>
                   <Option value={RoleTypes.KITCHEN}>Kitchen</Option>
                 </Select>
               </Form.Item>
+              <Form.Item
+                label="Phone Number"
+                name="phoneNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: "Phone Number must be filled!",
+                  },
+                  () => ({
+                    validator(_, value) {
+                      if (!value || !isNaN(value)) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("Invalid Phone Number"));
+                    },
+                  }),
+                ]}
+              >
+                <Input t />
+              </Form.Item>
 
+              <Form.Item
+                label="Gender"
+                name="gender"
+                rules={[
+                  {
+                    required: true,
+                    message: "Gender must be choosen!",
+                  },
+                ]}
+              >
+                <Radio.Group>
+                  <Radio value={Gender.MALE}> Male </Radio>
+                  <Radio value={Gender.FEMALE}> Female </Radio>
+                </Radio.Group>
+              </Form.Item>
               <Checkbox onChange={handleChecklist}>Change Password</Checkbox>
 
               <Form.Item
@@ -154,6 +209,18 @@ function EditEmployeeLayout() {
                     required: isChangePassword,
                     message: "Please input your current password!",
                   },
+                  () => ({
+                    validator(_, value) {
+                      if (!value || userData.password === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "The two passwords that you entered do not match!"
+                        )
+                      );
+                    },
+                  }),
                 ]}
                 hasFeedback
               >
@@ -200,19 +267,19 @@ function EditEmployeeLayout() {
               >
                 <Input.Password />
               </Form.Item>
-
-              <div className="button-container">
-                <Form.Item>
-                  <Button type="primary" danger onClick={confirmDeleteModal}>
-                    Delete
-                  </Button>
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </Form.Item>
-              </div>
+              <Form.Item wrapperCol={{ offset: 4, span: 18 }}>
+                <Button
+                  type="primary"
+                  danger
+                  htmlType="button"
+                  onClick={confirmDeleteModal}
+                >
+                  Delete
+                </Button>
+                <Button id="saveButton" type="primary" htmlType="submit">
+                  Save
+                </Button>
+              </Form.Item>
             </Form>
           </div>
         </div>

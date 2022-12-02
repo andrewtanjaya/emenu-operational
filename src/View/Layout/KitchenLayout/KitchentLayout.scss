@@ -1,0 +1,16 @@
+@import "../../../Utils/variables";
+
+.kitchen-layout-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.kitchen-layout-content-container{
+    width: 100vw;
+    height: 100vh;
+}
+#saveButton, #addButton{
+    background-color: $primary-color;
+  }

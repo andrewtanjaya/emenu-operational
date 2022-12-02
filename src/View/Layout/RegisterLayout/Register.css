@@ -1,4 +1,4 @@
-.registerContainer {
+.register-container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -6,6 +6,28 @@
   justify-content: center;
   align-items: center;
 }
-.registerContainer Form {
+
+.register-form-container {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  border: 3px solid inactive;
+  border-radius: 16px;
+  box-shadow: 0px 0px 15px rgb(134, 134, 134);
+  margin-top: 20px;
+  padding: 3%;
+}
+.register-form-container Form {
   width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#registerButton {
+  background-color: #36AB27;
 }/*# sourceMappingURL=Register.css.map */

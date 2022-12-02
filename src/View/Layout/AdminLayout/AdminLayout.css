@@ -1,5 +1,13 @@
 .admin-layout-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+}
+
+.admin-layout-content-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#saveButton, #addButton {
+  background-color: #36AB27;
 }/*# sourceMappingURL=AdminLayout.css.map */
