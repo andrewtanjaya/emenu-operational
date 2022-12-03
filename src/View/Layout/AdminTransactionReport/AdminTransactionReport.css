@@ -1,0 +1,18 @@
+.transaction-report-container {
+  width: 100vw;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.date-picker-container {
+  display: flex;
+  flex-direction: row;
+  -moz-column-gap: 16px;
+       column-gap: 16px;
+  background-color: #FFFFFF;
+  padding: 26px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  border: 1px solid #CACACA;
+}/*# sourceMappingURL=AdminTransactionReport.css.map */

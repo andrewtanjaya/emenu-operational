@@ -19,6 +19,7 @@ import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLay
 import AdminAddMenuLayout from "./View/Layout/AdminAddMenuLayout/AdminAddMenuLayout";
 import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLayout";
 import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantSetting";
+import AdminTransactionReport from "./View/Layout/AdminTransactionReport/AdminTransactionReport";
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route
             path="/admin/transactionReport"
-            element={<TransactionReport />}
+            element={<AdminTransactionReport />}
           />
           <Route path="/admin/employee" element={<ViewEmployeeLayout />} />
           <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />
