@@ -1,0 +1,32 @@
+.update-food-available-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.update-menu-available-image {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.ant-image-img {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.update-food-available-table-container {
+  width: 100%;
+}
+
+.update-availability-action-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=CashierKitchenUpdateMenuAvailableLayout.css.map */
