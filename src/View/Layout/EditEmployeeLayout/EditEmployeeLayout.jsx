@@ -28,7 +28,7 @@ function EditEmployeeLayout() {
   }, []);
 
   const onFinish = (values) => {
-    let newUser = new User(
+    let user = new User(
       values.firstName,
       values.lastName,
       values.firstName.concat(".", values.lastName),
@@ -43,12 +43,12 @@ function EditEmployeeLayout() {
       if (values.oldPassword !== userData.password) {
         errorModal("Invalid Old Password", "");
       } else {
-        UserController.updateUser(newUser).then(() => {
+        UserController.updateUser(user).then(() => {
           successModal("Success", "Employee Data Updated");
         });
       }
     } else {
-      UserController.updateUser(newUser).then(() => {
+      UserController.updateUser(user).then(() => {
         successModal("Success", "Employee Data Updated");
       });
     }

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection } from "@firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,8 +14,8 @@ const firebaseConfig = {
 
 const firebase = initializeApp(firebaseConfig);
 const firestore = getFirestore(firebase);
-
 export const storage = getStorage(firebase);
+
 export const usersRef = collection(firestore, "users");
 export const restaurantsRef = collection(firestore, "restaurants");
 export const foodsRef = collection(firestore, "foods");
@@ -25,3 +25,12 @@ export const categoriesRef = collection(firestore, "categories");
 export const cartsRef = collection(firestore, "carts");
 export const ordersRef = collection(firestore, "orders");
 export const orderQueuesRef = collection(firestore, "orderQueues");
+export const restaurantQrisRef = (fileName) => {
+  return ref(storage, "restaurant-qris/" + fileName);
+};
+export const restauranLogoRef = (fileName) => {
+  return ref(storage, "restaurant-logo/" + fileName);
+};
+export const restauranBannerRef = (fileName) => {
+  return ref(storage, "restaurant-banner/" + fileName);
+};

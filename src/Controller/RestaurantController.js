@@ -10,7 +10,7 @@ export class RestaurantController {
     return Restaurant.addRestaurant(restaurant);
   }
 
-  static async updateRestaurant(restaurant) {
+  static updateRestaurant(restaurant) {
     return Restaurant.updateRestaurant(restaurant);
   }
 }

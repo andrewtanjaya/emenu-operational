@@ -1,0 +1,29 @@
+.transaction-brief-card-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+
+.logo-transaction-brief-card {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #CACACA;
+}
+
+.description-transaction-brief-card {
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.description-transaction-brief-card p {
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}/*# sourceMappingURL=AdminTransactionBriefCard.css.map */

@@ -1,9 +1,9 @@
 .setting-layout-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90vw;
+  flex-direction: column;
+  width: 100%;
 }
 
 .setting-form-container {
@@ -14,9 +14,8 @@
   border-radius: 16px;
   box-shadow: 0px 0px 15px rgb(134, 134, 134);
   margin-top: 20px;
-  padding: 3%;
+  padding: 2%;
 }
-
-#settingForm {
-  width: 80%;
+.setting-form-container Form {
+  width: 100%;
 }/*# sourceMappingURL=RestaurantSetting.css.map */
