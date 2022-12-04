@@ -45,6 +45,7 @@ function Register() {
           values.restaurantName,
           values.restaurantPhoneNumber,
           "",
+          "",
           0,
           0,
           Object.assign({}, new RestaurantAddress("", "", "", "", "", "")),
