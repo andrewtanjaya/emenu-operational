@@ -1,0 +1,22 @@
+.transaction-report-viewer-container {
+  padding: 26px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  margin-top: 30px;
+  border-radius: 16px;
+  border: 1px solid #CACACA;
+}
+
+.brief-information-container {
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}/*# sourceMappingURL=AdminTransactionReportViewer.css.map */
