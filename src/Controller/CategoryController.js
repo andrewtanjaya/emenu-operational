@@ -1,4 +1,5 @@
 import { Category } from "../Model/Category";
+import { Database } from "../Model/Database";
 
 export class CategoryController {
   constructor() {}
@@ -8,7 +9,7 @@ export class CategoryController {
   }
 
   static async deleteCategoryById(categoryId) {
-    return Category.deleteategoryById(categoryId);
+    return Category.deleteCategoryById(categoryId);
   }
 
   static async addCategory(category) {
