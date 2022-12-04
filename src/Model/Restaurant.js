@@ -7,6 +7,7 @@ export class Restaurant {
     restaurantName,
     restaurantPhoneNumber,
     restaurantLogoPicture,
+    restaurantQris,
     tax,
     serviceCharge,
     restaurantAddress,
@@ -15,12 +16,13 @@ export class Restaurant {
   ) {
     this.restaurantId = restaurantId;
     this.restaurantName = restaurantName;
+    this.restaurantPhoneNumber = restaurantPhoneNumber;
+    this.restaurantLogoPicture = restaurantLogoPicture;
+    this.restaurantQris = restaurantQris;
+    this.tax = tax;
+    this.serviceCharge = serviceCharge;
     this.restaurantAddress = restaurantAddress;
     this.restaurantBanners = restaurantBanners;
-    this.restaurantLogoPicture = restaurantLogoPicture;
-    this.restaurantPhoneNumber = restaurantPhoneNumber;
-    this.serviceCharge = serviceCharge;
-    this.tax = tax;
     this.videoUrl = videoUrl;
   }
 
@@ -42,6 +44,7 @@ export class Restaurant {
       restaurantAddress: restaurant.restaurantAddress,
       restaurantBanners: restaurant.restaurantBanners,
       restaurantLogoPicture: restaurant.restaurantLogoPicture,
+      restaurantQris: restaurant.restaurantQris,
       restaurantPhoneNumber: restaurant.restaurantPhoneNumber,
       serviceCharge: restaurant.serviceCharge,
       tax: restaurant.tax,
