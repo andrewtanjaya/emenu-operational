@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal } from "antd";
@@ -8,6 +8,7 @@ import AuthConsumer from "../../../hooks/auth";
 
 function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [authed, dispatch] = AuthConsumer();
 
   const error = (title, content) => {
@@ -18,6 +19,7 @@ function Login() {
   };
 
   const onFinish = (values) => {
+    setLoading(true);
     UserController.getUserByEmail(values.email).then((user) => {
       if (user) {
         validateUser(values, user);
@@ -27,6 +29,7 @@ function Login() {
           `Account with ${values.email} does not exists!`
         );
       }
+      setLoading(false);
     });
   };
 
@@ -100,6 +103,7 @@ function Login() {
           <div className="button-container">
             <Form.Item>
               <Button
+                loading={loading}
                 id="loginButton"
                 type="primary"
                 htmlType="submit"

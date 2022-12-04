@@ -8,15 +8,9 @@ function KitchenLayout() {
   return (
     <div className="kitchen-layout-container">
       <nav>
-        <Link to="/admin">Dashboard</Link>
+        <Link to="/kitchen">Dashboard</Link>
         ---
-        <Link to="/admin/transactionReport">Transaction Report</Link>
-        ---
-        <Link to={"/admin/employee"}>Employee</Link>
-        ---
-        <Link to={"/admin/food"}>Food</Link>
-        ---
-        <Link to={"/admin/setting"}>Setting</Link>
+        <Link to="/kitchen/menu">Menu</Link>
         ---
         <button
           onClick={() => {
