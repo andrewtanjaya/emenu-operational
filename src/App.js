@@ -19,6 +19,7 @@ import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLay
 import AdminAddMenuLayout from "./View/Layout/AdminAddMenuLayout/AdminAddMenuLayout";
 import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLayout";
 import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantSetting";
+import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitchenUpdateMenuAvailableLayout/CashierKitchenUpdateMenuAvailableLayout";
 
 function App() {
   return (
@@ -69,7 +70,9 @@ function App() {
               <CashierLayout />
             </CashierAuth>
           }
-        ></Route>
+        >
+          <Route index element={<CashierKitchenUpdateMenuAvailableLayout />} />
+        </Route>
         <Route
           path="/kitchen"
           element={
@@ -77,7 +80,9 @@ function App() {
               <KitchenLayout />
             </KitchenAuth>
           }
-        ></Route>
+        >
+          <Route index element={<CashierKitchenUpdateMenuAvailableLayout />} />
+        </Route>
         <Route path="*" element={<h1>Page Not Found</h1>} />
       </Routes>
     </>
