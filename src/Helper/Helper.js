@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import { CategoryController } from "../Controller/CategoryController";
 import { FoodController } from "../Controller/FoodController";
 import { RestaurantController } from "../Controller/RestaurantController";
 import { IdTypes } from "../Enum/IdTypes";
@@ -30,6 +31,16 @@ export const generateRandomId = (type) => {
           return unique_id;
         } else {
           generateRandomId(IdTypes.FOOD, "");
+        }
+      });
+      return unique_id;
+    case IdTypes.CATEGORY:
+      unique_id = CATEGORY_PREFIX + unique_id;
+      CategoryController.getCategoryById(unique_id).then((category) => {
+        if (category === null) {
+          return unique_id;
+        } else {
+          generateRandomId(IdTypes.CATEGORY, "");
         }
       });
       return unique_id;

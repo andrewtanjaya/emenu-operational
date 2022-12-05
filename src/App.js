@@ -21,6 +21,7 @@ import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLay
 import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantSetting";
 import AdminTransactionReport from "./View/Layout/AdminTransactionReport/AdminTransactionReport";
 import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitchenUpdateMenuAvailableLayout/CashierKitchenUpdateMenuAvailableLayout";
+import ViewMenuLayout from "./View/Layout/ViewMenuLayout/ViewMenuLayout";
 
 function App() {
   return (
@@ -60,9 +61,10 @@ function App() {
           <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />
           <Route path="/admin/editEmployee" element={<EditEmployeeLayout />} />
           <Route path="/admin/food" element={<Foods />} />
-          <Route path="/admin/addFood" element={<AdminAddMenuLayout />} />
-          <Route path="/admin/editFood" element={<AdminAddMenuLayout />} />
-          <Route path="/admin/setting" element={<RestaurantSetting />} />
+          {/* <Route path="/admin/addFood" element={<AdminAddMenuLayout />} /> */}
+          {/* <Route path="/admin/editFood" element={<AdminAddMenuLayout />} /> */}
+          {/* <Route path="/admin/setting" element={<RestaurantSetting />} /> */}
+          <Route path="/admin/menu" element={<ViewMenuLayout />} />
         </Route>
         <Route
           path="/cashier"

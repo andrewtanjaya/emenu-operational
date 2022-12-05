@@ -15,7 +15,7 @@ function AdminLayout() {
         ---
         <Link to={"/admin/employee"}>Employee</Link>
         ---
-        <Link to={"/admin/food"}>Food</Link>
+        <Link to={"/admin/menu"}>Menu</Link>
         ---
         <Link to={"/admin/setting"}>Setting</Link>
         ---

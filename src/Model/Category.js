@@ -6,7 +6,7 @@ export class Category {
     this.categoryId = categoryId;
     this.restaurantId = restaurantId;
     this.categoryName = categoryName;
-    this.categoryIcon = categoryName;
+    this.categoryIcon = categoryIcon;
   }
 
   static async getCategoryById(categoryId) {
