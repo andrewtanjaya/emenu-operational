@@ -1,16 +1,10 @@
 .view-menu-container {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 50px;
+  width: 100vw;
+  padding: 0 40px;
+  box-sizing: border-box;
 }
 .view-menu-container .active-button {
   background-color: #36AB27;
-}
-
-.nav-button-container {
-  width: 70%;
 }
 
 .content-container {

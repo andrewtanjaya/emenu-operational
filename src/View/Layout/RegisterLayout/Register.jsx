@@ -56,7 +56,7 @@ function Register() {
         let newUser = new User(
           values.firstName,
           values.lastName,
-          values.firstName.concat(".", values.lastName),
+          values.firstName.concat(" ", values.lastName),
           values.email,
           RoleTypes.MANAGER,
           restaurantId,

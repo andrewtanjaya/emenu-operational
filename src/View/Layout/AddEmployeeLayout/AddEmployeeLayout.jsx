@@ -15,7 +15,7 @@ const AddEmployeeLayout = () => {
     let newUser = new User(
       values.firstName,
       values.lastName,
-      values.firstName.concat(".", values.lastName),
+      values.firstName.concat(" ", values.lastName),
       values.email,
       values.roleType,
       userSession.restaurantId,
@@ -57,14 +57,13 @@ const AddEmployeeLayout = () => {
 
   return (
     <>
-      <div className="add-employee-layout">
-        <div className="header">
+      <div className="add-employee-container">
+        <div className="add-employee-header">
           <h1>Add Employee</h1>
         </div>
 
         <div className="add-employee-form">
           <Form
-            id="addForm"
             name="register"
             onFinish={onFinish}
             scrollToFirstError

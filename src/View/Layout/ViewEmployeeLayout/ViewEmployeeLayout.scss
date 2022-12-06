@@ -1,18 +1,17 @@
 @import "../../../Utils/variables";
 
 .view-employee-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
+    width: 100vw;
+    padding: 0 40px;
+    box-sizing: border-box;
 }
 
-.header-container{
+.employee-header-container{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 70%;
+    width: 100%;
+    box-sizing: border-box;
     background-color: $white;
     border: 3px solid inactive;
     border-radius: 16px;
@@ -20,7 +19,7 @@
     padding: 2%;
 }
 .table-employee-container{
-    width: 70%;
+    box-sizing: border-box;
     background-color: $white;
     margin-top: 2%;
     border: 3px solid inactive;

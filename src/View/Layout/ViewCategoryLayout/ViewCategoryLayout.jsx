@@ -133,6 +133,7 @@ function ViewCategoryLayout() {
   const handleCancel = () => {
     setOpenAddModal(false);
     setOpenEditModal(false);
+    form.resetFields();
   };
 
   const confirmDeleteModal = (categoryId) => {
@@ -140,6 +141,7 @@ function ViewCategoryLayout() {
       onOk: () => {
         CategoryController.deleteCategoryById(categoryId);
       },
+      centered: true,
       title: "Delete",
       content: "Are you sure want to delete this category?",
     });
@@ -148,7 +150,7 @@ function ViewCategoryLayout() {
   return (
     <>
       <div className="view-category-container">
-        <div className="header-container">
+        <div className="category-header-container">
           <Button id="addButton" type="primary" onClick={showAddModal}>
             Add Category
           </Button>
@@ -165,6 +167,7 @@ function ViewCategoryLayout() {
         <Modal
           centered
           open={openAddModal}
+          onCancel={handleCancel}
           title="Add Category"
           footer={[
             <Button key="back" onClick={handleCancel}>
@@ -201,6 +204,7 @@ function ViewCategoryLayout() {
         <Modal
           centered
           open={openEditModal}
+          onCancel={handleCancel}
           title="Edit Category"
           footer={[
             <Button key="back" onClick={handleCancel}>
@@ -246,10 +250,8 @@ function ViewCategoryLayout() {
               showSizeChanger: true,
               pageSizeOptions: ["5", "10", "20"],
             }}
-            size="middle"
             scroll={{
-              x: 1000,
-              y: 500,
+              x: 1200,
             }}
           />
         </div>

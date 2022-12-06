@@ -1,28 +1,29 @@
-.edit-employee-layout {
+.edit-employee-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
+  width: 100vw;
+  padding: 0 40px;
+  box-sizing: border-box;
 }
 
 .edit-employee-form {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60%;
+  box-sizing: border-box;
+  width: 1080px;
   border: 3px solid inactive;
   border-radius: 16px;
   box-shadow: 0px 0px 15px rgb(134, 134, 134);
   margin-top: 20px;
-  padding: 3%;
+  padding: 20px 40px;
 }
 .edit-employee-form Form {
-  width: 80%;
+  width: 100%;
 }
 
-.header {
-  width: 60%;
-  padding-left: 3%;
-  padding-right: 3%;
+.edit-employee-header {
+  width: 1080px;
 }/*# sourceMappingURL=EditEmployeeLayout.css.map */
