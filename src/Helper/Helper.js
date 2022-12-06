@@ -44,6 +44,16 @@ export const generateRandomId = (type) => {
         }
       });
       return unique_id;
+    case IdTypes.FOOD:
+      unique_id = FOOD_PREFIX + unique_id;
+      FoodController.getFoodById(unique_id).then((food) => {
+        if (food === null) {
+          return unique_id;
+        } else {
+          generateRandomId(IdTypes.FOOD, "");
+        }
+      });
+      return unique_id;
     default:
       return "";
   }

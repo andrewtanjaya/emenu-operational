@@ -21,6 +21,7 @@ import { getDownloadURL, uploadBytes } from "firebase/storage";
 import {
   restauranBannerRef,
   restauranLogoRef,
+  restaurantBannerRef,
   restaurantQrisRef,
 } from "../../../Config/Firebase";
 import { v4 as uuid } from "uuid";
@@ -137,7 +138,7 @@ function RestaurantSetting() {
     if (bannersImage) {
       for (let i = 0; i < bannersImage.length; i++) {
         await uploadBytes(
-          restauranBannerRef(`${uuid() + bannersImage[i].name}`),
+          restaurantBannerRef(`${uuid() + bannersImage[i].name}`),
           bannersImage[i]
         ).then(async (response) => {
           await getDownloadURL(response.ref).then((url) => {
@@ -200,7 +201,6 @@ function RestaurantSetting() {
 
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
-    console.log(file);
     setPreviewImage(file.thumbUrl);
     setPreviewOpen(true);
   };

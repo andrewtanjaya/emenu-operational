@@ -9,6 +9,7 @@ import { generateRandomId } from "../../../Helper/Helper";
 import { IdTypes } from "../../../Enum/IdTypes";
 import "./ViewCategoryLayout.css";
 import { Option } from "antd/es/mentions";
+import { v4 as uuid } from "uuid";
 
 const icon = [
   "https://img.icons8.com/fluency/48/null/green-tea.png",
@@ -192,7 +193,7 @@ function ViewCategoryLayout() {
               <Select placeholder="Please select a role">
                 {icon.map((url) => {
                   return (
-                    <Option value={url}>
+                    <Option value={url} key={uuid()}>
                       <img src={url} />
                     </Option>
                   );
@@ -229,7 +230,7 @@ function ViewCategoryLayout() {
               <Select placeholder="Please select a role">
                 {icon.map((url) => {
                   return (
-                    <Option value={url}>
+                    <Option value={url} key={uuid()}>
                       <img src={url} />
                     </Option>
                   );
