@@ -8,6 +8,10 @@ export class UserController {
     return User.getUserByEmail(email);
   }
 
+  static getUserProfileByEmail(email) {
+    return User.getUserProfileByEmail(email)
+  }
+
   static async addUser(user) {
     return User.addUser(user);
   }

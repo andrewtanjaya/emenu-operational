@@ -31,6 +31,10 @@ export class Restaurant {
     return restoSnap.exists() ? restoSnap.data() : null;
   }
 
+  static getRestaurantProfileById(restaurantId) {
+    return doc(restaurantsRef, restaurantId)
+  }
+
   static async addRestaurant(restaurant) {
     return await setDoc(
       doc(restaurantsRef, restaurant.restaurantId),
