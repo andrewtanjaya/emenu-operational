@@ -1,0 +1,20 @@
+@import "../../../Utils/variables";
+
+.order-queue-group-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-queue-group-footer{
+    box-sizing: border-box;
+    background-color: $inactive;
+    color: $white;
+    width: 100%;
+    p{
+        margin: 0px;
+    }
+    border-radius: 0 0 10px 10px;
+    padding: 6px 10px;
+}

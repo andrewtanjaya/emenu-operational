@@ -1,0 +1,22 @@
+
+
+.order-queue-container{
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    column-gap: 20px;
+    padding: 0px 40px;
+    overflow: auto;
+    margin-top: 20px;
+    min-height: 90%;
+}
+.order-queue-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 92vh;
+    width: 100%;
+
+}
