@@ -25,22 +25,20 @@ function ViewMenuLayout() {
   return (
     <>
       <div className="view-menu-container">
-        <div className="nav-button-container">
-          <Space wrap>
-            <Button
-              className={isFood && "active-button"}
-              onClick={() => onClikNavBtn("FOOD")}
-            >
-              Food
-            </Button>
-            <Button
-              className={isCategory && "active-button"}
-              onClick={() => onClikNavBtn("CATEGORY")}
-            >
-              Category
-            </Button>
-          </Space>
-        </div>
+        <Space wrap>
+          <Button
+            className={isFood && "active-button"}
+            onClick={() => onClikNavBtn("FOOD")}
+          >
+            Food
+          </Button>
+          <Button
+            className={isCategory && "active-button"}
+            onClick={() => onClikNavBtn("CATEGORY")}
+          >
+            Category
+          </Button>
+        </Space>
 
         <div className="content-container">
           {isFood ? (

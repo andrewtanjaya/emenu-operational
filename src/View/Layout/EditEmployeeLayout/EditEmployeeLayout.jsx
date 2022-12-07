@@ -31,7 +31,7 @@ function EditEmployeeLayout() {
     let user = new User(
       values.firstName,
       values.lastName,
-      values.firstName.concat(".", values.lastName),
+      values.firstName.concat(" ", values.lastName),
       userData.email,
       values.roleType,
       userSession.restaurantId,
@@ -93,8 +93,8 @@ function EditEmployeeLayout() {
   return (
     <>
       {!isLoadData && (
-        <div className="add-employee-layout">
-          <div className="header">
+        <div className="edit-employee-container">
+          <div className="edit-employee-header">
             <h1>Edit Employee</h1>
           </div>
           <div className="edit-employee-form">

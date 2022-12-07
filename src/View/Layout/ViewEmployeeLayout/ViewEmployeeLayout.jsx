@@ -106,7 +106,7 @@ function ViewEmployeeLayout() {
     <>
       <div className="view-employee-container">
         <h1>Employee</h1>
-        <div className="header-container">
+        <div className="employee-header-container">
           <Button
             id="addButton"
             type="primary"
@@ -169,10 +169,8 @@ function ViewEmployeeLayout() {
               showSizeChanger: true,
               pageSizeOptions: ["5", "10", "20"],
             }}
-            size="middle"
             scroll={{
-              x: 1000,
-              y: 500,
+              x: 1200,
             }}
           />
         </div>

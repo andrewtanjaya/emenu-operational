@@ -22,6 +22,7 @@ import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantS
 import AdminTransactionReport from "./View/Layout/AdminTransactionReport/AdminTransactionReport";
 import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitchenUpdateMenuAvailableLayout/CashierKitchenUpdateMenuAvailableLayout";
 import ViewMenuLayout from "./View/Layout/ViewMenuLayout/ViewMenuLayout";
+import { Button, Result } from "antd";
 
 function App() {
   return (
@@ -63,7 +64,7 @@ function App() {
           <Route path="/admin/food" element={<Foods />} />
           {/* <Route path="/admin/addFood" element={<AdminAddMenuLayout />} /> */}
           {/* <Route path="/admin/editFood" element={<AdminAddMenuLayout />} /> */}
-          {/* <Route path="/admin/setting" element={<RestaurantSetting />} /> */}
+          <Route path="/admin/setting" element={<RestaurantSetting />} />
           <Route path="/admin/menu" element={<ViewMenuLayout />} />
         </Route>
         <Route
@@ -86,7 +87,17 @@ function App() {
         >
           <Route index element={<CashierKitchenUpdateMenuAvailableLayout />} />
         </Route>
-        <Route path="*" element={<h1>Page Not Found</h1>} />
+        <Route
+          path="*"
+          element={
+            <Result
+              status="404"
+              title="404"
+              subTitle="Sorry, the page you visited does not exist."
+              extra={<Button type="primary">Back Home</Button>}
+            />
+          }
+        />
       </Routes>
     </>
   );
