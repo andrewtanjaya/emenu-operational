@@ -1,0 +1,49 @@
+@import "../../../Utils/variables";
+
+.option-group-container{
+    border: 1px solid $inactive;
+    border-radius: 8px;
+    width: 100%;
+    height: 300px;
+    background-color: $white;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.option-group-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $inactive;
+    width: 100%;
+    padding: 0px 20px;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.add-option-button{
+    border: 1px solid $primary-color;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.option-group-form-container{
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+#addGroupButton{
+    border-color: $primary-color;
+    color: $primary-color;
+}
+
+

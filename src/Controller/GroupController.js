@@ -1,3 +1,4 @@
+import { Database } from "../Model/Database";
 import { Group } from "../Model/Group";
 
 export class GroupController {

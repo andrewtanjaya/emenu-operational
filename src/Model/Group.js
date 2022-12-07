@@ -2,11 +2,12 @@ import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { groupsRef } from "../Config/Firebase";
 
 export class Group {
-  constructor(groupId, foodId, groupName, isRequired) {
+  constructor(groupId, foodId, groupName, isRequired, options) {
     this.groupId = groupId;
     this.foodId = foodId;
     this.groupName = groupName;
     this.isRequired = isRequired;
+    this.options = options;
   }
 
   static async getGroupById(groupId) {
@@ -29,6 +30,7 @@ export class Group {
     return await updateDoc(doc(groupsRef, group.groupId), {
       groupName: group.groupName,
       isRequired: group.isRequired,
+      options: group.options,
     });
   }
 }

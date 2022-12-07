@@ -1,7 +1,4 @@
 import React from "react";
-import { User } from "../../../Model/User";
-import { RoleTypes } from "../../../Enum/RoleTypes";
-import { UserController } from "../../../Controller/UserController";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -18,17 +15,8 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./AddFoodLayout.css";
-import { Gender } from "../../../Enum/Gender";
 import TextArea from "antd/es/input/TextArea";
 import { CategoryController } from "../../../Controller/CategoryController";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
@@ -38,15 +26,14 @@ import { generateRandomId } from "../../../Helper/Helper";
 import { IdTypes } from "../../../Enum/IdTypes";
 import { foodImageRef } from "../../../Config/Firebase";
 import { getDownloadURL, uploadBytes } from "firebase/storage";
+import AdminFoodGroup from "../../Component/AdminFoodGroup/AdminFoodGroup";
+import { GroupController } from "../../../Controller/GroupController";
 const { Option } = Select;
 
 const AddFoodLayout = () => {
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
-  const [foodData, setFoodData] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
   const [groupData, setGroupData] = useState([]);
-  const [optionData, setOptionData] = useState([]);
-  const [isload, setisload] = useState(true);
   const [foodImages, setFoodImages] = useState([]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -54,11 +41,11 @@ const AddFoodLayout = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [isUpload, setIsUpload] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
   useEffect(() => {
     CategoryController.getAllCategoriesByRestaurantIdDocs(
       userSession.restaurantId
     ).then((resp) => {
-      //   categoryQuery = resp;
       resp.forEach((doc) => {
         setCategoryData((categoryData) => [
           ...categoryData,
@@ -69,7 +56,6 @@ const AddFoodLayout = () => {
         ]);
       });
     });
-    setisload(false);
   }, []);
 
   const onFinish = async (values) => {
@@ -103,25 +89,13 @@ const AddFoodLayout = () => {
       0,
       0
     );
-    FoodController.addFood(newFood).then((resp) => {
+    FoodController.addFood(newFood).then((resp) => {});
+
+    groupData.forEach((data) => {
+      data.foodId = foodId;
+      GroupController.addGroup(data);
+
       setIsUpload(false);
-    });
-  };
-
-  const successModal = (title, content) => {
-    Modal.success({
-      onOk: () => {
-        navigate("/admin/employee", { replace: true });
-      },
-      title: title,
-      content: content,
-    });
-  };
-
-  const errorModal = (title, content) => {
-    Modal.error({
-      title: title,
-      content: content,
     });
   };
 
@@ -182,15 +156,15 @@ const AddFoodLayout = () => {
             wrapperCol={{
               span: 24,
             }}
-            // initialValues={{
-            // }}
             onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            // initialValues={{ categoryId: ["CTG-03032a1a", "CTG-52699ee8"] }}
           >
             <Row gutter={16} justify="space-evenly">
               <Col span={24}>
-                <Form.Item label="Food Photos" name="foodPicture">
+                <Form.Item
+                  label="Food Photos"
+                  name="foodPicture"
+                  valuePropName="filelist"
+                >
                   <Upload
                     beforeUpload={beforeUploadImage}
                     onRemove={onRemoveImage}
@@ -198,10 +172,7 @@ const AddFoodLayout = () => {
                     maxCount={6}
                     onPreview={handlePreview}
                   >
-                    {uploadButton}
-                    {/* {bannersPreview.length + bannersImage.length >= 4
-                        ? null
-                        : uploadButton} */}
+                    {foodImages.length >= 6 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
               </Col>
@@ -218,7 +189,7 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input placeholder="Input Food Name" />
                 </Form.Item>
                 <Form.Item
                   name="categoryId"
@@ -226,12 +197,12 @@ const AddFoodLayout = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select category!",
+                      message: "Please choose category!",
                       type: "array",
                     },
                   ]}
                 >
-                  <Select mode="multiple" placeholder="Please select category!">
+                  <Select mode="multiple" placeholder="Please choose category!">
                     {categoryData.map((data) => {
                       return (
                         <Option value={data.categoryId} key={uuid()}>
@@ -241,14 +212,36 @@ const AddFoodLayout = () => {
                     })}
                   </Select>
                 </Form.Item>
-                <Form.Item label="Food Description" name="foodDescription">
-                  <TextArea rows={4} placeholder="description" />
+                <Form.Item
+                  label="Food Description"
+                  name="foodDescription"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please fill description!",
+                    },
+                  ]}
+                >
+                  <TextArea rows={4} placeholder="Description" />
                 </Form.Item>
-                <Form.Item label="Food Price" name="foodPrice">
+                <Form.Item
+                  label="Food Price"
+                  name="foodPrice"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input food price!",
+                    },
+                  ]}
+                >
                   <InputNumber />
                 </Form.Item>
               </Col>
               <Col span={12}>
+                <AdminFoodGroup
+                  groupData={groupData}
+                  setGroupData={setGroupData}
+                ></AdminFoodGroup>
                 <Form.Item wrapperCol={{ span: 24 }}>
                   <Button id="saveButton" type="primary" htmlType="submit">
                     Save
