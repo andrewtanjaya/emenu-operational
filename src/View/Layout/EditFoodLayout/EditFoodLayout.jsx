@@ -58,6 +58,11 @@ const EditFoodLayout = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [isUpload, setIsUpload] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [categoryIdsInitialValue, setCategoryIdsInitialValue] = useState([]);
+  // const categoryIdsInitialValue = [];
+
+  const [isCategoryload, setIsCategoryload] = useState(true);
+  const [isFoodload, setIsFoodload] = useState(true);
   useEffect(() => {
     CategoryController.getAllCategoriesByRestaurantIdDocs(
       userSession.restaurantId
@@ -71,6 +76,7 @@ const EditFoodLayout = () => {
           },
         ]);
       });
+      setIsCategoryload(false);
     });
 
     const foodId = searchParams.get("foodId");
@@ -87,12 +93,27 @@ const EditFoodLayout = () => {
           return { uid: uuid(), status: "done", thumbUrl: x, url: x };
         });
         setFoodImagesPreview(foodImageUrl);
-        setisload(false);
+        setIsFoodload(false);
       } else {
         navigate("not found page");
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (!isCategoryload && !isFoodload && isload) {
+      foodData.categoryId.forEach((categoryId) => {
+        let result = categoryData.filter((data) => {
+          return data.categoryId === categoryId;
+        });
+        setCategoryIdsInitialValue((categoryIdsInitialValue) => [
+          ...categoryIdsInitialValue,
+          result[0].categoryId.concat("#", result[0].categoryName),
+        ]);
+      });
+      setisload(false);
+    }
+  }, [isCategoryload, isFoodload]);
 
   const onFinish = async (values) => {
     setIsUpload(true);
@@ -118,10 +139,13 @@ const EditFoodLayout = () => {
         });
       }
     }
+    let categoryIdList = values.categoryId.map((id) => {
+      return id.split("#").shift();
+    });
 
     let newFood = new Food(
       foodData.foodId,
-      values.categoryId,
+      categoryIdList,
       userSession.restaurantId,
       values.foodName,
       true,
@@ -224,13 +248,11 @@ const EditFoodLayout = () => {
               }}
               initialValues={{
                 foodName: foodData.foodName,
-                categoryId: foodData.categoryId,
+                categoryId: categoryIdsInitialValue,
                 foodPrice: foodData.foodPrice,
                 foodDescription: foodData.foodDescription,
               }}
               onFinish={onFinish}
-              // onFinishFailed={onFinishFailed}
-              // initialValues={{ categoryId: ["CTG-03032a1a", "CTG-52699ee8"] }}
             >
               <Row gutter={16} justify="space-evenly">
                 <Col span={24}>
@@ -281,7 +303,13 @@ const EditFoodLayout = () => {
                     >
                       {categoryData.map((data) => {
                         return (
-                          <Option value={data.categoryId} key={uuid()}>
+                          <Option
+                            key={data.categoryId}
+                            value={data.categoryId.concat(
+                              "#",
+                              data.categoryName
+                            )}
+                          >
                             {data.categoryName}
                           </Option>
                         );

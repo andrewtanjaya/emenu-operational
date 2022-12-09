@@ -76,9 +76,12 @@ const AddFoodLayout = () => {
       }
     }
 
+    let categoryIdList = values.categoryId.map((id) => {
+      return id.split("#").shift();
+    });
     let newFood = new Food(
       foodId,
-      values.categoryId,
+      categoryIdList,
       userSession.restaurantId,
       values.foodName,
       true,
@@ -89,14 +92,16 @@ const AddFoodLayout = () => {
       0,
       0
     );
-    FoodController.addFood(newFood).then((resp) => {});
-
-    groupData.forEach((data) => {
-      data.foodId = foodId;
-      GroupController.addGroup(data);
-
+    FoodController.addFood(newFood).then((resp) => {
       setIsUpload(false);
     });
+
+    if (groupData) {
+      groupData.forEach((data) => {
+        data.foodId = foodId;
+        GroupController.addGroup(data);
+      });
+    }
   };
 
   const onRemoveImage = (file) => {
@@ -205,7 +210,10 @@ const AddFoodLayout = () => {
                   <Select mode="multiple" placeholder="Please choose category!">
                     {categoryData.map((data) => {
                       return (
-                        <Option value={data.categoryId} key={uuid()}>
+                        <Option
+                          value={data.categoryId.concat("#", data.categoryName)}
+                          key={data.categoryId}
+                        >
                           {data.categoryName}
                         </Option>
                       );
