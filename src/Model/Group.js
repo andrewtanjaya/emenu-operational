@@ -27,10 +27,9 @@ export class Group {
   }
 
   static async updateGroup(group) {
-    return await updateDoc(doc(groupsRef, group.groupId), {
-      groupName: group.groupName,
-      isRequired: group.isRequired,
-      options: group.options,
-    });
+    return await setDoc(
+      doc(groupsRef, group.groupId),
+      Object.assign({}, group)
+    );
   }
 }

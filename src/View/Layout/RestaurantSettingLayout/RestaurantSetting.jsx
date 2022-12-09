@@ -62,14 +62,20 @@ function RestaurantSetting() {
   }, []);
 
   const onRemoveBanner = (file) => {
-    if (bannersImage.length > 0) {
-      const indexImage = bannersImage.indexOf(file);
+    const indexImage = bannersImage
+      .map(function (e) {
+        return e.uid;
+      })
+      .indexOf(file.uid);
+
+    const indexPreview = bannersPreview.indexOf(file);
+
+    if (bannersImage.length > 0 && indexImage !== -1) {
       const newbannersImage = bannersImage.slice();
       newbannersImage.splice(indexImage, 1);
       setBannersImage(newbannersImage);
     }
-    if (bannersPreview.length > 0) {
-      const indexPreview = bannersPreview.indexOf(file);
+    if (bannersPreview.length > 0 && indexPreview !== -1) {
       const newbannersPreview = bannersPreview.slice();
       newbannersPreview.splice(indexPreview, 1);
       setBannersPreview(newbannersPreview);

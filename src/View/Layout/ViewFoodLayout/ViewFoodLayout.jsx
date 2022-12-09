@@ -38,16 +38,7 @@ function ViewFoodLayout() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link
-          // onClick={() => {
-          //   setInitialValueEditForm(record);
-          //   setOpenEditModal(true);
-          //   form.setFieldValue("categoryName", record.categoryName);
-          //   form.setFieldValue("categoryIcon", record.categoryIcon);
-          // }}
-          >
-            Edit
-          </Link>
+          <Link to={`/admin/editFood?foodId=${record.foodId}`}>Edit</Link>
           <Link
             onClick={() => {
               confirmDeleteModal(record.foodId);

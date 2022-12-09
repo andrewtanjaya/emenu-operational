@@ -16,8 +16,8 @@ import {
   Select,
   Upload,
 } from "antd";
-import { useNavigate } from "react-router-dom";
-import "./AddFoodLayout.css";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import "./EditFoodLayout.css";
 import { Gender } from "../../../Enum/Gender";
 import TextArea from "antd/es/input/TextArea";
 import { CategoryController } from "../../../Controller/CategoryController";
@@ -44,11 +44,14 @@ const { Option } = Select;
 
 const EditFoodLayout = () => {
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
+  const [searchParams, setSearchParams] = useSearchParams();
   const [foodData, setFoodData] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
   const [groupData, setGroupData] = useState([]);
+  const [groupIdToDelete, setGroupIdToDelete] = useState([]);
   const [isload, setisload] = useState(true);
   const [foodImages, setFoodImages] = useState([]);
+  const [foodImagesPreview, setFoodImagesPreview] = useState([]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -59,7 +62,6 @@ const EditFoodLayout = () => {
     CategoryController.getAllCategoriesByRestaurantIdDocs(
       userSession.restaurantId
     ).then((resp) => {
-      //   categoryQuery = resp;
       resp.forEach((doc) => {
         setCategoryData((categoryData) => [
           ...categoryData,
@@ -70,14 +72,34 @@ const EditFoodLayout = () => {
         ]);
       });
     });
-    setisload(false);
+
+    const foodId = searchParams.get("foodId");
+    GroupController.getAllGroupsByFoodIdDocs(foodId).then((resp) => {
+      resp.forEach((doc) => {
+        setGroupData((groupData) => [...groupData, doc.data()]);
+      });
+    });
+
+    FoodController.getFoodById(foodId).then((resp) => {
+      if (resp) {
+        setFoodData(resp);
+        let foodImageUrl = resp.foodPictures.map((x) => {
+          return { uid: uuid(), status: "done", thumbUrl: x, url: x };
+        });
+        setFoodImagesPreview(foodImageUrl);
+        setisload(false);
+      } else {
+        navigate("not found page");
+      }
+    });
   }, []);
 
   const onFinish = async (values) => {
-    const foodId = generateRandomId(IdTypes.FOOD);
     setIsUpload(true);
     setOpenSuccessModal(true);
-    let foodImagesUrl = [];
+    let foodImagesUrl = foodImagesPreview.map((img) => {
+      return img.url;
+    });
     if (foodImages) {
       for (let i = 0; i < foodImages.length; i++) {
         await uploadBytes(
@@ -86,13 +108,19 @@ const EditFoodLayout = () => {
         ).then(async (response) => {
           await getDownloadURL(response.ref).then((url) => {
             foodImagesUrl = [...foodImagesUrl, url];
+            foodImagesPreview.push({
+              uid: uuid(),
+              status: "done",
+              thumbUrl: url,
+              url: url,
+            });
           });
         });
       }
     }
 
     let newFood = new Food(
-      foodId,
+      foodData.foodId,
       values.categoryId,
       userSession.restaurantId,
       values.foodName,
@@ -104,38 +132,43 @@ const EditFoodLayout = () => {
       0,
       0
     );
-    FoodController.addFood(newFood).then((resp) => {});
-
-    groupData.forEach((data) => {
-      data.foodId = foodId;
-      GroupController.addGroup(data);
-
+    FoodController.addFood(newFood).then((resp) => {
       setIsUpload(false);
     });
-  };
 
-  const successModal = (title, content) => {
-    Modal.success({
-      onOk: () => {
-        navigate("/admin/employee", { replace: true });
-      },
-      title: title,
-      content: content,
-    });
-  };
+    if (groupData) {
+      groupData.forEach((data) => {
+        data.foodId = foodData.foodId;
+        GroupController.updateGroup(data);
+      });
+    }
 
-  const errorModal = (title, content) => {
-    Modal.error({
-      title: title,
-      content: content,
-    });
+    if (groupIdToDelete) {
+      groupIdToDelete.forEach((id) => {
+        GroupController.deleteGroupById(id);
+      });
+    }
   };
 
   const onRemoveImage = (file) => {
-    const indexImage = foodImages.indexOf(file);
-    const newFoodImage = foodImages.slice();
-    newFoodImage.splice(indexImage, 1);
-    setFoodImages(newFoodImage);
+    const indexImage = foodImages
+      .map(function (e) {
+        return e.uid;
+      })
+      .indexOf(file.uid);
+
+    const indexPreview = foodImagesPreview.indexOf(file);
+
+    if (foodImages.length > 0 && indexImage !== -1) {
+      const newFoodImages = foodImages.slice();
+      newFoodImages.splice(indexImage, 1);
+      setFoodImages(newFoodImages);
+    }
+    if (foodImagesPreview.length > 0 && indexPreview !== -1) {
+      const newFoodImagesPreview = foodImagesPreview.slice();
+      newFoodImagesPreview.splice(indexPreview, 1);
+      setFoodImagesPreview(newFoodImagesPreview);
+    }
   };
 
   const beforeUploadImage = (file) => {
@@ -175,98 +208,109 @@ const EditFoodLayout = () => {
     <>
       <div className="add-food-container">
         <div className="add-food-header">
-          <h1>Add Food</h1>
+          <h1>Edit Food</h1>
         </div>
 
         <div className="add-food-form">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{
-              span: 24,
-            }}
-            wrapperCol={{
-              span: 24,
-            }}
-            // initialValues={{
-            // }}
-            onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            // initialValues={{ categoryId: ["CTG-03032a1a", "CTG-52699ee8"] }}
-          >
-            <Row gutter={16} justify="space-evenly">
-              <Col span={24}>
-                <Form.Item label="Food Photos" name="foodPicture">
-                  <Upload
-                    beforeUpload={beforeUploadImage}
-                    onRemove={onRemoveImage}
-                    listType="picture-card"
-                    maxCount={6}
-                    onPreview={handlePreview}
-                  >
-                    {uploadButton}
-                    {/* {bannersPreview.length + bannersImage.length >= 4
+          {!isload && (
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{
+                span: 24,
+              }}
+              wrapperCol={{
+                span: 24,
+              }}
+              initialValues={{
+                foodName: foodData.foodName,
+                categoryId: foodData.categoryId,
+                foodPrice: foodData.foodPrice,
+                foodDescription: foodData.foodDescription,
+              }}
+              onFinish={onFinish}
+              // onFinishFailed={onFinishFailed}
+              // initialValues={{ categoryId: ["CTG-03032a1a", "CTG-52699ee8"] }}
+            >
+              <Row gutter={16} justify="space-evenly">
+                <Col span={24}>
+                  <Form.Item label="Food Photos" name="foodPicture">
+                    <Upload
+                      beforeUpload={beforeUploadImage}
+                      onRemove={onRemoveImage}
+                      listType="picture-card"
+                      maxCount={6}
+                      defaultFileList={foodImagesPreview}
+                      onPreview={handlePreview}
+                    >
+                      {foodImages.length + foodImagesPreview.length >= 6
                         ? null
-                        : uploadButton} */}
-                  </Upload>
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16} justify="space-evenly">
-              <Col span={12}>
-                <Form.Item
-                  label="Food Name"
-                  name="foodName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input foodName!",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="categoryId"
-                  label="Food Category"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select category!",
-                      type: "array",
-                    },
-                  ]}
-                >
-                  <Select mode="multiple" placeholder="Please select category!">
-                    {categoryData.map((data) => {
-                      return (
-                        <Option value={data.categoryId} key={uuid()}>
-                          {data.categoryName}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                </Form.Item>
-                <Form.Item label="Food Description" name="foodDescription">
-                  <TextArea rows={4} placeholder="description" />
-                </Form.Item>
-                <Form.Item label="Food Price" name="foodPrice">
-                  <InputNumber />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <AdminFoodGroup
-                  groupData={groupData}
-                  setGroupData={setGroupData}
-                ></AdminFoodGroup>
-                <Form.Item wrapperCol={{ span: 24 }}>
-                  <Button id="saveButton" type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
+                        : uploadButton}
+                    </Upload>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16} justify="space-evenly">
+                <Col span={12}>
+                  <Form.Item
+                    label="Food Name"
+                    name="foodName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input foodName!",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="categoryId"
+                    label="Food Category"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select category!",
+                        type: "array",
+                      },
+                    ]}
+                  >
+                    <Select
+                      mode="multiple"
+                      placeholder="Please select category!"
+                    >
+                      {categoryData.map((data) => {
+                        return (
+                          <Option value={data.categoryId} key={uuid()}>
+                            {data.categoryName}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Food Description" name="foodDescription">
+                    <TextArea rows={4} placeholder="description" />
+                  </Form.Item>
+                  <Form.Item label="Food Price" name="foodPrice">
+                    <InputNumber />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <AdminFoodGroup
+                    groupData={groupData}
+                    setGroupData={setGroupData}
+                    groupIdToDelete={groupIdToDelete}
+                    setGroupIdToDelete={setGroupIdToDelete}
+                  ></AdminFoodGroup>
+                  <Form.Item wrapperCol={{ span: 24 }}>
+                    <Button id="saveButton" type="primary" htmlType="submit">
+                      Save
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          )}
           <Modal
             centered
             open={previewOpen}

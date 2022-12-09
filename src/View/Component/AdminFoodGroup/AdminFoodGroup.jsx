@@ -6,7 +6,12 @@ import AdminAddOptionModal from "../AdminAddOptionModal/AdminAddOptionModal";
 import AdminEditOptionModal from "../AdminEditOptionModal/AdminEditOptionModal";
 import "./AdminFoodGroup.css";
 
-function AdminFoodGroup({ groupData, setGroupData }) {
+function AdminFoodGroup({
+  groupData,
+  setGroupData,
+  groupIdToDelete,
+  setGroupIdToDelete,
+}) {
   const columns = [
     {
       title: "Name",
@@ -60,6 +65,7 @@ function AdminFoodGroup({ groupData, setGroupData }) {
     const newGroupData = groupData.slice();
     newGroupData.splice(index, 1);
     setGroupData(newGroupData);
+    setGroupIdToDelete([...groupIdToDelete, record.groupId]);
   }
 
   return (

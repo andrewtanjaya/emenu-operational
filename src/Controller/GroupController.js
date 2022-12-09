@@ -1,3 +1,4 @@
+import { getDocs } from "firebase/firestore";
 import { Database } from "../Model/Database";
 import { Group } from "../Model/Group";
 
@@ -22,5 +23,10 @@ export class GroupController {
 
   static getAllGroupsByFoodId(foodId) {
     return Database.getAllGroupsByFoodId(foodId);
+  }
+
+  static async getAllGroupsByFoodIdDocs(foodId) {
+    const docs = await getDocs(this.getAllGroupsByFoodId(foodId));
+    return docs;
   }
 }
