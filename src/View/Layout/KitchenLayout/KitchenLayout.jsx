@@ -1,7 +1,6 @@
 import React from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
-import { Menu, Row, Col, Layout } from "antd";
-import AuthConsumer from "../../../hooks/auth";
+import { Link, Outlet } from "react-router-dom";
+import { Menu } from "antd";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { RestaurantController } from "../../../Controller/RestaurantController";
 import { UserController } from "../../../Controller/UserController";
@@ -9,8 +8,6 @@ import NavbarRestaurantProfile from "../../Component/NavbarRestaurantProfile/Nav
 import NavbarUserProfile from "../../Component/NavbarUserProfile/NavbarUserProfile";
 
 function KitchenLayout() {
-  const navigate = useNavigate();
-  const [authed, dispatch] = AuthConsumer();
   const data = JSON.parse(sessionStorage.getItem("userData"));
   const [user, userLoading, userError, userSnapshot] = useDocumentData(
     UserController.getUserProfileByEmail(data.email),

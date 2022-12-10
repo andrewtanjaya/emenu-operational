@@ -1,7 +1,6 @@
 import React from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import AuthConsumer from "../../../hooks/auth";
-import { AudioOutlined } from "@ant-design/icons";
 import { Menu, Input, Space } from "antd";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { RestaurantController } from "../../../Controller/RestaurantController";
@@ -10,8 +9,6 @@ import NavbarRestaurantProfile from "../../Component/NavbarRestaurantProfile/Nav
 import NavbarUserProfile from "../../Component/NavbarUserProfile/NavbarUserProfile";
 
 function CashierLayout() {
-  const navigate = useNavigate();
-  const [authed, dispatch] = AuthConsumer();
   const data = JSON.parse(sessionStorage.getItem("userData"));
   const { Search } = Input;
   const [user, userLoading, userError, userSnapshot] = useDocumentData(
