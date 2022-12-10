@@ -1,0 +1,76 @@
+.order-queue-card-container {
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  width: 400px;
+}
+
+.order-queue-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #36AB27;
+  border-radius: 10px 10px 0 0;
+  color: #FFFFFF;
+  font-weight: 700;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.order-food-list {
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #CACACA;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+.order-food-list p {
+  margin: 0;
+}
+
+.order-food-quantity {
+  height: 100%;
+  width: 10%;
+  text-align: center;
+}
+
+.order-food-description {
+  height: 100%;
+  width: 70%;
+}
+
+.change-order-status-button {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #FFFFFF;
+  border-radius: 4px;
+  width: 20%;
+  cursor: pointer;
+}
+.change-order-status-button p {
+  margin: 0;
+  padding: 0;
+}
+
+.on-progress {
+  background-color: #F3CC43;
+}
+
+.ready {
+  background-color: #F55353;
+}
+
+.dine-in-header {
+  background-color: #36AB27;
+}
+
+.takeaway-header {
+  background-color: #F55353;
+}/*# sourceMappingURL=KitchenOrderQueueCard.css.map */

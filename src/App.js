@@ -23,6 +23,7 @@ import AdminTransactionReport from "./View/Layout/AdminTransactionReport/AdminTr
 import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitchenUpdateMenuAvailableLayout/CashierKitchenUpdateMenuAvailableLayout";
 import ViewMenuLayout from "./View/Layout/ViewMenuLayout/ViewMenuLayout";
 import { Button, Result } from "antd";
+import KitchenOrderQueueLayout from "./View/Layout/KitchenOrderQueueLayout/KitchenOrderQueueLayout";
 import AddFoodLayout from "./View/Layout/AddFoodLayout/AddFoodLayout";
 import EditFoodLayout from "./View/Layout/EditFoodLayout/EditFoodLayout";
 
@@ -89,7 +90,8 @@ function App() {
             </KitchenAuth>
           }
         >
-          <Route index element={<CashierKitchenUpdateMenuAvailableLayout />} />
+          <Route index element={<KitchenOrderQueueLayout />} />
+          <Route path="/kitchen/menu" element={<CashierKitchenUpdateMenuAvailableLayout />} />
         </Route>
         <Route
           path="*"
