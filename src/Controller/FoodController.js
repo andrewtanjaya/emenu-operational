@@ -23,4 +23,8 @@ export class FoodController {
   static getAllFoodsByRestaurantId(restaurantId) {
     return Database.getAllFoodsByRestaurantId(restaurantId);
   }
+
+  static async updateFoodAvailability(foodId, foodAvailability) {
+    return Food.updateFoodAvailability(foodId, foodAvailability);
+  }
 }
