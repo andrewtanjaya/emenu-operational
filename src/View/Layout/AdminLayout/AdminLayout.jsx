@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Menu, Row, Col, Layout } from "antd";
 import React, { useEffect } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Link, Outlet } from "react-router-dom";
@@ -10,15 +10,12 @@ import "./AdminLayout.css";
 
 function AdminLayout() {
   const data = JSON.parse(sessionStorage.getItem("userData"));
-  console.log(data);
-
   const [user, userLoading, userError, userSnapshot] = useDocumentData(
-    UserController.getUserProfileByEmail("agusmanager@gmail.com"),
+    UserController.getUserProfileByEmail(data.email),
     {
       idField: "id",
     }
   );
-
   const [restaurant, restaurantLoading, restaurantError, restaurantSnapshot] =
     useDocumentData(
       RestaurantController.getRestaurantProfileById(data.restaurantId),
@@ -26,14 +23,18 @@ function AdminLayout() {
         idField: "id",
       }
     );
-  console.log("layout user", user);
-  // console.log("layout resto", restaurant);
 
   const renderNavbar = () => {
     return (
       <nav>
         <Menu className="navbar" mode={"horizontal"}>
-          <NavbarRestaurantProfile restaurantData={restaurant} />
+          {!restaurantLoading ? (
+            <NavbarRestaurantProfile
+              restaurantData={restaurant}
+            />
+          ) : (
+            <></>
+          )}
           <Menu.Item key="dashboard">
             <Link to="/admin">Dashboard</Link>
           </Menu.Item>
@@ -49,7 +50,7 @@ function AdminLayout() {
           <Menu.Item key="setting">
             <Link to="/admin/setting">Setting</Link>
           </Menu.Item>
-          <NavbarUserProfile userData={user} />
+          {!userLoading ? <NavbarUserProfile userData={user} /> : <></>}
         </Menu>
       </nav>
     );

@@ -9,11 +9,12 @@ function NavbarRestaurantProfile(props) {
   const { Text } = Typography;
   const navigate = useNavigate();
 
-  console.log(props.restaurantData);
-  //   console.log(userName);
-  //   console.log(roleType);
-
-  return <Card>{props.restaurantData.restaurantName}</Card>;
+  return (
+    <Card>
+        <Avatar icon={<UserOutlined />} />
+        {props.restaurantData.restaurantName}
+    </Card>
+  );
 }
 
 export default NavbarRestaurantProfile;

@@ -4,13 +4,12 @@ import { Row, Card, Col, Menu } from "antd";
 import { Avatar, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import AuthConsumer from "../../../hooks/auth";
+import CashierAuth from "../../../Utils/CashierAuth";
 
 function NavbarUserProfile(props) {
   const { Text } = Typography;
   const navigate = useNavigate();
   const [authed, dispatch] = AuthConsumer();
-
-  console.log(props.userData);
 
   return (
     <Menu.SubMenu
