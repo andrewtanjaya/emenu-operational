@@ -1,0 +1,40 @@
+@import "../../../Utils/variables";
+
+.view-food-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 40px;
+    box-sizing: border-box;
+}
+
+.food-header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: $white;
+    border: 3px solid inactive;
+    border-radius: 16px;
+    box-shadow: 0px 0px 15px rgb(134, 134, 134);
+    padding: 2%;
+}
+.table-food-container{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: $white;
+    margin-top: 40px;
+    border: 3px solid inactive;
+    border-radius: 16px;
+    box-shadow: 0px 0px 15px rgb(134, 134, 134);
+    padding: 2%;
+}
+
+.filter-food-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+}

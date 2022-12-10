@@ -7,10 +7,9 @@ export class Food {
     categoryId,
     restaurantId,
     foodName,
-    availability,
-    mainPicture,
+    foodAvailability,
+    foodPictures,
     foodPrice,
-    addedPicture,
     foodDescription,
     tags,
     orderCount,
@@ -20,10 +19,9 @@ export class Food {
     this.categoryId = categoryId;
     this.restaurantId = restaurantId;
     this.foodName = foodName;
-    this.availability = availability;
-    this.mainPicture = mainPicture;
+    this.foodAvailability = foodAvailability;
+    this.foodPictures = foodPictures;
     this.foodPrice = foodPrice;
-    this.addedPicture = addedPicture;
     this.foodDescription = foodDescription;
     this.tags = tags;
     this.orderCount = orderCount;
@@ -49,14 +47,11 @@ export class Food {
       categoryId: food.categoryId,
       restaurantId: food.restaurantId,
       foodName: food.foodName,
-      availability: food.availability,
-      mainPicture: food.mainPicture,
+      foodAvailability: food.foodAvailability,
+      foodPictures: food.foodPictures,
       foodPrice: food.foodPrice,
-      addedPicture: food.addedPicture,
       foodDescription: food.foodDescription,
       tags: food.tags,
-      orderCount: food.orderCount,
-      totalSales: food.totalSales,
     });
   }
 }

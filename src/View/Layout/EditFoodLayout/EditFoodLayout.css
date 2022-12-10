@@ -1,0 +1,29 @@
+.add-food-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.add-food-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 1080px;
+  border: 3px solid inactive;
+  border-radius: 16px;
+  box-shadow: 0px 0px 15px rgb(134, 134, 134);
+  margin-top: 20px;
+  padding: 20px 40px;
+}
+.add-food-form Form {
+  width: 100%;
+}
+
+.add-food-header {
+  width: 1080px;
+}/*# sourceMappingURL=EditFoodLayout.css.map */
