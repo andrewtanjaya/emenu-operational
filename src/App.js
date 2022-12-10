@@ -24,6 +24,8 @@ import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitche
 import ViewMenuLayout from "./View/Layout/ViewMenuLayout/ViewMenuLayout";
 import { Button, Result } from "antd";
 import KitchenOrderQueueLayout from "./View/Layout/KitchenOrderQueueLayout/KitchenOrderQueueLayout";
+import AddFoodLayout from "./View/Layout/AddFoodLayout/AddFoodLayout";
+import EditFoodLayout from "./View/Layout/EditFoodLayout/EditFoodLayout";
 
 function App() {
   return (
@@ -63,6 +65,8 @@ function App() {
           <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />
           <Route path="/admin/editEmployee" element={<EditEmployeeLayout />} />
           <Route path="/admin/food" element={<Foods />} />
+          <Route path="/admin/addFood" element={<AddFoodLayout />} />
+          <Route path="/admin/editFood" element={<EditFoodLayout />} />
           {/* <Route path="/admin/addFood" element={<AdminAddMenuLayout />} /> */}
           {/* <Route path="/admin/editFood" element={<AdminAddMenuLayout />} /> */}
           <Route path="/admin/setting" element={<RestaurantSetting />} />

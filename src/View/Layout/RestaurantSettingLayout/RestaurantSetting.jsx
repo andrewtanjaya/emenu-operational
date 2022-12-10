@@ -21,6 +21,7 @@ import { getDownloadURL, uploadBytes } from "firebase/storage";
 import {
   restauranBannerRef,
   restauranLogoRef,
+  restaurantBannerRef,
   restaurantQrisRef,
 } from "../../../Config/Firebase";
 import { v4 as uuid } from "uuid";
@@ -61,14 +62,20 @@ function RestaurantSetting() {
   }, []);
 
   const onRemoveBanner = (file) => {
-    if (bannersImage.length > 0) {
-      const indexImage = bannersImage.indexOf(file);
+    const indexImage = bannersImage
+      .map(function (e) {
+        return e.uid;
+      })
+      .indexOf(file.uid);
+
+    const indexPreview = bannersPreview.indexOf(file);
+
+    if (bannersImage.length > 0 && indexImage !== -1) {
       const newbannersImage = bannersImage.slice();
       newbannersImage.splice(indexImage, 1);
       setBannersImage(newbannersImage);
     }
-    if (bannersPreview.length > 0) {
-      const indexPreview = bannersPreview.indexOf(file);
+    if (bannersPreview.length > 0 && indexPreview !== -1) {
       const newbannersPreview = bannersPreview.slice();
       newbannersPreview.splice(indexPreview, 1);
       setBannersPreview(newbannersPreview);
@@ -137,7 +144,7 @@ function RestaurantSetting() {
     if (bannersImage) {
       for (let i = 0; i < bannersImage.length; i++) {
         await uploadBytes(
-          restauranBannerRef(`${uuid() + bannersImage[i].name}`),
+          restaurantBannerRef(`${uuid() + bannersImage[i].name}`),
           bannersImage[i]
         ).then(async (response) => {
           await getDownloadURL(response.ref).then((url) => {
@@ -200,7 +207,6 @@ function RestaurantSetting() {
 
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
-    console.log(file);
     setPreviewImage(file.thumbUrl);
     setPreviewOpen(true);
   };

@@ -2,9 +2,7 @@ import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { optionsRef } from "../Config/Firebase";
 
 export class Option {
-  constructor(optionId, groupId, optionName, addedValue) {
-    this.optionId = optionId;
-    this.groupId = groupId;
+  constructor(optionName, addedValue) {
     this.optionName = optionName;
     this.addedValue = addedValue;
   }

@@ -1,3 +1,4 @@
+import { getDocs } from "firebase/firestore";
 import { Category } from "../Model/Category";
 import { Database } from "../Model/Database";
 
@@ -22,5 +23,12 @@ export class CategoryController {
 
   static getAllCategoriesByRestaurantId(restaurantId) {
     return Database.getAllCategoriesByRestaurantId(restaurantId);
+  }
+
+  static async getAllCategoriesByRestaurantIdDocs(restaurantId) {
+    const docs = await getDocs(
+      this.getAllCategoriesByRestaurantId(restaurantId)
+    );
+    return docs;
   }
 }

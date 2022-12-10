@@ -31,6 +31,9 @@ export const restaurantQrisRef = (fileName) => {
 export const restauranLogoRef = (fileName) => {
   return ref(storage, "restaurant-logo/" + fileName);
 };
-export const restauranBannerRef = (fileName) => {
+export const restaurantBannerRef = (fileName) => {
   return ref(storage, "restaurant-banner/" + fileName);
+};
+export const foodImageRef = (fileName) => {
+  return ref(storage, "food-image/" + fileName);
 };
