@@ -64,7 +64,7 @@ function App() {
           <Route path="/admin/employee" element={<ViewEmployeeLayout />} />
           <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />
           <Route path="/admin/editEmployee" element={<EditEmployeeLayout />} />
-          <Route path="/admin/food" element={<Foods />} />
+          <Route path="/admin/food" element={<ViewMenuLayout />} />
           <Route path="/admin/addFood" element={<AddFoodLayout />} />
           <Route path="/admin/editFood" element={<EditFoodLayout />} />
           {/* <Route path="/admin/addFood" element={<AdminAddMenuLayout />} /> */}
@@ -91,7 +91,10 @@ function App() {
           }
         >
           <Route index element={<KitchenOrderQueueLayout />} />
-          <Route path="/kitchen/menu" element={<CashierKitchenUpdateMenuAvailableLayout />} />
+          <Route
+            path="/kitchen/menu"
+            element={<CashierKitchenUpdateMenuAvailableLayout />}
+          />
         </Route>
         <Route
           path="*"
