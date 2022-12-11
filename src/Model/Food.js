@@ -54,4 +54,10 @@ export class Food {
       tags: food.tags,
     });
   }
+
+  static async updateFoodAvailability(foodId, foodAvailability) {
+    return await updateDoc(doc(foodsRef, foodId), {
+      foodAvailability: foodAvailability,
+    });
+  }
 }
