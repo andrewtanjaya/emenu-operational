@@ -13,7 +13,7 @@ export class Food {
     foodDescription,
     tags,
     orderCount,
-    totalSales
+    totalSold
   ) {
     this.foodId = foodId;
     this.categoryId = categoryId;
@@ -25,7 +25,7 @@ export class Food {
     this.foodDescription = foodDescription;
     this.tags = tags;
     this.orderCount = orderCount;
-    this.totalSales = totalSales;
+    this.totalSold = totalSold;
   }
 
   static async getFoodById(foodId) {
