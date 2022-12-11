@@ -6,6 +6,10 @@ export class RestaurantController {
     return Restaurant.getRestaurantById(restaurantId);
   }
 
+  static getRestaurantProfileById(restaurantId) {
+    return Restaurant.getRestaurantProfileById(restaurantId)
+  }
+
   static async addRestaurant(restaurant) {
     return Restaurant.addRestaurant(restaurant);
   }

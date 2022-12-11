@@ -29,6 +29,10 @@ export class User {
     return userSnap.exists() ? userSnap.data() : null;
   }
 
+  static getUserProfileByEmail(email) {
+    return doc(usersRef, email)
+  }
+
   static async addUser(user) {
     return await setDoc(doc(usersRef, user.email), Object.assign({}, user));
   }
