@@ -53,9 +53,18 @@ function RestaurantSetting() {
         }
         setRestaurantData(result);
         let bannerImgUrl = result.restaurantBanners.map((x) => {
-          return { uid: uuid(), status: "done", thumbUrl: x, url: x };
+          return {
+            uid: uuid(),
+            status: "done",
+            thumbUrl: x,
+            url: x,
+            type: "image/png",
+          };
         });
         setBannersPreview(bannerImgUrl);
+        form.setFieldsValue({
+          restaurantBanners: { fileList: bannerImgUrl },
+        });
         setIsLoad(false);
       }
     );
@@ -84,10 +93,12 @@ function RestaurantSetting() {
 
   const beforeUploadBanners = (file) => {
     const isPng = file.type === "image/png";
-    if (!isPng) {
+    if (isPng) {
+      setBannersImage([...bannersImage, file]);
+    } else {
       message.error("You can only upload JPG/PNG file!");
     }
-    setBannersImage([...bannersImage, file]);
+
     return false;
   };
 
@@ -250,6 +261,30 @@ function RestaurantSetting() {
                   <Form.Item
                     label="Restaurant Banners"
                     name="restaurantBanners"
+                    rules={[
+                      {
+                        validator: (rule, value) => {
+                          if (
+                            value &&
+                            value.fileList.length >= 1 &&
+                            value.fileList.some(
+                              (file) => file.type !== "image/png"
+                            )
+                          ) {
+                            return Promise.reject(
+                              "You can only upload JPG/PNG file!"
+                            );
+                          }
+                          if (value && value.fileList.length >= 1) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject(
+                              "Input restaurant banners at least 1!"
+                            );
+                          }
+                        },
+                      },
+                    ]}
                   >
                     <Upload
                       beforeUpload={beforeUploadBanners}

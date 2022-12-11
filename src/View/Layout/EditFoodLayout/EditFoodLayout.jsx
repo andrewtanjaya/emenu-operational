@@ -1,7 +1,4 @@
 import React from "react";
-import { User } from "../../../Model/User";
-import { RoleTypes } from "../../../Enum/RoleTypes";
-import { UserController } from "../../../Controller/UserController";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -18,24 +15,13 @@ import {
 } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./EditFoodLayout.css";
-import { Gender } from "../../../Enum/Gender";
 import TextArea from "antd/es/input/TextArea";
 import { CategoryController } from "../../../Controller/CategoryController";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import { FoodController } from "../../../Controller/FoodController";
 import { Food } from "../../../Model/Food";
-import { generateRandomId } from "../../../Helper/Helper";
-import { IdTypes } from "../../../Enum/IdTypes";
 import { foodImageRef } from "../../../Config/Firebase";
 import { getDownloadURL, uploadBytes } from "firebase/storage";
 import AdminFoodGroup from "../../Component/AdminFoodGroup/AdminFoodGroup";
@@ -90,9 +76,18 @@ const EditFoodLayout = () => {
       if (resp) {
         setFoodData(resp);
         let foodImageUrl = resp.foodPictures.map((x) => {
-          return { uid: uuid(), status: "done", thumbUrl: x, url: x };
+          return {
+            uid: uuid(),
+            status: "done",
+            thumbUrl: x,
+            url: x,
+            type: "image/png",
+          };
         });
         setFoodImagesPreview(foodImageUrl);
+        form.setFieldsValue({
+          foodPicture: { fileList: foodImageUrl },
+        });
         setIsFoodload(false);
       } else {
         navigate("not found page");
@@ -197,10 +192,12 @@ const EditFoodLayout = () => {
 
   const beforeUploadImage = (file) => {
     const isPng = file.type === "image/png";
-    if (!isPng) {
+    if (isPng) {
+      setFoodImages([...foodImages, file]);
+    } else {
       message.error("You can only upload JPG/PNG file!");
     }
-    setFoodImages([...foodImages, file]);
+
     return false;
   };
 
@@ -256,7 +253,36 @@ const EditFoodLayout = () => {
             >
               <Row gutter={16} justify="space-evenly">
                 <Col span={24}>
-                  <Form.Item label="Food Photos" name="foodPicture">
+                  <Form.Item
+                    label="Food Photos"
+                    name="foodPicture"
+                    valuePropName="filelist"
+                    required
+                    rules={[
+                      {
+                        validator: (rule, value) => {
+                          if (
+                            value &&
+                            value.fileList.length >= 1 &&
+                            value.fileList.some(
+                              (file) => file.type !== "image/png"
+                            )
+                          ) {
+                            return Promise.reject(
+                              "You can only upload JPG/PNG file!"
+                            );
+                          }
+                          if (value && value.fileList.length >= 1) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject(
+                              "Input food picture at least 1!"
+                            );
+                          }
+                        },
+                      },
+                    ]}
+                  >
                     <Upload
                       beforeUpload={beforeUploadImage}
                       onRemove={onRemoveImage}

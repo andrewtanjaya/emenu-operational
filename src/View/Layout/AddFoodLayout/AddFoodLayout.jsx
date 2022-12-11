@@ -8,7 +8,6 @@ import {
   InputNumber,
   message,
   Modal,
-  Radio,
   Row,
   Select,
   Upload,
@@ -113,10 +112,12 @@ const AddFoodLayout = () => {
 
   const beforeUploadImage = (file) => {
     const isPng = file.type === "image/png";
-    if (!isPng) {
+    if (isPng) {
+      setFoodImages([...foodImages, file]);
+    } else {
       message.error("You can only upload JPG/PNG file!");
     }
-    setFoodImages([...foodImages, file]);
+
     return false;
   };
 
@@ -169,6 +170,31 @@ const AddFoodLayout = () => {
                   label="Food Photos"
                   name="foodPicture"
                   valuePropName="filelist"
+                  required
+                  rules={[
+                    {
+                      validator: (rule, value) => {
+                        if (
+                          value &&
+                          value.fileList.length >= 1 &&
+                          value.fileList.some(
+                            (file) => file.type !== "image/png"
+                          )
+                        ) {
+                          return Promise.reject(
+                            "You can only upload JPG/PNG file!"
+                          );
+                        }
+                        if (value && value.fileList.length >= 1) {
+                          return Promise.resolve();
+                        } else {
+                          return Promise.reject(
+                            "Input food picture at least 1!"
+                          );
+                        }
+                      },
+                    },
+                  ]}
                 >
                   <Upload
                     beforeUpload={beforeUploadImage}
