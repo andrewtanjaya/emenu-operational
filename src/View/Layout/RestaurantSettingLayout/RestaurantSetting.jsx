@@ -62,8 +62,40 @@ function RestaurantSetting() {
           };
         });
         setBannersPreview(bannerImgUrl);
+        let restaurantLogoFile =
+          result.restaurantLogoPicture !== ""
+            ? [
+                {
+                  uid: uuid(),
+                  status: "done",
+                  thumbUrl: result.restaurantLogoPicture,
+                  url: result.restaurantLogoPicture,
+                  type: "image/png",
+                },
+              ]
+            : [];
+
+        let restaurantQrisFile =
+          result.restaurantQris !== ""
+            ? [
+                {
+                  uid: uuid(),
+                  status: "done",
+                  thumbUrl: result.restaurantLQris,
+                  url: result.restaurantLQris,
+                  type: "image/png",
+                },
+              ]
+            : [];
+
         form.setFieldsValue({
           restaurantBanners: { fileList: bannerImgUrl },
+          restaurantLogoPicture: {
+            fileList: restaurantLogoFile,
+          },
+          restaurantQris: {
+            fileList: restaurantQrisFile,
+          },
         });
         setIsLoad(false);
       }
@@ -322,7 +354,35 @@ function RestaurantSetting() {
                       />
                     </Col>
                     <Col span={16}>
-                      <Form.Item label="Restaurant Logo">
+                      <Form.Item
+                        label="Restaurant Logo"
+                        name="restaurantLogoPicture"
+                        required
+                        rules={[
+                          {
+                            validator: (rule, value) => {
+                              if (
+                                value &&
+                                value.fileList.length >= 1 &&
+                                value.fileList.some(
+                                  (file) => file.type !== "image/png"
+                                )
+                              ) {
+                                return Promise.reject(
+                                  "You can only upload JPG/PNG file!"
+                                );
+                              }
+                              if (value && value.fileList.length >= 1) {
+                                return Promise.resolve();
+                              } else {
+                                return Promise.reject(
+                                  "Input your restaurant logo picture!"
+                                );
+                              }
+                            },
+                          },
+                        ]}
+                      >
                         <Upload
                           listType="text"
                           beforeUpload={beforeUploadLogo}
@@ -348,7 +408,35 @@ function RestaurantSetting() {
                       />
                     </Col>
                     <Col span={16}>
-                      <Form.Item label="Restaurant QRIS">
+                      <Form.Item
+                        label="Restaurant QRIS"
+                        name="restaurantQris"
+                        required
+                        rules={[
+                          {
+                            validator: (rule, value) => {
+                              if (
+                                value &&
+                                value.fileList.length >= 1 &&
+                                value.fileList.some(
+                                  (file) => file.type !== "image/png"
+                                )
+                              ) {
+                                return Promise.reject(
+                                  "You can only upload JPG/PNG file!"
+                                );
+                              }
+                              if (value && value.fileList.length >= 1) {
+                                return Promise.resolve();
+                              } else {
+                                return Promise.reject(
+                                  "Input your restaurant Qris picture!"
+                                );
+                              }
+                            },
+                          },
+                        ]}
+                      >
                         <Upload
                           listType="text"
                           beforeUpload={beforeUploadQris}
