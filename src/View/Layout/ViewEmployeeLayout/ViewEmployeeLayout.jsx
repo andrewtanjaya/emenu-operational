@@ -12,31 +12,26 @@ function ViewEmployeeLayout() {
       title: "Name",
       dataIndex: "firstName",
       key: "firstName",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Role Type",
       dataIndex: "roleType",
       key: "roleType",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Gender",
       dataIndex: "gender",
       key: "gender",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Email Address",
       dataIndex: "email",
       key: "email",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Action",
@@ -107,15 +102,17 @@ function ViewEmployeeLayout() {
       <div className="view-employee-container">
         <h1>Employee</h1>
         <div className="employee-header-container">
-          <Button
-            id="addButton"
-            type="primary"
-            onClick={() => {
-              navigate("/admin/addEmployee");
-            }}
-          >
-            Add Employee
-          </Button>
+          <div className="add-employee-button-container">
+            <Button
+              id="addButton"
+              type="primary"
+              onClick={() => {
+                navigate("/admin/addEmployee");
+              }}
+            >
+              Add Employee
+            </Button>
+          </div>
           <div className="filter-container">
             <Select
               autoFocus
@@ -147,9 +144,9 @@ function ViewEmployeeLayout() {
               }}
             />
             <Search
-              placeholder="input search text"
+              placeholder="Search employee name or email"
               style={{
-                width: 300,
+                maxWidth: 600,
               }}
               onChange={(e) => {
                 setKeyword(e.target.value);

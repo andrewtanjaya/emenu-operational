@@ -274,7 +274,6 @@ function AdminTransactionReportViewer() {
         dataSource={dataA}
         onChange={onChange}
       />
-      ;
     </div>
   );
 }

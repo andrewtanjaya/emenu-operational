@@ -1,1 +1,1 @@
-{"version":3,"sources":["AdminTransactionBrief.scss","AdminTransactionBrief.css"],"names":[],"mappings":"AACA;EACI,aAAA;EACA,mBAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;OAAA,gBAAA;ACAJ","file":"AdminTransactionBrief.css"}
+{"version":3,"sources":["AdminTransactionBrief.scss","AdminTransactionBrief.css"],"names":[],"mappings":"AAEA;EACI,aAAA;EACA,WAAA;EACA,qCAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;OAAA,gBAAA;EACA,iBAAA;ACDJ;;ADIA;EACI;IACI,qCAAA;IACA,aAAA;ECDN;AACF;ADIA;EACI;IACI,qCAAA;IACA,YAAA;IACA,mBAAA;IACA,uBAAA;ECFN;AACF","file":"AdminTransactionBrief.css"}

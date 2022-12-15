@@ -3,7 +3,7 @@ import "./Register.css";
 import { Button, Form, Input, Modal, Radio } from "antd";
 import { Gender } from "../../../Enum/Gender";
 import { User } from "../../../Model/User";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RoleTypes } from "../../../Enum/RoleTypes";
 import { IdTypes } from "../../../Enum/IdTypes";
 import { generateRandomId } from "../../../Helper/Helper";
@@ -11,9 +11,11 @@ import { UserController } from "../../../Controller/UserController";
 import { Restaurant } from "../../../Model/Restaurant";
 import { RestaurantAddress } from "../../../Model/RestaurantAddress";
 import { RestaurantController } from "../../../Controller/RestaurantController";
+import { useState } from "react";
 
 function Register() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const errorModal = (title, content) => {
     Modal.error({
       title: title,
@@ -31,6 +33,7 @@ function Register() {
   };
 
   const onFinish = (values) => {
+    setLoading(true);
     const restaurantId = generateRandomId(IdTypes.RESTAURANT);
 
     UserController.getUserByEmail(values.email).then((user) => {
@@ -39,6 +42,7 @@ function Register() {
           "Account Exists",
           `Account with ${values.email} already exists try to login into your account instead`
         );
+        setLoading(false);
       } else {
         let newRestaurant = new Restaurant(
           restaurantId,
@@ -67,6 +71,7 @@ function Register() {
 
         RestaurantController.addRestaurant(newRestaurant);
         UserController.addUser(newUser).then(() => {
+          setLoading(false);
           successModal("Success", "Your account successfully created!");
         });
       }
@@ -76,17 +81,19 @@ function Register() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <div className="register-container">
-      <h1 className="registerTitle">Register</h1>
       <div className="register-form-container">
+        <h1 className="registerTitle">Sign Up to your account</h1>
         <Form
           name="basic"
+          layout="vertical"
           labelCol={{
-            span: 6,
+            span: 24,
           }}
           wrapperCol={{
-            span: 14,
+            span: 24,
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -102,7 +109,7 @@ function Register() {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your email" />
           </Form.Item>
           <Form.Item
             label="First Name"
@@ -114,7 +121,7 @@ function Register() {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your first name" />
           </Form.Item>
           <Form.Item
             label="Last Name"
@@ -126,7 +133,7 @@ function Register() {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your last name" />
           </Form.Item>
           <Form.Item
             label="Phone Number"
@@ -146,7 +153,7 @@ function Register() {
               }),
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your phone number" />
           </Form.Item>
           <Form.Item
             label="Restaurant Name"
@@ -158,7 +165,7 @@ function Register() {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your restaurant name" />
           </Form.Item>
           <Form.Item
             label="Restaurant Phone Number"
@@ -178,7 +185,7 @@ function Register() {
               }),
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your restaurant phone number" />
           </Form.Item>
 
           <Form.Item
@@ -206,7 +213,7 @@ function Register() {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Enter your password" />
           </Form.Item>
           <Form.Item
             label="Confirm Password"
@@ -227,17 +234,30 @@ function Register() {
               }),
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Enter your password again" />
           </Form.Item>
 
           <div className="button-container">
             <Form.Item>
-              <Button id="registerButton" type="primary" htmlType="submit">
-                Submit
+              <Button
+                loading={loading}
+                className="testt"
+                size="large"
+                id="registerButton"
+                type="primary"
+                htmlType="submit"
+              >
+                SIGN UP
               </Button>
             </Form.Item>
           </div>
         </Form>
+        <p>
+          Do you have an account?{" "}
+          <Link to="/login" style={{ color: "black" }}>
+            Sign in Here
+          </Link>
+        </p>
       </div>
     </div>
   );
