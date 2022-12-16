@@ -2,6 +2,7 @@
   width: 100vw;
   padding: 0 40px;
   box-sizing: border-box;
+  margin-top: 30px;
 }
 .view-menu-container .active-button {
   background-color: #36AB27;
@@ -9,4 +10,20 @@
 
 .content-container {
   margin-top: 30px;
+}
+
+@media only screen and (max-width: 576px) {
+  .view-menu-container {
+    padding: 0 10px;
+    background-color: #FFFFFF;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .view-menu-container {
+    padding: 0 20px;
+    background-color: #FFFFFF;
+  }
+}
+.active-button {
+  color: #FFFFFF;
 }/*# sourceMappingURL=ViewMenuLayout.css.map */

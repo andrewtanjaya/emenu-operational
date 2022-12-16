@@ -116,7 +116,7 @@ function ViewEmployeeLayout() {
           <div className="filter-container">
             <Select
               autoFocus
-              placeholder="Filter"
+              placeholder="Role"
               style={{
                 width: 200,
               }}

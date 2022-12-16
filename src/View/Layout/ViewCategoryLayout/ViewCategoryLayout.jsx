@@ -22,26 +22,33 @@ const icon = [
 function ViewCategoryLayout() {
   const columns = [
     {
+      title: "Icon",
+      dataIndex: "categoryIcon",
+      key: "categoryIcon",
+      width: "10%",
+      render: (text) => (
+        <div className="category-table-icon">
+          <img src={text} />
+        </div>
+      ),
+    },
+    {
       title: "Category Id",
       dataIndex: "categoryId",
       key: "categoryId",
-      render: (text) => <a>{text}</a>,
+      width: "20%",
     },
     {
       title: "Category Name",
       dataIndex: "categoryName",
       key: "categoryName",
-      render: (text) => <a>{text}</a>,
+      width: "40%",
     },
-    {
-      title: "Category Icon",
-      dataIndex: "categoryIcon",
-      key: "categoryIcon",
-      render: (text) => <img src={text} />,
-    },
+
     {
       title: "Action",
       key: "action",
+      width: "30%",
       render: (_, record) => (
         <Space size="middle">
           <Link

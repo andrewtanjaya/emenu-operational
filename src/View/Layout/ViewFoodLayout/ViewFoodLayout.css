@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 30px;
   box-sizing: border-box;
 }
 
@@ -14,26 +14,91 @@
   width: 100%;
   box-sizing: border-box;
   background-color: #FFFFFF;
-  border: 3px solid inactive;
+  border: 1px solid #CACACA;
   border-radius: 16px;
-  box-shadow: 0px 0px 15px rgb(134, 134, 134);
-  padding: 2%;
+  padding: 26px;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+
+.add-food-button-container {
+  display: flex;
+  max-width: 200px;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+}
+.add-food-button-container Button {
+  width: 100%;
 }
 
 .table-food-container {
   width: 100%;
   box-sizing: border-box;
   background-color: #FFFFFF;
-  margin-top: 40px;
-  border: 3px solid inactive;
+  margin-top: 30px;
+  border: 1px solid #CACACA;
   border-radius: 16px;
-  box-shadow: 0px 0px 15px rgb(134, 134, 134);
-  padding: 2%;
+  padding: 26px;
 }
 
 .filter-food-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  gap: 10%;
+  width: 80%;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .view-food-container {
+    padding: 0 10px;
+  }
+  .view-food-container h1 {
+    font-size: 18px;
+  }
+  .table-food-container {
+    margin-top: 20px;
+    padding: 10px;
+  }
+  .food-header-container {
+    -moz-column-gap: 4px;
+         column-gap: 4px;
+    flex-direction: column;
+    row-gap: 4px;
+  }
+  .filter-food-container {
+    width: 100%;
+    -moz-column-gap: 4px;
+         column-gap: 4px;
+  }
+  .add-food-button-container {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .view-food-container {
+    padding: 0px;
+    background-color: #FFFFFF;
+  }
+  .filter-food-container {
+    width: 100%;
+    -moz-column-gap: 4px;
+         column-gap: 4px;
+  }
+  .table-food-container {
+    margin-top: 10px;
+    border: none;
+    padding: 4px;
+  }
+  .food-header-container {
+    padding: 4px;
+    border: none;
+    -moz-column-gap: 4px;
+         column-gap: 4px;
+    flex-direction: column;
+    row-gap: 4px;
+  }
 }/*# sourceMappingURL=ViewFoodLayout.css.map */
