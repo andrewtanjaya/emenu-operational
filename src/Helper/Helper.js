@@ -3,6 +3,7 @@ import { CategoryController } from "../Controller/CategoryController";
 import { FoodController } from "../Controller/FoodController";
 import { GroupController } from "../Controller/GroupController";
 import { OptionController } from "../Controller/OptionController";
+import { OrderController } from "../Controller/OrderController";
 import { RestaurantController } from "../Controller/RestaurantController";
 import { IdTypes } from "../Enum/IdTypes";
 
@@ -73,6 +74,16 @@ export const generateRandomId = (type) => {
           return unique_id;
         } else {
           generateRandomId(IdTypes.OPTION, "");
+        }
+      });
+      return unique_id;
+    case IdTypes.ORDER:
+      unique_id = ORDER_PREFIX + unique_id;
+      OrderController.getOrderById(unique_id).then((order) => {
+        if (order === null) {
+          return unique_id;
+        } else {
+          generateRandomId(IdTypes.ORDER, "");
         }
       });
       return unique_id;

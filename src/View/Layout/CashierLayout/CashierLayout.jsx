@@ -34,9 +34,7 @@ function CashierLayout() {
       <nav>
         <Menu className="navbar" mode={"horizontal"}>
           {!restaurantLoading ? (
-            <NavbarRestaurantProfile
-              restaurantData={restaurant}
-            />
+            <NavbarRestaurantProfile restaurantData={restaurant} />
           ) : (
             <></>
           )}
@@ -52,7 +50,7 @@ function CashierLayout() {
             <Link to="/cashier">Dashboard</Link>
           </Menu.Item>
           <Menu.Item key="menu">
-            <Link to="/cashier/menu">Menu</Link>
+            <Link to="/cashier/menuAvailibility">Menu</Link>
           </Menu.Item>
           <Menu.Item key="report">
             <Link to="/cashier/report">Report</Link>
@@ -64,7 +62,7 @@ function CashierLayout() {
             <Link to="/cashier/orders">Orders</Link>
           </Menu.Item>
           <Menu.Item key="qrCode">
-            <Link to="/cashier/qrCode">QR Code</Link>
+            <Link to="/cashier/generateQrCode">QR Code</Link>
           </Menu.Item>
           {!userLoading ? <NavbarUserProfile userData={user} /> : <></>}
         </Menu>

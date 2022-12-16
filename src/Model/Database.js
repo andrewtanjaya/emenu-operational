@@ -1,9 +1,10 @@
-import { query, where } from "firebase/firestore";
+import { getDocs, query, where } from "firebase/firestore";
 import {
   categoriesRef,
   foodsRef,
   groupsRef,
   optionsRef,
+  ordersRef,
   usersRef,
 } from "../Config/Firebase";
 
@@ -36,5 +37,31 @@ export class Database {
   static getAllOptionsByGroupId(groupId) {
     const optionSnap = query(optionsRef, where("groupId", "==", groupId));
     return optionSnap;
+  }
+
+  static async getUnpaidOrderByOrderTableAndRestaurantId(
+    orderTable,
+    restaurantId
+  ) {
+    return await getDocs(
+      query(
+        ordersRef,
+        where("restaurantId", "==", restaurantId),
+        where("orderTable", "==", orderTable)
+      )
+    );
+  }
+
+  static async getUnpaidOrderByOrderQueueAndRestaurantId(
+    orderQueue,
+    restaurantId
+  ) {
+    return await getDocs(
+      query(
+        ordersRef,
+        where("restaurantId", "==", restaurantId),
+        where("orderQueue", "==", orderQueue)
+      )
+    );
   }
 }

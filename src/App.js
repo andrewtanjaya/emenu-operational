@@ -26,6 +26,8 @@ import { Button, Result } from "antd";
 import KitchenOrderQueueLayout from "./View/Layout/KitchenOrderQueueLayout/KitchenOrderQueueLayout";
 import AddFoodLayout from "./View/Layout/AddFoodLayout/AddFoodLayout";
 import EditFoodLayout from "./View/Layout/EditFoodLayout/EditFoodLayout";
+import CashierDashboardLayout from "./View/Layout/CashierDashboardLayout/CashierDashboardLayout";
+import GenerateQrCodeLayout from "./View/Layout/CashierGenerateQrCodeLayout/GenerateQrCodeLayout";
 
 function App() {
   return (
@@ -67,8 +69,6 @@ function App() {
           <Route path="/admin/food" element={<ViewMenuLayout />} />
           <Route path="/admin/addFood" element={<AddFoodLayout />} />
           <Route path="/admin/editFood" element={<EditFoodLayout />} />
-          {/* <Route path="/admin/addFood" element={<AdminAddMenuLayout />} /> */}
-          {/* <Route path="/admin/editFood" element={<AdminAddMenuLayout />} /> */}
           <Route path="/admin/setting" element={<RestaurantSetting />} />
           <Route path="/admin/menu" element={<ViewMenuLayout />} />
         </Route>
@@ -80,7 +80,15 @@ function App() {
             </CashierAuth>
           }
         >
-          <Route index element={<CashierKitchenUpdateMenuAvailableLayout />} />
+          <Route index element={<CashierDashboardLayout />} />
+          <Route
+            path="/cashier/menuAvailibility"
+            element={<CashierKitchenUpdateMenuAvailableLayout />}
+          />
+          <Route
+            path="/cashier/generateQrCode"
+            element={<GenerateQrCodeLayout />}
+          />
         </Route>
         <Route
           path="/kitchen"
