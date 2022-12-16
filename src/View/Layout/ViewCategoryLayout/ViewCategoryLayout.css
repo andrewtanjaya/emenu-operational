@@ -33,4 +33,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.add-category-modal-form .ant-select-selector {
+  height: 70px !important;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding-top: 10px !important;
+}
+
+.save-edit-category-button-submit {
+  width: 100%;
+}
+
+.search-category-container {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.add-category-button-container {
+  width: 20%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.add-category-button-container Button {
+  width: 100%;
+  max-width: 200px;
 }/*# sourceMappingURL=ViewCategoryLayout.css.map */

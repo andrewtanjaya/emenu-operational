@@ -220,20 +220,20 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <Input placeholder="Input Food Name" />
+                  <Input placeholder="Enter food name" />
                 </Form.Item>
                 <Form.Item
                   name="categoryId"
                   label="Food Category"
                   rules={[
-                    {
-                      required: true,
-                      message: "Please choose category!",
-                      type: "array",
-                    },
+                    // {
+                    //   required: true,
+                    //   message: "Please choose at least one category",
+                    //   type: "array",
+                    // },
                   ]}
                 >
-                  <Select mode="multiple" placeholder="Please choose category!">
+                  <Select mode="multiple" placeholder="Select food category">
                     {categoryData.map((data) => {
                       return (
                         <Option
@@ -256,7 +256,7 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <TextArea rows={4} placeholder="Description" />
+                  <TextArea rows={4} placeholder="Enter food description" />
                 </Form.Item>
                 <Form.Item
                   label="Food Price"
@@ -268,7 +268,7 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <InputNumber />
+                  <InputNumber placeholder="0.0" />
                 </Form.Item>
               </Col>
               <Col span={12}>

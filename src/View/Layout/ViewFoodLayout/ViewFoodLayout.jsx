@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Modal, Select, Button } from "antd";
+import { Space, Table, Modal, Select, Button, Image } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "antd/es/input/Search";
 import "./ViewFoodLayout.css";
@@ -10,28 +10,47 @@ import { CategoryController } from "../../../Controller/CategoryController";
 function ViewFoodLayout() {
   const columns = [
     {
+      title: "Food Picture",
+      dataIndex: "foodPictures",
+      key: "foodPictures",
+      width: "10%",
+      render: (imgUrl) => (
+        <div className="food-table-main-picture">
+          <Image width={80} height={80} src={imgUrl[0]} fluid />
+        </div>
+      ),
+    },
+    {
       title: "Food Id",
       dataIndex: "foodId",
       key: "foodId",
+      width: "12%",
     },
     {
       title: "Name",
       dataIndex: "foodName",
       key: "foodName",
+      width: "28%",
     },
     {
       title: "Price",
       dataIndex: "foodPrice",
       key: "foodPrice",
+      width: "10%",
+      render: (price) => (
+        <p>IDR. {price}</p>
+      ),
     },
     {
       title: "Description",
       dataIndex: "foodDescription",
       key: "foodDescription",
+      width: "30%",
     },
     {
       title: "Action",
       key: "action",
+      width: "10%",
       render: (_, record) => (
         <Space size="middle">
           <Link to={`/admin/editFood?foodId=${record.foodId}`}>Edit</Link>
