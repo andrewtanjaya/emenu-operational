@@ -12,6 +12,10 @@ export class OrderController {
     return Order.addOrder(order);
   }
 
+  static getTakeAwayOrdersByDateBetween(startDate, endDate) {
+    return Database.getTakeAwayOrdersByDateBetween(startDate, endDate);
+  }
+
   static async getUnpaidOrderByOrderQueueAndRestaurantId(
     orderQueue,
     restaurantId

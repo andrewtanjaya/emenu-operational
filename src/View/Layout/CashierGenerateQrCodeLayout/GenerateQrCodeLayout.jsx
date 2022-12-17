@@ -11,6 +11,8 @@ import { OrderController } from "../../../Controller/OrderController";
 import { Order } from "../../../Model/Order";
 import { OrderType } from "../../../Enum/OrderType";
 import { PaymentStatus } from "../../../Enum/PaymentStatus";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useEffect } from "react";
 const months = [
   "January",
   "February",
@@ -37,7 +39,29 @@ function GenerateQrCodeLayout() {
   const [isGenerated, setIsGenerated] = useState(false);
   const [isShowErrorMsg, setIsShowErrorMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
+  const [orderQueue, setOrderQueue] = useState(0);
+
   let componentRef;
+  let startDate = new Date().setHours(0, 0, 0, 0);
+  let endDate = new Date().setHours(23, 59, 59, 999);
+
+  const [orders, isLoading, error] = useCollectionData(
+    OrderController.getTakeAwayOrdersByDateBetween(startDate, endDate),
+    {
+      idField: "id",
+    }
+  );
+
+  useEffect(() => {
+    if (!isLoading) {
+      const orderFiltered = orders.filter((data) => {
+        return (data.restaurantId =
+          userSession.restaurantId && data.orderType == OrderType.TAKEAWAY);
+      });
+      form.setFieldsValue({ orderQueue: orderFiltered.length + 1 });
+      setOrderQueue(orderFiltered.length + 1);
+    }
+  }, [orders]);
 
   const onFinish = (values) => {
     if (values.orderTable) {
@@ -87,7 +111,7 @@ function GenerateQrCodeLayout() {
       userSession.email,
       "",
       Date.now(),
-      0,
+      null,
       [],
       0,
       0,
@@ -128,10 +152,7 @@ function GenerateQrCodeLayout() {
           form={form}
           labelCol={{ span: 10 }}
           wrapperCol={{ span: 14 }}
-          // initialValues={{ remember: true }}
           onFinish={onFinish}
-          // onFinishFailed={onFinishFailed}
-          // autoComplete="off"
         >
           <Form.Item
             label="Order Type"
@@ -163,14 +184,8 @@ function GenerateQrCodeLayout() {
               <InputNumber />
             </Form.Item>
           ) : (
-            <Form.Item
-              label="Order Queue"
-              name="orderQueue"
-              rules={[
-                { required: true, message: "Please input your queue number!" },
-              ]}
-            >
-              <InputNumber />
+            <Form.Item label="Order Queue" name="orderQueue">
+              <InputNumber disabled />
             </Form.Item>
           )}
 
@@ -197,11 +212,7 @@ function GenerateQrCodeLayout() {
 
             <ReactToPrint
               trigger={() => {
-                return (
-                  <Button id="printBtn" type="primary" htmlType="submit">
-                    Print
-                  </Button>
-                );
+                return <Button type="primary">Print</Button>;
               }}
               content={() => componentRef}
               pageStyle="print"

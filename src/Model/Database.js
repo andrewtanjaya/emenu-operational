@@ -7,6 +7,7 @@ import {
   ordersRef,
   usersRef,
 } from "../Config/Firebase";
+import { PaymentStatus } from "../Enum/PaymentStatus";
 
 export class Database {
   constructor() {}
@@ -47,7 +48,8 @@ export class Database {
       query(
         ordersRef,
         where("restaurantId", "==", restaurantId),
-        where("orderTable", "==", orderTable)
+        where("orderTable", "==", orderTable),
+        where("orderPaymentStatus", "==", PaymentStatus.UNPAID)
       )
     );
   }
@@ -60,8 +62,18 @@ export class Database {
       query(
         ordersRef,
         where("restaurantId", "==", restaurantId),
-        where("orderQueue", "==", orderQueue)
+        where("orderQueue", "==", orderQueue),
+        where("orderPaymentStatus", "==", PaymentStatus.UNPAID)
       )
     );
+  }
+
+  static getTakeAwayOrdersByDateBetween(startDate, endDate) {
+    const orderSnap = query(
+      ordersRef,
+      where("orderCreatedDate", ">=", startDate),
+      where("orderCreatedDate", "<=", endDate)
+    );
+    return orderSnap;
   }
 }
