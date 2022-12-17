@@ -1,0 +1,19 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.form-container Button {
+  background-color: #36AB27;
+}
+
+.qr-template {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 2px rgb(134, 134, 134);
+  width: 500px;
+}/*# sourceMappingURL=GenerateQrCodeLayout.css.map */

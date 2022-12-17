@@ -1,0 +1,20 @@
+@import "../../../Utils/variables";
+
+.form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    Button{
+        background-color: $primary-color;
+    }
+}
+.qr-template{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: $white;
+    box-shadow: 0px 0px 2px rgb(134, 134, 134);
+    width: 500px;
+}
