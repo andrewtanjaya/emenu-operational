@@ -30,7 +30,6 @@ const months = [
 function GenerateQrCodeLayout() {
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [form] = Form.useForm();
-  const [orderIdUrl, setOrderIdUrl] = useState("");
   const [orderTableNumber, setOrderTableNumber] = useState("");
   const [orderQueueNumber, setOrderQueueNumber] = useState("");
   const [url, setUrl] = useState("");
@@ -39,7 +38,6 @@ function GenerateQrCodeLayout() {
   const [isGenerated, setIsGenerated] = useState(false);
   const [isShowErrorMsg, setIsShowErrorMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
-  const [orderQueue, setOrderQueue] = useState(0);
 
   let componentRef;
   let startDate = new Date().setHours(0, 0, 0, 0);
@@ -55,11 +53,12 @@ function GenerateQrCodeLayout() {
   useEffect(() => {
     if (!isLoading) {
       const orderFiltered = orders.filter((data) => {
-        return (data.restaurantId =
-          userSession.restaurantId && data.orderType == OrderType.TAKEAWAY);
+        return (
+          data.restaurantId == userSession.restaurantId &&
+          data.orderType == OrderType.TAKEAWAY
+        );
       });
       form.setFieldsValue({ orderQueue: orderFiltered.length + 1 });
-      setOrderQueue(orderFiltered.length + 1);
     }
   }, [orders]);
 
@@ -121,8 +120,7 @@ function GenerateQrCodeLayout() {
     );
 
     OrderController.addOrder(newOrder).then(() => {
-      setOrderIdUrl(orderId);
-      setUrl(`http://localhost:3000/welcome?orderId=${orderIdUrl}`);
+      setUrl(`http://localhost:3000/welcome?orderId=${orderId}`);
       if (values.orderTable) {
         setOrderTableNumber(values.orderTable);
       } else {
