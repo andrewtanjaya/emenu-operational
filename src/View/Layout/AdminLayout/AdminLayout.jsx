@@ -57,9 +57,9 @@ function AdminLayout() {
   };
 
   return (
-    <div>
+    <div className="admin-layout-content-container">
       {renderNavbar()}
-      <div className="admin-layout-content-container">
+      <div className="admin-layout-content">
         <Outlet />
       </div>
     </div>

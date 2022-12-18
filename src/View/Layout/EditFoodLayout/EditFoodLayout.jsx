@@ -298,8 +298,8 @@ const EditFoodLayout = () => {
                   </Form.Item>
                 </Col>
               </Row>
-              <Row gutter={16} justify="space-evenly">
-                <Col span={12}>
+              <div className="food-form-container-wrapper">
+                <div className="food-form-container-left">
                   <Form.Item
                     label="Food Name"
                     name="foodName"
@@ -348,8 +348,9 @@ const EditFoodLayout = () => {
                   <Form.Item label="Food Price" name="foodPrice">
                     <InputNumber />
                   </Form.Item>
-                </Col>
-                <Col span={12}>
+                </div>
+
+                <div className="food-form-container-right">
                   <AdminFoodGroup
                     groupData={groupData}
                     setGroupData={setGroupData}
@@ -361,8 +362,8 @@ const EditFoodLayout = () => {
                       Save
                     </Button>
                   </Form.Item>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </Form>
           )}
           <Modal
