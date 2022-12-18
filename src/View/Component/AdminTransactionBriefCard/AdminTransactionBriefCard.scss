@@ -2,9 +2,10 @@
 
 .transaction-brief-card-container{
     display: flex;
+    width: 100%;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 44px;
     column-gap: 10px;
 }
@@ -26,5 +27,25 @@
         font-size: 14px;
         margin: 0;
         padding: 0;
+    }
+}
+
+@media only screen and (max-width: $sm) {
+    .transaction-brief-card-container{
+        justify-content: center;
+        align-items: center;
+    }
+    .logo-transaction-brief-card {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+    }
+    .description-transaction-brief-card{
+        width: 60%;
+        p{
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
     }
 }

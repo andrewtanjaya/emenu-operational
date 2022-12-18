@@ -14,9 +14,8 @@
   width: 100%;
   box-sizing: border-box;
   background-color: #FFFFFF;
-  border: 3px solid inactive;
+  border: 1px solid #CACACA;
   border-radius: 16px;
-  box-shadow: 0px 0px 15px rgb(134, 134, 134);
   padding: 2%;
 }
 
@@ -25,8 +24,43 @@
   box-sizing: border-box;
   background-color: #FFFFFF;
   margin-top: 40px;
-  border: 3px solid inactive;
+  border: 1px solid #CACACA;
   border-radius: 16px;
-  box-shadow: 0px 0px 15px rgb(134, 134, 134);
   padding: 2%;
+}
+
+.category-table-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-category-modal-form .ant-select-selector {
+  height: 70px !important;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding-top: 10px !important;
+}
+
+.save-edit-category-button-submit {
+  width: 100%;
+}
+
+.search-category-container {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.add-category-button-container {
+  width: 20%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.add-category-button-container Button {
+  width: 100%;
+  max-width: 200px;
 }/*# sourceMappingURL=ViewCategoryLayout.css.map */

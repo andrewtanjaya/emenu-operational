@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 30px;
     box-sizing: border-box;
 }
 
@@ -16,25 +16,98 @@
     width: 100%;
     box-sizing: border-box;
     background-color: $white;
-    border: 3px solid inactive;
+    border: 1px solid $inactive;
     border-radius: 16px;
-    box-shadow: 0px 0px 15px rgb(134, 134, 134);
-    padding: 2%;
+    padding: 26px;
+    column-gap: 10px;
+    max-width: 2000px;
 }
+
+.add-food-button-container{
+    display: flex;
+    max-width: 200px;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    Button{
+        width: 100%;
+    }
+}
+
 .table-food-container{
     width: 100%;
     box-sizing: border-box;
     background-color: $white;
-    margin-top: 40px;
-    border: 3px solid inactive;
+    margin-top: 30px;
+    border: 1px solid $inactive;
     border-radius: 16px;
-    box-shadow: 0px 0px 15px rgb(134, 134, 134);
-    padding: 2%;
+    padding: 26px;
+    max-width: 2000px;
 }
 
 .filter-food-container{
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 80%;
+    column-gap: 10px;
+}
+
+.food-table-main-picture{
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10%;
+}
+
+
+@media only screen and (max-width: $md) {
+    .view-food-container{
+        padding: 0 10px;
+        h1{
+            font-size: 18px;
+        }
+    }
+
+    .table-food-container{
+        margin-top: 20px;
+        padding: 10px;
+    }
+    .food-header-container{
+        column-gap: 4px;
+        flex-direction: column;
+        row-gap: 4px;
+    }
+    .filter-food-container{
+        width: 100%;
+        column-gap: 4px;
+    }
+    .add-food-button-container{
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width: $sm) {
+    .view-food-container{
+        padding: 0px;
+        background-color: $white;
+    }
+
+    .filter-food-container{
+        width: 100%;
+        column-gap: 4px;
+    }
+
+    .table-food-container{
+        margin-top: 10px;
+        border: none;
+        padding: 4px;
+    }
+    .food-header-container{
+        padding: 4px;
+        border: none;
+        column-gap: 4px;
+        flex-direction: column;
+        row-gap: 4px;
+    }
 }

@@ -1,8 +1,25 @@
 .admin-transaction-brief-container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   justify-content: center;
   -moz-column-gap: 20px;
        column-gap: 20px;
+  max-width: 1000px;
+}
+
+@media only screen and (max-width: 992px) {
+  .admin-transaction-brief-container {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 10px;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .admin-transaction-brief-container {
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 2px;
+    align-items: center;
+    justify-content: center;
+  }
 }/*# sourceMappingURL=AdminTransactionBrief.css.map */

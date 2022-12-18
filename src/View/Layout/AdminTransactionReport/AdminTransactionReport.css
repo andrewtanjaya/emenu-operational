@@ -2,6 +2,10 @@
   width: 100vw;
   padding: 0 40px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .date-picker-container {
@@ -10,9 +14,37 @@
   -moz-column-gap: 16px;
        column-gap: 16px;
   background-color: #FFFFFF;
-  padding: 26px;
-  width: 100%;
   box-sizing: border-box;
+  width: 100%;
+  padding: 26px;
   border-radius: 16px;
   border: 1px solid #CACACA;
+  max-width: 2000px;
+}
+
+@media only screen and (max-width: 992px) {
+  .transaction-report-container {
+    padding: 10px;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .transaction-report-container {
+    padding: 0px;
+    background-color: #FFFFFF;
+  }
+  .transaction-report-container h1 {
+    font-size: 18px;
+  }
+  .date-picker-container {
+    flex-direction: column;
+    -moz-column-gap: 0;
+         column-gap: 0;
+    row-gap: 4px;
+    border-radius: 0px;
+    border: none;
+    border: 1px solid #CACACA;
+  }
+  .ant-select-selector {
+    width: 100px;
+  }
 }/*# sourceMappingURL=AdminTransactionReport.css.map */

@@ -1,6 +1,7 @@
 @import "../../../Utils/variables";
 
 .transaction-report-viewer-container{
+    width: 100%;
     padding: 26px;
     box-sizing: border-box;
     display: flex;
@@ -11,6 +12,7 @@
     margin-top: 30px;
     border-radius: 16px;
     border: 1px solid $inactive;
+    max-width: 2000px;
 }
 
 .brief-information-container{
@@ -21,4 +23,18 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+}
+
+@media only screen and (max-width: $lg) {
+    .transaction-report-viewer-container {
+        padding: 10px;
+    }
+}
+
+@media only screen and (max-width: $sm) {
+    .transaction-report-viewer-container {
+        border: none;
+        padding: 0px;
+        margin-top: 10px;
+    }
 }

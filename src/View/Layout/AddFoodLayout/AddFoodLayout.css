@@ -3,8 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100vw;
-  padding: 0 40px;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -13,11 +12,10 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  width: 1080px;
-  border: 3px solid inactive;
+  width: 80%;
+  border: 1px solid #CACACA;
   border-radius: 16px;
-  box-shadow: 0px 0px 15px rgb(134, 134, 134);
-  margin-top: 20px;
+  margin-top: 0px;
   padding: 20px 40px;
 }
 .add-food-form Form {
@@ -25,5 +23,57 @@
 }
 
 .add-food-header {
-  width: 1080px;
+  width: 80%;
+}
+
+.food-form-container-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+
+.food-form-container-left {
+  width: 100%;
+}
+
+.food-form-container-right {
+  width: 100%;
+}
+
+@media only screen and (max-width: 992px) {
+  .add-food-form {
+    width: 90%;
+    padding: 10px 20px;
+    margin: 0px 40px;
+  }
+  .add-food-container {
+    box-sizing: border-box;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .food-photos-container {
+    margin: 0px;
+    padding: 0px;
+  }
+  .food-photos-container .ant-row {
+    margin: 0;
+    padding: 0;
+  }
+  .add-food-form {
+    width: 100%;
+    padding: 0px;
+    border: none;
+  }
+  .add-food-container {
+    width: 96%;
+    margin: 0;
+    padding: 10px;
+  }
+  .food-form-container-wrapper {
+    flex-direction: column;
+    row-gap: 0;
+  }
 }/*# sourceMappingURL=AddFoodLayout.css.map */

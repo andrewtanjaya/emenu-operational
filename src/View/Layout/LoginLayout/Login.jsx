@@ -3,7 +3,7 @@ import "./Login.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal } from "antd";
 import { UserController } from "../../../Controller/UserController";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthConsumer from "../../../hooks/auth";
 
 function Login() {
@@ -46,7 +46,10 @@ function Login() {
 
       navigate("/admin", { replace: true });
     } else {
-      error("Wrong Password");
+      Modal.error({
+        title: "Sign in Failed",
+        content: "Please try again with valid credential",
+      });
     }
   }
 
@@ -55,17 +58,18 @@ function Login() {
   };
   return (
     <div className="login-container">
-      <h1>Login</h1>
       <div className="login-form-container">
+      <h1>Welcome back</h1>
         <Form
           name="normal_login"
           className="login-form"
           labelCol={{
-            span: 6,
+            span: 24,
           }}
           wrapperCol={{
-            span: 16,
+            span: 24,
           }}
+          layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -80,8 +84,7 @@ function Login() {
             ]}
           >
             <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Email"
+              placeholder="Enter your email"
             />
           </Form.Item>
           <Form.Item
@@ -95,9 +98,8 @@ function Login() {
             ]}
           >
             <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder="Enter your password"
             />
           </Form.Item>
           <div className="button-container">
@@ -109,12 +111,13 @@ function Login() {
                 htmlType="submit"
                 className="login-form-button"
               >
-                Log in
+                SIGN IN
               </Button>
             </Form.Item>
-            Or <a href="/register">register now!</a>
+            
           </div>
         </Form>
+        <p>Don't have an account? <Link to="/register" style={{color:"black"}}>Sign up here</Link></p>
       </div>
     </div>
   );

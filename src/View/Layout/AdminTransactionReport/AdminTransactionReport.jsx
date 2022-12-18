@@ -41,10 +41,10 @@ function AdminTransactionReport() {
     <div className="transaction-report-container">
       <h1>Report</h1>
       <div className="date-picker-container">
-        <Select
+        {/* <Select
           defaultValue="sale"
           style={{
-            width: 200,
+            width: 300,
           }}
           onChange={onSelectChange}
           options={[
@@ -57,7 +57,7 @@ function AdminTransactionReport() {
               label: "Laporan Produk",
             },
           ]}
-        />
+        /> */}
         <RangePicker
           presets={rangePresets}
           format="DD/MM/YYYY"

@@ -164,7 +164,7 @@ const AddFoodLayout = () => {
             }}
             onFinish={onFinish}
           >
-            <Row gutter={16} justify="space-evenly">
+            <Row className="food-photos-container" gutter={16} justify="space-evenly">
               <Col span={24}>
                 <Form.Item
                   label="Food Photos"
@@ -208,8 +208,8 @@ const AddFoodLayout = () => {
                 </Form.Item>
               </Col>
             </Row>
-            <Row gutter={16} justify="space-evenly">
-              <Col span={12}>
+            <div className="food-form-container-wrapper">
+              <div className="food-form-container-left">
                 <Form.Item
                   label="Food Name"
                   name="foodName"
@@ -220,20 +220,22 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <Input placeholder="Input Food Name" />
+                  <Input placeholder="Enter food name" />
                 </Form.Item>
                 <Form.Item
                   name="categoryId"
                   label="Food Category"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please choose category!",
-                      type: "array",
-                    },
-                  ]}
+                  rules={
+                    [
+                      // {
+                      //   required: true,
+                      //   message: "Please choose at least one category",
+                      //   type: "array",
+                      // },
+                    ]
+                  }
                 >
-                  <Select mode="multiple" placeholder="Please choose category!">
+                  <Select mode="multiple" placeholder="Select food category">
                     {categoryData.map((data) => {
                       return (
                         <Option
@@ -256,7 +258,7 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <TextArea rows={4} placeholder="Description" />
+                  <TextArea rows={4} placeholder="Enter food description" />
                 </Form.Item>
                 <Form.Item
                   label="Food Price"
@@ -268,21 +270,34 @@ const AddFoodLayout = () => {
                     },
                   ]}
                 >
-                  <InputNumber />
+                  <InputNumber
+                    style={{
+                      width: "100%",
+                    }}
+                    placeholder="IDR 0.0"
+                  />
                 </Form.Item>
-              </Col>
-              <Col span={12}>
+              </div>
+
+              <div className="food-form-container-right">
                 <AdminFoodGroup
                   groupData={groupData}
                   setGroupData={setGroupData}
                 ></AdminFoodGroup>
                 <Form.Item wrapperCol={{ span: 24 }}>
-                  <Button id="saveButton" type="primary" htmlType="submit">
+                  <Button
+                    style={{
+                      width: "100%",
+                    }}
+                    id="saveButton"
+                    type="primary"
+                    htmlType="submit"
+                  >
                     Save
                   </Button>
                 </Form.Item>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </Form>
           <Modal
             centered

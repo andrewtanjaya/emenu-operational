@@ -42,22 +42,28 @@ function AdminAddOptionModal({
         onCancel={handleCancel}
         title="Add Option"
         footer={[
-          <Button key="back" onClick={handleCancel}>
-            Return
-          </Button>,
           <Button
             id="saveButton"
             key="submit"
             type="primary"
             onClick={form.submit}
           >
-            Add Option
+            Add Option Group
           </Button>,
         ]}
       >
         <Form form={form} onFinish={handleSubmitOption}>
-          <Form.Item label="Option Group Name" name="groupName">
-            <Input placeholder="category name" allowClear />
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Please input Option Group Name!",
+              },
+            ]}
+            label="Option Group Name"
+            name="groupName"
+          >
+            <Input placeholder="Enter Option Group Name" allowClear />
           </Form.Item>
           <Form.Item label="Required" valuePropName="checked" name="isRequired">
             <Switch />

@@ -4,6 +4,10 @@
     width: 100vw;
     padding: 0 40px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .employee-header-container{
@@ -13,24 +17,90 @@
     width: 100%;
     box-sizing: border-box;
     background-color: $white;
-    border: 3px solid inactive;
+    border: 1px solid $inactive;
     border-radius: 16px;
-    box-shadow: 0px 0px 15px rgb(134, 134, 134);
-    padding: 2%;
+    padding: 26px;
+    column-gap: 10px;
+    max-width: 2000px;
 }
 .table-employee-container{
+    max-width: 2000px;
+    width: 100%;
     box-sizing: border-box;
     background-color: $white;
-    margin-top: 2%;
-    border: 3px solid inactive;
+    margin-top: 30px;
     border-radius: 16px;
-    box-shadow: 0px 0px 15px rgb(134, 134, 134);
-    padding: 2%;
+    border: 1px solid $inactive;
+    padding: 26px;
+}
+
+.add-employee-button-container{
+    display: flex;
+    max-width: 200px;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    Button{
+        width: 100%;
+    }
 }
 
 .filter-container{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    gap: 10%;
+    width: 80%;
+    column-gap: 10px;
+}
+
+@media only screen and (max-width: $md) {
+    .view-employee-container{
+        padding: 0 10px;
+        h1{
+            font-size: 18px;
+        }
+    }
+
+    .table-employee-container{
+        margin-top: 20px;
+        padding: 10px;
+    }
+    .employee-header-container{
+        column-gap: 4px;
+        flex-direction: column;
+        row-gap: 4px;
+    }
+    .filter-container{
+        width: 100%;
+        column-gap: 4px;
+    }
+    .add-employee-button-container{
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width: $sm) {
+    .view-employee-container{
+        padding: 0px;
+        background-color: $white;
+    }
+
+    .filter-container{
+        width: 100%;
+        column-gap: 4px;
+    }
+
+    .table-employee-container{
+        margin-top: 10px;
+        border: none;
+        padding: 4px;
+    }
+    .employee-header-container{
+        padding: 4px;
+        border: none;
+        column-gap: 4px;
+        flex-direction: column;
+        row-gap: 4px;
+    }
 }

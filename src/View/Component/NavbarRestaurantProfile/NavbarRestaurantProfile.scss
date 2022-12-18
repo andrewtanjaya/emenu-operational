@@ -1,0 +1,25 @@
+@import "../../../Utils/variables";
+.navbar-restaurant-profile-img{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.navbar-restaurant-profile-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+}
+
+
+@media only screen and (max-width: $md) {
+    .navbar-restaurant-profile-img{
+        width: 30px;
+        height: 30px;
+    }
+    .navbar-restaurant-profile-container{
+        column-gap: 10px;
+    }
+}

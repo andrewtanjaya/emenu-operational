@@ -1,12 +1,40 @@
+.view-menu-tab-button-container {
+  width: 100%;
+  max-width: 2000px;
+}
+
 .view-menu-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 100vw;
   padding: 0 40px;
   box-sizing: border-box;
+  margin-top: 30px;
 }
 .view-menu-container .active-button {
   background-color: #36AB27;
 }
 
 .content-container {
+  width: 100%;
+  max-width: 2000px;
   margin-top: 30px;
+}
+
+@media only screen and (max-width: 576px) {
+  .view-menu-container {
+    padding: 0 10px;
+    background-color: #FFFFFF;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .view-menu-container {
+    padding: 0 20px;
+    background-color: #FFFFFF;
+  }
+}
+.active-button {
+  color: #FFFFFF;
 }/*# sourceMappingURL=ViewMenuLayout.css.map */

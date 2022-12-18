@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Modal, Select, Button, Form, Input } from "antd";
+import { Space, Table, Modal, Select, Button, Form, Input, Image } from "antd";
 import { Link } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Search from "antd/es/input/Search";
@@ -22,26 +22,33 @@ const icon = [
 function ViewCategoryLayout() {
   const columns = [
     {
+      title: "Icon",
+      dataIndex: "categoryIcon",
+      key: "categoryIcon",
+      width: "10%",
+      render: (iconUrl) => (
+        <div className="category-table-icon">
+          <Image width={80} height={80} src={iconUrl} fluid />
+        </div>
+      ),
+    },
+    {
       title: "Category Id",
       dataIndex: "categoryId",
       key: "categoryId",
-      render: (text) => <a>{text}</a>,
+      width: "20%",
     },
     {
       title: "Category Name",
       dataIndex: "categoryName",
       key: "categoryName",
-      render: (text) => <a>{text}</a>,
+      width: "40%",
     },
-    {
-      title: "Category Icon",
-      dataIndex: "categoryIcon",
-      key: "categoryIcon",
-      render: (text) => <img src={text} />,
-    },
+
     {
       title: "Action",
       key: "action",
+      width: "30%",
       render: (_, record) => (
         <Space size="middle">
           <Link
@@ -87,7 +94,7 @@ function ViewCategoryLayout() {
     if (!isLoading) {
       setCategoriesFiltered(
         categories.filter((category) => {
-          const categoryNameLowerCase = category.categoryName;
+          const categoryNameLowerCase = category.categoryName.toLowerCase();
           return categoryNameLowerCase.includes(keyword.toLowerCase());
         })
       );
@@ -152,18 +159,22 @@ function ViewCategoryLayout() {
     <>
       <div className="view-category-container">
         <div className="category-header-container">
-          <Button id="addButton" type="primary" onClick={showAddModal}>
-            Add Category
-          </Button>
-          <Search
-            placeholder="input search text"
-            style={{
-              width: 300,
-            }}
-            onChange={(e) => {
-              setKeyword(e.target.value);
-            }}
-          />
+          <div className="add-category-button-container">
+            <Button id="addButton" type="primary" onClick={showAddModal}>
+              Add Category
+            </Button>
+          </div>
+          <div className="search-category-container">
+            <Search
+              placeholder="Search category name"
+              style={{
+                maxWidth: 600,
+              }}
+              onChange={(e) => {
+                setKeyword(e.target.value);
+              }}
+            />
+          </div>
         </div>
         <Modal
           centered
@@ -171,10 +182,8 @@ function ViewCategoryLayout() {
           onCancel={handleCancel}
           title="Add Category"
           footer={[
-            <Button key="back" onClick={handleCancel}>
-              Return
-            </Button>,
             <Button
+              className="save-edit-category-button-submit"
               id="saveButton"
               key="submit"
               type="primary"
@@ -185,20 +194,57 @@ function ViewCategoryLayout() {
             </Button>,
           ]}
         >
-          <Form form={form} onFinish={handleSubmitCategory}>
-            <Form.Item label="Category Name" name="categoryName">
-              <Input placeholder="category name" allowClear />
-            </Form.Item>
-            <Form.Item label="Category Icon" name="categoryIcon">
-              <Select placeholder="Please select a role">
+          <Form
+            className="add-category-modal-form"
+            form={form}
+            onFinish={handleSubmitCategory}
+            labelCol={{
+              span: 6,
+            }}
+            wrapperCol={{
+              span: 18,
+            }}
+          >
+            <Form.Item
+              label="Category Icon"
+              name="categoryIcon"
+              rules={[
+                {
+                  required: true,
+                  message: "Icon must be selected",
+                },
+              ]}
+            >
+              <Select
+                size="large"
+                placeholder="Icon"
+                listHeight={300}
+                style={{ width: 100 }}
+              >
                 {icon.map((url) => {
                   return (
-                    <Option value={url} key={uuid()}>
+                    <Option
+                      className="add-category-icon-option-container"
+                      value={url}
+                      key={uuid()}
+                    >
                       <img src={url} />
                     </Option>
                   );
                 })}
               </Select>
+            </Form.Item>
+            <Form.Item
+              label="Category Name"
+              name="categoryName"
+              rules={[
+                {
+                  required: true,
+                  message: "Category name must be filled",
+                },
+              ]}
+            >
+              <Input placeholder="Enter category name" allowClear />
             </Form.Item>
           </Form>
         </Modal>
@@ -208,10 +254,8 @@ function ViewCategoryLayout() {
           onCancel={handleCancel}
           title="Edit Category"
           footer={[
-            <Button key="back" onClick={handleCancel}>
-              Return
-            </Button>,
             <Button
+              className="save-edit-category-button-submit"
               id="saveButton"
               key="submit"
               type="primary"
@@ -222,12 +266,24 @@ function ViewCategoryLayout() {
             </Button>,
           ]}
         >
-          <Form form={form} onFinish={handleEditCategory}>
-            <Form.Item label="Category Name" name="categoryName">
-              <Input placeholder="category name" allowClear />
-            </Form.Item>
+          <Form
+            className="add-category-modal-form"
+            form={form}
+            onFinish={handleEditCategory}
+            labelCol={{
+              span: 6,
+            }}
+            wrapperCol={{
+              span: 18,
+            }}
+          >
             <Form.Item label="Category Icon" name="categoryIcon">
-              <Select placeholder="Please select a role">
+              <Select
+                size="large"
+                placeholder="Select Category Icon"
+                listHeight={300}
+                style={{ width: 100 }}
+              >
                 {icon.map((url) => {
                   return (
                     <Option value={url} key={uuid()}>
@@ -236,6 +292,9 @@ function ViewCategoryLayout() {
                   );
                 })}
               </Select>
+            </Form.Item>
+            <Form.Item label="Category Name" name="categoryName">
+              <Input placeholder="category name" allowClear />
             </Form.Item>
           </Form>
         </Modal>
