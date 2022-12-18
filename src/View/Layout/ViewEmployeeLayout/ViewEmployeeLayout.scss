@@ -21,8 +21,10 @@
     border-radius: 16px;
     padding: 26px;
     column-gap: 10px;
+    max-width: 2000px;
 }
 .table-employee-container{
+    max-width: 2000px;
     width: 100%;
     box-sizing: border-box;
     background-color: $white;

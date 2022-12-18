@@ -1,5 +1,6 @@
 import { Menu, Row, Col, Layout } from "antd";
 import React, { useEffect } from "react";
+import { useState } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Link, Outlet } from "react-router-dom";
 import { RestaurantController } from "../../../Controller/RestaurantController";
@@ -24,35 +25,94 @@ function AdminLayout() {
       }
     );
 
+  const [currentPath, setCurrentPath] = useState("/admin");
+
+  useEffect(()=>{
+    setCurrentPath(window.location.pathname);
+  }, [])
+  
+  const changeActive = (url) => {
+    setCurrentPath(url)
+  }
+
   const renderNavbar = () => {
     return (
-      <nav>
-        <Menu className="navbar" mode={"horizontal"}>
-          {!restaurantLoading ? (
-            <NavbarRestaurantProfile
-              restaurantData={restaurant}
-            />
-          ) : (
-            <></>
-          )}
-          <Menu.Item key="dashboard">
-            <Link to="/admin">Dashboard</Link>
-          </Menu.Item>
-          <Menu.Item key="transactionReport">
-            <Link to="/admin/transactionReport">Transaction Report</Link>
-          </Menu.Item>
-          <Menu.Item key="employee">
-            <Link to="/admin/employee">Employee</Link>
-          </Menu.Item>
-          <Menu.Item key="food">
-            <Link to="/admin/food">Food</Link>
-          </Menu.Item>
-          <Menu.Item key="setting">
-            <Link to="/admin/setting">Setting</Link>
-          </Menu.Item>
-          {!userLoading ? <NavbarUserProfile userData={user} /> : <></>}
-        </Menu>
-      </nav>
+      <div className="admin-restaurant-navbar">
+        {!restaurantLoading && restaurant ? (
+          <NavbarRestaurantProfile restaurantData={restaurant} />
+        ) : (
+          <></>
+        )}
+        <ul className="admin-navbar-item">
+          <li>
+            <Link
+              to="/admin"
+              style={{ textDecoration: "none", color: "black" }}
+              onClick={() => changeActive("/admin")}
+              className={
+                currentPath === "/admin" ? "active-nav" : ""
+              }
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              onClick={() => changeActive("/admin/food")}
+              className={
+                currentPath === "/admin/food" ? "active-nav" : ""
+              }
+              to="/admin/food"
+            >
+              Menu
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to="/admin/transactionReport"
+              onClick={() => changeActive("/admin/transactionReport")}
+              className={
+                currentPath === "/admin/transactionReport"
+                  ? "active-nav"
+                  : ""
+              }
+            >
+              Report
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              onClick={() => changeActive("/admin/employee")}
+              to="/admin/employee"
+              className={
+                currentPath === "/admin/employee"
+                  ? "active-nav"
+                  : ""
+              }
+            >
+              Employee
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black"  }}
+              to="/admin/setting"
+              onClick={() => changeActive("/admin/setting")}
+              className={
+                currentPath === "/admin/setting"
+                  ? "active-nav"
+                  : ""
+              }
+            >
+              Restaurant
+            </Link>
+          </li>
+        </ul>
+        {!userLoading && user ? <NavbarUserProfile userData={user} /> : <></>}
+      </div>
     );
   };
 

@@ -11,3 +11,58 @@
 #saveButton, #addButton{
     background-color: $primary-color;
   }
+
+.admin-restaurant-navbar{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+    box-sizing: border-box;
+    align-content: center;
+    width: 100%;
+    background-color: $white;
+    border-bottom: 1px solid $inactive;
+    height: 80px;
+}
+
+.admin-restaurant-navbar{
+    .admin-navbar-item{
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        li{
+            padding: 10px 20px;
+            cursor: pointer;
+           
+        }
+    }
+}
+
+.active-nav{
+    font-weight: 700;
+    color: $primary-color !important;
+}
+
+@media only screen and (max-width: $lg) {
+    .admin-restaurant-navbar{
+        .admin-navbar-item{
+            li{
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+        }
+    }
+    .admin-restaurant-navbar{
+        padding: 0 20px;
+    }
+}
+
+@media only screen and (max-width: $md) {
+    .admin-restaurant-navbar{
+        height: 60px;
+        .admin-navbar-item{
+            display: none;
+        }
+    }
+}

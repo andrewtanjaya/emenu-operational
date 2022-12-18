@@ -7,8 +7,6 @@ import {
   Button,
   InputNumber,
   Upload,
-  Col,
-  Row,
   Modal,
   Image,
   message,
@@ -259,7 +257,7 @@ function RestaurantSetting() {
       {!isLoad && (
         <div className="setting-layout-container">
           <div className="header">
-            <h1>Restaurant Setting</h1>
+            <h1>Restaurant Settings</h1>
           </div>
           <div className="setting-form-container">
             <Form
@@ -285,8 +283,8 @@ function RestaurantSetting() {
                 videoUrls: restaurantData.videoUrl.join(";"),
               }}
             >
-              <Row gutter={16} justify="space-evenly">
-                <Col span={12}>
+              <div className="restaurant-setting-form-container">
+                <div className="restaurant-setting-container-left">
                   <Form.Item label="Restaurant Name" name="restaurantName">
                     <Input placeholder="restaurant name" />
                   </Form.Item>
@@ -340,8 +338,8 @@ function RestaurantSetting() {
                       placeholder="videoUrl1;videourl2;videourl3"
                     />
                   </Form.Item>
-                  <Row gutter={[16, 40]} justify="start">
-                    <Col span={8}>
+                  <div className="restaurant-setting-logo-container">
+                    <div className="restaurant-setting-logo-container-left">
                       <Image
                         width={100}
                         height={100}
@@ -352,8 +350,8 @@ function RestaurantSetting() {
                         }
                         fallback={defaultImage}
                       />
-                    </Col>
-                    <Col span={16}>
+                    </div>
+                    <div className="restaurant-setting-logo-container-right">
                       <Form.Item
                         label="Restaurant Logo"
                         name="restaurantLogoPicture"
@@ -394,8 +392,10 @@ function RestaurantSetting() {
                           </Button>
                         </Upload>
                       </Form.Item>
-                    </Col>
-                    <Col span={8}>
+                    </div>
+                  </div>
+                  <div className="restaurant-setting-qris-container">
+                    <div className="restaurant-setting-qris-container-left">
                       <Image
                         width={100}
                         height={100}
@@ -406,8 +406,8 @@ function RestaurantSetting() {
                         }
                         fallback={defaultImage}
                       />
-                    </Col>
-                    <Col span={16}>
+                    </div>
+                    <div className="restaurant-setting-qris-container-right">
                       <Form.Item
                         label="Restaurant QRIS"
                         name="restaurantQris"
@@ -447,26 +447,29 @@ function RestaurantSetting() {
                             Change QRIS
                           </Button>
                         </Upload>
+
                       </Form.Item>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col span={12}>
-                  <Row gutter={16} justify="start">
-                    <Col span={12}>
+                    </div>
+                  </div>
+                </div>
+                <div className="restaurant-setting-container-right">
+                  <div className="restaurant-setting-service-tax-container">
+                    <div
+                      className="restaurant-setting-service-tax-container-left"
+                    >
                       <Form.Item
                         label="Service Charge (%)"
                         name="serviceCharge"
                       >
                         <InputNumber />
                       </Form.Item>
-                    </Col>
-                    <Col span={12}>
+                    </div>
+                    <div className="restaurant-setting-service-tax-container-right">
                       <Form.Item label="Tax (%)" name="tax">
                         <InputNumber />
                       </Form.Item>
-                    </Col>
-                  </Row>
+                    </div>
+                  </div>
 
                   <Form.Item label="Phone Number" name="restaurantPhoneNumber">
                     <Input />
@@ -490,12 +493,12 @@ function RestaurantSetting() {
                     <Input />
                   </Form.Item>
                   <Form.Item wrapperCol={{ span: 24 }}>
-                    <Button id="saveButton" type="primary" htmlType="submit">
+                    <Button className="save-button-restaurant-setting" id="saveButton" type="primary" htmlType="submit">
                       Save
                     </Button>
                   </Form.Item>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </Form>
           </div>
           <Modal

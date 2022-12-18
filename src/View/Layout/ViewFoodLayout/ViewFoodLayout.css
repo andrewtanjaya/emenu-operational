@@ -19,6 +19,7 @@
   padding: 26px;
   -moz-column-gap: 10px;
        column-gap: 10px;
+  max-width: 2000px;
 }
 
 .add-food-button-container {
@@ -40,6 +41,7 @@
   border: 1px solid #CACACA;
   border-radius: 16px;
   padding: 26px;
+  max-width: 2000px;
 }
 
 .filter-food-container {

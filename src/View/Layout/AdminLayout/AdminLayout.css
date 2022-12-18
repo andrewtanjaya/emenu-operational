@@ -10,4 +10,50 @@
 
 #saveButton, #addButton {
   background-color: #36AB27;
+}
+
+.admin-restaurant-navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-sizing: border-box;
+  align-content: center;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #CACACA;
+  height: 80px;
+}
+
+.admin-restaurant-navbar .admin-navbar-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-restaurant-navbar .admin-navbar-item li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.active-nav {
+  font-weight: 700;
+  color: #36AB27 !important;
+}
+
+@media only screen and (max-width: 992px) {
+  .admin-restaurant-navbar .admin-navbar-item li {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  .admin-restaurant-navbar {
+    padding: 0 20px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .admin-restaurant-navbar {
+    height: 60px;
+  }
+  .admin-restaurant-navbar .admin-navbar-item {
+    display: none;
+  }
 }/*# sourceMappingURL=AdminLayout.css.map */
