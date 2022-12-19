@@ -39,6 +39,7 @@
   align-items: center;
   z-index: 1;
   list-style: none;
+  cursor: pointer;
   background-color: #F55353;
   color: white;
 }
@@ -56,6 +57,7 @@
 
 .navbar-user-profile-container:hover .navbar-user-profile-hover-container {
   visibility: visible;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 768px) {

@@ -40,7 +40,7 @@
     align-items: center;
     z-index: 1;
     list-style: none;
-    
+    cursor: pointer;
     background-color: $red;
     color: white;
     li{
@@ -59,6 +59,7 @@
 .navbar-user-profile-container:hover{
     .navbar-user-profile-hover-container{
         visibility: visible;
+        cursor: pointer;
     }
 }
 

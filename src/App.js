@@ -2,10 +2,6 @@ import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Register from "./View/Layout/RegisterLayout/Register";
 import Login from "./View/Layout/LoginLayout/Login";
-import Employees from "./View/Admin/Employees";
-import Foods from "./View/Admin/Foods";
-import Setting from "./View/Admin/Setting";
-import TransactionReport from "./View/Admin/TransactionReport";
 import AdminDashboard from "./View/Admin/AdminDashboard";
 import CashierAuth from "./Utils/CashierAuth";
 import AdminAuth from "./Utils/AdminAuth";
@@ -19,7 +15,6 @@ import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLay
 import AdminAddMenuLayout from "./View/Layout/AdminAddMenuLayout/AdminAddMenuLayout";
 import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLayout";
 import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantSetting";
-import AdminTransactionReport from "./View/Layout/AdminTransactionReport/AdminTransactionReport";
 import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitchenUpdateMenuAvailableLayout/CashierKitchenUpdateMenuAvailableLayout";
 import ViewMenuLayout from "./View/Layout/ViewMenuLayout/ViewMenuLayout";
 import { Button, Result } from "antd";
@@ -28,6 +23,7 @@ import AddFoodLayout from "./View/Layout/AddFoodLayout/AddFoodLayout";
 import EditFoodLayout from "./View/Layout/EditFoodLayout/EditFoodLayout";
 import CashierDashboardLayout from "./View/Layout/CashierDashboardLayout/CashierDashboardLayout";
 import GenerateQrCodeLayout from "./View/Layout/CashierGenerateQrCodeLayout/GenerateQrCodeLayout";
+import AdminDashboardLayout from "./View/Layout/AdminDashboardLayout/AdminDashboardLayout";
 
 function App() {
   return (
@@ -61,7 +57,7 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route
             path="/admin/transactionReport"
-            element={<AdminTransactionReport />}
+            element={<AdminDashboardLayout />}
           />
           <Route path="/admin/employee" element={<ViewEmployeeLayout />} />
           <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />
