@@ -15,6 +15,7 @@ import ViewEmployeeLayout from "./View/Layout/ViewEmployeeLayout/ViewEmployeeLay
 import AdminAddMenuLayout from "./View/Layout/AdminAddMenuLayout/AdminAddMenuLayout";
 import EditEmployeeLayout from "./View/Layout/EditEmployeeLayout/EditEmployeeLayout";
 import RestaurantSetting from "./View/Layout/RestaurantSettingLayout/RestaurantSetting";
+import AdminTransactionReport from "./View/Layout/AdminTransactionReport/AdminTransactionReport";
 import CashierKitchenUpdateMenuAvailableLayout from "./View/Layout/CashierKitchenUpdateMenuAvailableLayout/CashierKitchenUpdateMenuAvailableLayout";
 import ViewMenuLayout from "./View/Layout/ViewMenuLayout/ViewMenuLayout";
 import { Button, Result } from "antd";
@@ -54,10 +55,10 @@ function App() {
             </AdminAuth>
           }
         >
-          <Route index element={<AdminDashboard />} />
+          <Route index element={<AdminDashboardLayout />} />
           <Route
             path="/admin/transactionReport"
-            element={<AdminDashboardLayout />}
+            element={<AdminTransactionReport />}
           />
           <Route path="/admin/employee" element={<ViewEmployeeLayout />} />
           <Route path="/admin/addEmployee" element={<AddEmployeeLayout />} />

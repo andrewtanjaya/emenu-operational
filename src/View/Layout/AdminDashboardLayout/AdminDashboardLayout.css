@@ -1,1 +1,163 @@
-/*# sourceMappingURL=AdminDashboardLayout.css.map */
+.admin-dashboard-container {
+  width: 100%;
+  padding: 0 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-dashboard-report-container {
+  width: 100%;
+  max-width: 1380px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.admin-dashboard-today-brief-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  -moz-column-gap: 60px;
+       column-gap: 60px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.admin-today-brief-upper {
+  width: 50%;
+  -moz-column-gap: 60px;
+       column-gap: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-today-brief-lower {
+  width: 50%;
+  -moz-column-gap: 60px;
+       column-gap: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-dashboard-report-by-date-section {
+  width: 50%;
+  display: flex;
+  -moz-column-gap: 60px;
+       column-gap: 60px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.admin-report-by-date-header-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 1400px) {
+  .admin-dashboard-report-container {
+    max-width: 1080px;
+  }
+  .admin-dashboard-report-by-date-section {
+    -moz-column-gap: 40px;
+         column-gap: 40px;
+  }
+  .admin-dashboard-today-brief-section {
+    -moz-column-gap: 40px;
+         column-gap: 40px;
+  }
+  .admin-today-brief-upper {
+    -moz-column-gap: 40px;
+         column-gap: 40px;
+  }
+  .admin-today-brief-lower {
+    -moz-column-gap: 40px;
+         column-gap: 40px;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .admin-dashboard-report-container {
+    max-width: 990px;
+  }
+  .admin-dashboard-report-by-date-section {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+  }
+  .admin-dashboard-today-brief-section {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+  }
+  .admin-today-brief-upper {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+  }
+  .admin-today-brief-lower {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .admin-dashboard-report-container {
+    max-width: 410px;
+  }
+  .admin-dashboard-report-container h1 {
+    font-size: 20px;
+  }
+  .admin-dashboard-report-by-date-section {
+    width: 100%;
+  }
+  .admin-dashboard-today-brief-section {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+  .admin-today-brief-upper {
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+  }
+  .admin-today-brief-lower {
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+  }
+  .admin-dashboard-container {
+    padding: 0;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .admin-dashboard-report-container {
+    max-width: 350px;
+  }
+  .admin-dashboard-report-container h1 {
+    font-size: 20px;
+  }
+  .admin-dashboard-report-by-date-section {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .admin-dashboard-today-brief-section {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+  .admin-today-brief-upper {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .admin-today-brief-lower {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .admin-dashboard-container {
+    padding: 0;
+  }
+}/*# sourceMappingURL=AdminDashboardLayout.css.map */
