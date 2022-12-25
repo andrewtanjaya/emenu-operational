@@ -69,13 +69,6 @@ export const generateRandomId = (type) => {
       return unique_id;
     case IdTypes.OPTION:
       unique_id = OPTION_PREFIX + unique_id;
-      OptionController.getOptionById(unique_id).then((option) => {
-        if (option === null) {
-          return unique_id;
-        } else {
-          generateRandomId(IdTypes.OPTION, "");
-        }
-      });
       return unique_id;
     case IdTypes.ORDER:
       unique_id = ORDER_PREFIX + unique_id;

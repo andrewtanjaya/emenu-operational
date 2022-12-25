@@ -112,7 +112,8 @@ const AddFoodLayout = () => {
 
   const beforeUploadImage = (file) => {
     const isPng = file.type === "image/png";
-    if (isPng) {
+    const isJpg = file.type === "image/jpeg";
+    if (isPng || isJpg) {
       setFoodImages([...foodImages, file]);
     } else {
       message.error("You can only upload JPG/PNG file!");
@@ -164,7 +165,11 @@ const AddFoodLayout = () => {
             }}
             onFinish={onFinish}
           >
-            <Row className="food-photos-container" gutter={16} justify="space-evenly">
+            <Row
+              className="food-photos-container"
+              gutter={16}
+              justify="space-evenly"
+            >
               <Col span={24}>
                 <Form.Item
                   label="Food Photos"
@@ -178,7 +183,9 @@ const AddFoodLayout = () => {
                           value &&
                           value.fileList.length >= 1 &&
                           value.fileList.some(
-                            (file) => file.type !== "image/png"
+                            (file) =>
+                              file.type !== "image/png" &&
+                              file.type !== "image/jpeg"
                           )
                         ) {
                           return Promise.reject(

@@ -9,6 +9,9 @@ import {
   Typography,
 } from "antd";
 import { v4 as uuid } from "uuid";
+import { generateRandomId } from "../../../Helper/Helper";
+import { IdTypes } from "../../../Enum/IdTypes";
+
 const originData = [];
 for (let i = 0; i < 100; i++) {
   originData.push({
@@ -161,8 +164,10 @@ const AdminOptionForm = ({ data, setData }) => {
   });
 
   const handleAdd = () => {
+    let optionId = generateRandomId(IdTypes.OPTION);
     const newData = {
-      key: uuid(),
+      key: optionId,
+      optionId: optionId,
       optionName: `Option Name`,
       optionPrice: "0",
     };

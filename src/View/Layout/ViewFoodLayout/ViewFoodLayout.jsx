@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Modal, Select, Button, Image } from "antd";
+import { Space, Table, Modal, Select, Button, Image, Switch } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "antd/es/input/Search";
 import "./ViewFoodLayout.css";
@@ -37,15 +37,51 @@ function ViewFoodLayout() {
       dataIndex: "foodPrice",
       key: "foodPrice",
       width: "10%",
-      render: (price) => (
-        <p>IDR. {price}</p>
-      ),
+      render: (price) => <p>IDR. {price}</p>,
     },
     {
       title: "Description",
       dataIndex: "foodDescription",
       key: "foodDescription",
       width: "30%",
+    },
+    {
+      title: "Recommended",
+      key: "recommended",
+      width: "5%",
+      render: (_, record) => (
+        <Space size="middle">
+          <Switch
+            checked={record.tags.includes("RECOMMENDED")}
+            onChange={(e) => {
+              if (e === true) {
+                record.tags.push("RECOMMENDED");
+              } else {
+                record.tags = record.tags.filter((tag) => {
+                  return tag != "RECOMMENDED";
+                });
+              }
+              FoodController.updateFood(record);
+            }}
+          />
+        </Space>
+      ),
+    },
+    {
+      title: "Availability",
+      key: "availability",
+      width: "5%",
+      render: (_, record) => (
+        <Space size="middle">
+          <Switch
+            checked={record.foodAvailability}
+            onChange={(e) => {
+              record.foodAvailability = e;
+              FoodController.updateFood(record);
+            }}
+          />
+        </Space>
+      ),
     },
     {
       title: "Action",
