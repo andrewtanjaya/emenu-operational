@@ -123,7 +123,8 @@ function RestaurantSetting() {
 
   const beforeUploadBanners = (file) => {
     const isPng = file.type === "image/png";
-    if (isPng) {
+    const isJpg = file.type === "image/jpeg";
+    if (isPng || isJpg) {
       setBannersImage([...bannersImage, file]);
     } else {
       message.error("You can only upload JPG/PNG file!");
@@ -135,22 +136,24 @@ function RestaurantSetting() {
   const beforeUploadLogo = (file) => {
     const isPng = file.type === "image/png";
     if (!isPng) {
-      message.error("You can only upload JPG/PNG file!");
+      message.error("You can only upload PNG file!");
+    } else {
+      setLogoPreview(URL.createObjectURL(file));
+      setLogoImage(file);
     }
-    setLogoPreview(URL.createObjectURL(file));
-    setLogoImage(file);
     return false;
   };
 
   const beforeUploadQris = (file) => {
     const isPng = file.type === "image/png";
+    const isJpg = file.type === "image/jpeg";
     setQrisImage(file);
-    if (!isPng) {
+    if (!isPng && !isJpg) {
       message.error("You can only upload JPG/PNG file!");
+    } else {
+      setQrisPreview(URL.createObjectURL(file));
+      setQrisImage(file);
     }
-
-    setQrisPreview(URL.createObjectURL(file));
-    setQrisImage(file);
     return false;
   };
 
@@ -294,11 +297,14 @@ function RestaurantSetting() {
                     rules={[
                       {
                         validator: (rule, value) => {
+                          console.log(value.fileList);
                           if (
                             value &&
                             value.fileList.length >= 1 &&
                             value.fileList.some(
-                              (file) => file.type !== "image/png"
+                              (file) =>
+                                file.type !== "image/png" &&
+                                file.type !== "image/jpeg"
                             )
                           ) {
                             return Promise.reject(
@@ -419,7 +425,9 @@ function RestaurantSetting() {
                                 value &&
                                 value.fileList.length >= 1 &&
                                 value.fileList.some(
-                                  (file) => file.type !== "image/png"
+                                  (file) =>
+                                    file.type !== "image/png" &&
+                                    file.type !== "image/jpeg"
                                 )
                               ) {
                                 return Promise.reject(
@@ -447,16 +455,13 @@ function RestaurantSetting() {
                             Change QRIS
                           </Button>
                         </Upload>
-
                       </Form.Item>
                     </div>
                   </div>
                 </div>
                 <div className="restaurant-setting-container-right">
                   <div className="restaurant-setting-service-tax-container">
-                    <div
-                      className="restaurant-setting-service-tax-container-left"
-                    >
+                    <div className="restaurant-setting-service-tax-container-left">
                       <Form.Item
                         label="Service Charge (%)"
                         name="serviceCharge"
@@ -493,7 +498,12 @@ function RestaurantSetting() {
                     <Input />
                   </Form.Item>
                   <Form.Item wrapperCol={{ span: 24 }}>
-                    <Button className="save-button-restaurant-setting" id="saveButton" type="primary" htmlType="submit">
+                    <Button
+                      className="save-button-restaurant-setting"
+                      id="saveButton"
+                      type="primary"
+                      htmlType="submit"
+                    >
                       Save
                     </Button>
                   </Form.Item>
