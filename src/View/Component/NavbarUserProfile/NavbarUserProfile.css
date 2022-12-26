@@ -60,6 +60,16 @@
   cursor: pointer;
 }
 
+@media only screen and (max-width: 992px) {
+  .user-profile-avatar-admin-navbar {
+    width: 30px;
+    height: 30px;
+  }
+  .navbar-user-profile-container {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+  }
+}
 @media only screen and (max-width: 768px) {
   .navbar-user-profile-hover-container {
     top: 50px;
@@ -71,13 +81,5 @@
   }
   .navbar-user-profile-hover-container li:last-child {
     color: #F55353;
-  }
-  .user-profile-avatar-admin-navbar {
-    width: 30px;
-    height: 30px;
-  }
-  .navbar-user-profile-container {
-    -moz-column-gap: 10px;
-         column-gap: 10px;
   }
 }/*# sourceMappingURL=NavbarUserProfile.css.map */

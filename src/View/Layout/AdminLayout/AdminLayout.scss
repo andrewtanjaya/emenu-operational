@@ -16,25 +16,32 @@
     display: flex;
     justify-content: space-between;
     padding: 0 40px;
-    box-sizing: border-box;
     align-content: center;
+    min-width: 100%;
+    max-width: 100%;
     width: 100%;
     background-color: $white;
     border-bottom: 1px solid $inactive;
     height: 80px;
+    column-gap: 20px;
+    box-sizing: border-box;
 }
 
 .admin-restaurant-navbar{
     .admin-navbar-item{
+        width: 100%;
+        margin: 0;
+        padding: 0;
         list-style: none;
         display: flex;
         align-items: center;
         justify-content: center;
         
         li{
-            padding: 10px 20px;
+            min-width: fit-content;
+            font-size: 14px;
+            padding: 6px 12px;
             cursor: pointer;
-           
         }
     }
 }
@@ -46,6 +53,7 @@
 
 @media only screen and (max-width: $lg) {
     .admin-restaurant-navbar{
+        column-gap: 10px;
         .admin-navbar-item{
             li{
                 font-size: 14px;

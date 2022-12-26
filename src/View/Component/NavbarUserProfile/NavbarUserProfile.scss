@@ -56,10 +56,23 @@
     height: 40px;
 }
 
+
 .navbar-user-profile-container:hover{
     .navbar-user-profile-hover-container{
         visibility: visible;
         cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: $lg) {
+
+    .user-profile-avatar-admin-navbar{
+        width: 30px;
+        height: 30px;
+    }
+
+    .navbar-user-profile-container{
+        column-gap: 10px;
     }
 }
 
@@ -81,15 +94,6 @@
         li:last-child{
             color: $red;
         }
-    }
-
-    .user-profile-avatar-admin-navbar{
-        width: 30px;
-        height: 30px;
-    }
-
-    .navbar-user-profile-container{
-        column-gap: 10px;
     }
 }
 
