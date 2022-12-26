@@ -31,42 +31,118 @@ function CashierLayout() {
 
   const renderNavbar = () => {
     return (
-      <nav>
-        <Menu className="navbar" mode={"horizontal"}>
-          {!restaurantLoading ? (
-            <NavbarRestaurantProfile restaurantData={restaurant} />
-          ) : (
-            <></>
-          )}
-          <Search
-            placeholder="Search order or menu"
-            allowClear
-            onSearch={onSearch}
-            style={{
-              width: 250,
-            }}
-          />
-          <Menu.Item key="dashboard">
-            <Link to="/cashier">Dashboard</Link>
-          </Menu.Item>
-          <Menu.Item key="menu">
-            <Link to="/cashier/menuAvailibility">Menu</Link>
-          </Menu.Item>
-          <Menu.Item key="report">
-            <Link to="/cashier/report">Report</Link>
-          </Menu.Item>
-          <Menu.Item key="cart">
-            <Link to="/cashier/cart">Cart</Link>
-          </Menu.Item>
-          <Menu.Item key="orders">
-            <Link to="/cashier/orders">Orders</Link>
-          </Menu.Item>
-          <Menu.Item key="qrCode">
-            <Link to="/cashier/generateQrCode">QR Code</Link>
-          </Menu.Item>
-          {!userLoading ? <NavbarUserProfile userData={user} /> : <></>}
-        </Menu>
-      </nav>
+      <div className="admin-restaurant-navbar">
+        {!restaurantLoading && restaurant ? (
+          <NavbarRestaurantProfile restaurantData={restaurant} />
+        ) : (
+          <></>
+        )}
+        <ul className="admin-navbar-item">
+          <li>
+            <Link
+              to="/admin"
+              style={{ textDecoration: "none", color: "black" }}
+              // onClick={() => changeActive("/admin")}
+              // className={
+              //   currentPath === "/admin" ? "active-nav" : ""
+              // }
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              // onClick={() => changeActive("/admin/food")}
+              // className={
+              //   currentPath === "/admin/food" ? "active-nav" : ""
+              // }
+              to="/admin/food"
+            >
+              Menu
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to="/admin/transactionReport"
+              // onClick={() => changeActive("/admin/transactionReport")}
+              // className={
+              //   currentPath === "/admin/transactionReport"
+              //     ? "active-nav"
+              //     : ""
+              // }
+            >
+              Report
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              // onClick={() => changeActive("/admin/employee")}
+              to="/admin/employee"
+              // className={
+              //   currentPath === "/admin/employee"
+              //     ? "active-nav"
+              //     : ""
+              // }
+            >
+              Employee
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black"  }}
+              to="/admin/setting"
+              // onClick={() => changeActive("/admin/setting")}
+              // className={
+              //   currentPath === "/admin/setting"
+              //     ? "active-nav"
+              //     : ""
+              // }
+            >
+              Restaurant
+            </Link>
+          </li>
+        </ul>
+        {!userLoading && user ? <NavbarUserProfile userData={user} /> : <></>}
+      </div>
+      // <nav>
+      //   <Menu className="navbar" mode={"horizontal"}>
+      //     {!restaurantLoading ? (
+      //       <NavbarRestaurantProfile restaurantData={restaurant} />
+      //     ) : (
+      //       <></>
+      //     )}
+      //     <Search
+      //       placeholder="Search order or menu"
+      //       allowClear
+      //       onSearch={onSearch}
+      //       style={{
+      //         width: 250,
+      //       }}
+      //     />
+      //     <Menu.Item key="dashboard">
+      //       <Link to="/cashier">Dashboard</Link>
+      //     </Menu.Item>
+      //     <Menu.Item key="menu">
+      //       <Link to="/cashier/menuAvailibility">Menu</Link>
+      //     </Menu.Item>
+      //     <Menu.Item key="report">
+      //       <Link to="/cashier/report">Report</Link>
+      //     </Menu.Item>
+      //     <Menu.Item key="cart">
+      //       <Link to="/cashier/cart">Cart</Link>
+      //     </Menu.Item>
+      //     <Menu.Item key="orders">
+      //       <Link to="/cashier/orders">Orders</Link>
+      //     </Menu.Item>
+      //     <Menu.Item key="qrCode">
+      //       <Link to="/cashier/generateQrCode">QR Code</Link>
+      //     </Menu.Item>
+      //     {!userLoading ? <NavbarUserProfile userData={user} /> : <></>}
+      //   </Menu>
+      // </nav>
     );
   };
 
