@@ -1,0 +1,27 @@
+.cashier-menu-card-container {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  cursor: pointer;
+  row-gap: 6px;
+}
+.cashier-menu-card-container img {
+  width: 200px;
+  height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.cashier-menu-card-container p {
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cashier-menu-card-container p:nth-child(3) {
+  font-size: 18px;
+}/*# sourceMappingURL=CashierMenuCard.css.map */

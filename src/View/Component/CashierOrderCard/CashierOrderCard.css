@@ -1,0 +1,93 @@
+.cashier-order-card-container {
+  min-width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid rgba(202, 202, 202, 0.4549019608);
+}
+
+.order-number-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  font-weight: 800;
+  color: #FFFFFF;
+  background-color: #36AB27;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  border-radius: 4px;
+}
+.order-number-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.order-description-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  row-gap: 4px;
+}
+.order-description-container p {
+  padding: 0;
+  margin: 0;
+}
+.order-description-container p:nth-child(1) {
+  color: black;
+}
+
+.arrow-icon {
+  font-size: 24px;
+}
+
+.badge-icon {
+  color: white;
+  font-size: 14px;
+}
+
+.cashier-order-list-status-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  row-gap: 10px;
+}
+
+.order-status-badge {
+  -moz-column-gap: 4px;
+       column-gap: 4px;
+  background-color: #36AB27;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.order-status-badge span {
+  font-size: 14px;
+}
+
+.order-status-indicator-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  -moz-column-gap: 4px;
+       column-gap: 4px;
+}
+.order-status-indicator-container span {
+  font-size: 14px;
+}
+
+.order-status-indicator {
+  width: 10px;
+  height: 10px;
+  background-color: #36AB27;
+}/*# sourceMappingURL=CashierOrderCard.css.map */
