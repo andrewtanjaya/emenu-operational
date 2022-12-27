@@ -13,6 +13,7 @@ import { OrderType } from "../../../Enum/OrderType";
 import { PaymentStatus } from "../../../Enum/PaymentStatus";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useEffect } from "react";
+import { RestaurantController } from "../../../Controller/RestaurantController";
 const months = [
   "January",
   "February",
@@ -38,6 +39,8 @@ function GenerateQrCodeLayout() {
   const [isGenerated, setIsGenerated] = useState(false);
   const [isShowErrorMsg, setIsShowErrorMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
+  const [taxRate, setTaxRate] = useState(0);
+  const [serviceChargeRate, setServiceChargeRate] = useState(0);
 
   let componentRef;
   let startDate = new Date().setHours(0, 0, 0, 0);
@@ -50,6 +53,14 @@ function GenerateQrCodeLayout() {
     }
   );
 
+  useEffect(() => {
+    RestaurantController.getRestaurantById(userSession.restaurantId).then(
+      (resp) => {
+        setTaxRate(resp.tax);
+        setServiceChargeRate(resp.serviceCharge);
+      }
+    );
+  }, []);
   useEffect(() => {
     if (!isLoading) {
       const orderFiltered = orders.filter((data) => {
@@ -112,6 +123,8 @@ function GenerateQrCodeLayout() {
       Date.now(),
       null,
       [],
+      taxRate,
+      serviceChargeRate,
       0,
       0,
       0,
