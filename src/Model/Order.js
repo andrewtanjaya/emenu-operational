@@ -14,10 +14,12 @@ export class Order {
     orderCreatedDate,
     orderPaidDate,
     orderItems,
-    subTotalOrderAmount,
+    taxRate,
+    serviceChargeRate,
+    totalOrderAmount,
     serviceChargeAmount,
     taxAmount,
-    totalOrderAmount,
+    finalTotalOrderAmount,
     paymentMethod
   ) {
     this.orderId = orderId;
@@ -31,10 +33,12 @@ export class Order {
     this.orderCreatedDate = orderCreatedDate;
     this.orderPaidDate = orderPaidDate;
     this.orderItems = orderItems;
-    this.subTotalOrderAmount = subTotalOrderAmount;
+    this.taxRate = taxRate;
+    this.serviceChargeRate = serviceChargeRate;
+    this.totalOrderAmount = totalOrderAmount;
     this.serviceChargeAmount = serviceChargeAmount;
     this.taxAmount = taxAmount;
-    this.totalOrderAmount = totalOrderAmount;
+    this.finalTotalOrderAmount = finalTotalOrderAmount;
     this.paymentMethod = paymentMethod;
   }
   static async getOrderById(orderId) {
