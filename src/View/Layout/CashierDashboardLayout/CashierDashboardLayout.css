@@ -1,0 +1,37 @@
+.cashier-dashboard-order-list-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+}
+
+.cashier-dashboard-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cashier-dashboard-category-list-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+  box-shadow: none;
+  background-color: #F9F9F9;
+  overflow-x: auto;
+}
+
+.cashier-dashboard-menu-list-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+  flex-wrap: wrap;
+  row-gap: 20px;
+}/*# sourceMappingURL=CashierDashboardLayout.css.map */

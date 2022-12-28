@@ -1,15 +1,111 @@
 .cashier-layout-container {
+  width: 100vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .cashier-layout-content-container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.navbar-item-container {
+  -moz-column-gap: 30px;
+       column-gap: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-search-bar {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 80px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #CACACA;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+.show-search-bar .close-search-navbar-icon {
+  color: black;
+}
+
+.search-bar-navbar-container {
+  display: none;
+}
+.search-bar-navbar-container input {
+  border: none;
+  background-color: rgba(202, 202, 202, 0.3764705882);
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 500px;
+  min-width: 60px;
+}
+.search-bar-navbar-container input:focus {
+  outline: none;
 }
 
 #saveButton, #addButton {
   background-color: #36AB27;
+}
+
+.navbar-search-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #CACACA;
+  color: #FFFFFF;
+  width: 30px;
+  min-width: 30px !important;
+  height: 30px;
+  border-radius: 20px;
+}
+
+.navbar-search-icon-small {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: #CACACA;
+  color: #FFFFFF;
+  width: 30px;
+  min-width: 30px !important;
+  height: 30px;
+  border-radius: 20px;
+}
+
+@media only screen and (max-width: 992px) {
+  .admin-restaurant-navbar {
+    padding: 0 20px;
+  }
+  .navbar-search-icon {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+  .navbar-item-container {
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .navbar-search-icon-small {
+    display: flex;
+  }
+  .show-search-bar {
+    height: 60px;
+  }
 }/*# sourceMappingURL=CashierLayout.css.map */
