@@ -1,11 +1,129 @@
 import { DatePicker, Table } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import AdminReportCard from "../../Component/ReportCard/AdminReportCard";
 import "./AdminDashboardLayout.css";
+import { OrderController } from "../../../Controller/OrderController";
+import { useEffect } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { FoodController } from "../../../Controller/FoodController";
 
 function AdminDashboardLayout() {
   const { RangePicker } = DatePicker;
+  const [todayTotalSalesDropdown, setTodayTotalSalesDropdown] = useState("All");
+  const [rangedTotalSalesDropdown, setRangedTotalSalesDropdown] =
+    useState("All");
+  const userSession = JSON.parse(sessionStorage.getItem("userData"));
+  const [todayBriefData, setTodayBriefData] = useState({
+    totalOrder: 0,
+    totalSales: 0,
+    totalPendingOrder: 0,
+    totalCompletedOrder: 0,
+  });
+  const [totalSalesByRange, setTotalSalesByRange] = useState(0);
+  const [allOrderData, setAllOrderData] = useState([]);
+  const [todayOrderData, setTodayOrderData] = useState([]);
+  const [rangedOrderData, setRangedOrderData] = useState([]);
+  const [startDateReport, setStartDateReport] = useState(0);
+  const [endDateReport, setEndDateReport] = useState(0);
+
+  let todayStartDate = new Date().setHours(0, 0, 0, 0);
+  let todayEndDate = new Date().setHours(23, 59, 59, 999);
+
+  const [foods, isFoodLoad, foodError] = useCollectionData(
+    FoodController.getAllFoodsByRestaurantId(userSession.restaurantId),
+    {
+      idField: "id",
+    }
+  );
+
+  useEffect(() => {
+    OrderController.getAllOrderByRestaurantId(userSession.restaurantId).then(
+      (res) => {
+        let tempOrders = [];
+        res.docs.map((doc) => {
+          let order = doc.data();
+          order.key = order.orderId;
+          tempOrders = [...tempOrders, order];
+        });
+        setAllOrderData(tempOrders);
+        let tempTodayOrder = tempOrders.filter(
+          (order) =>
+            order.orderCreatedDate >= todayStartDate &&
+            order.orderCreatedDate <= todayEndDate
+        );
+        let todayTotalSales = 0;
+        tempTodayOrder.forEach((order) => {
+          todayTotalSales += order.totalOrderAmount;
+        });
+
+        setTodayBriefData({
+          totalOrder: tempTodayOrder.length,
+          totalSales: todayTotalSales,
+          totalPendingOrder: tempTodayOrder.filter(
+            (order) => order.orderPaymentStatus === "UNPAID"
+          ).length,
+          totalCompletedOrder: tempTodayOrder.filter(
+            (order) => order.orderPaymentStatus === "PAID"
+          ).length,
+        });
+        setTodayOrderData(tempTodayOrder);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    console.log(foods)
+    let tempTodayData = todayOrderData;
+    if (todayTotalSalesDropdown !== "All") {
+      tempTodayData = todayOrderData.filter((order) =>
+        order.paymentMethod
+          .toLowerCase()
+          .includes(todayTotalSalesDropdown.toLowerCase())
+      );
+    }
+    let todayTotalSales = 0;
+    tempTodayData.forEach((order) => {
+      todayTotalSales += order.totalOrderAmount;
+    });
+    setTodayBriefData((todayBriefData) => ({
+      totalSales: todayTotalSales,
+      totalOrder: todayBriefData.totalOrder,
+      totalPendingOrder: todayBriefData.totalPendingOrder,
+      totalCompletedOrder: todayBriefData.totalCompletedOrder,
+    }));
+  }, [todayTotalSalesDropdown]);
+
+  useEffect(() => {
+    let tempRangedData = rangedOrderData;
+    if (rangedTotalSalesDropdown !== "All") {
+      tempRangedData = rangedOrderData.filter((order) =>
+        order.paymentMethod
+          .toLowerCase()
+          .includes(rangedTotalSalesDropdown.toLowerCase())
+      );
+    }
+    let rangedTotalSales = 0;
+    tempRangedData.forEach((order) => {
+      rangedTotalSales += order.totalOrderAmount;
+    });
+    setTotalSalesByRange(rangedTotalSales);
+  }, [rangedTotalSalesDropdown]);
+
+  useEffect(() => {
+    let tempRangeData = allOrderData.filter(
+      (order) =>
+        order.orderCreatedDate >= startDateReport &&
+        order.orderCreatedDate <= endDateReport
+    );
+    let tempTotalSalesRanged = 0;
+    tempRangeData.forEach((order) => {
+      tempTotalSalesRanged += order.totalOrderAmount;
+    });
+    setTotalSalesByRange(tempTotalSalesRanged);
+    setRangedOrderData(tempRangeData);
+  }, [startDateReport, endDateReport]);
+
   const rangePresets = [
     {
       label: "Last 7 Days",
@@ -27,10 +145,8 @@ function AdminDashboardLayout() {
 
   const onRangeChange = (dates, dateStrings) => {
     if (dates) {
-      console.log("From: ", dates[0], ", to: ", dates[1]);
-      console.log("From: ", dateStrings[0], ", to: ", dateStrings[1]);
-    } else {
-      console.log("Clear");
+      setStartDateReport(new Date(dates[0]).setHours(0, 0, 0, 0));
+      setEndDateReport(new Date(dates[1]).setHours(23, 59, 59, 999));
     }
   };
 
@@ -76,9 +192,9 @@ function AdminDashboardLayout() {
       render: (item, record, index) => <>{index + 1}</>,
     },
     {
-      title: "Menu Name",
-      dataIndex: "menuName",
-      key: "menuName",
+      title: "Food Name",
+      dataIndex: "foodName",
+      key: "foodName",
     },
     {
       title: "Total Sold",
@@ -99,16 +215,26 @@ function AdminDashboardLayout() {
         <h1>Today's Report</h1>
         <div className="admin-dashboard-today-brief-section">
           <div className="admin-today-brief-upper">
-            <AdminReportCard value={"30"} description={"Total Order"} />
             <AdminReportCard
-              value={"IDR. 1.999.999"}
+              value={todayOrderData.length}
+              description={"Total Order"}
+            />
+            <AdminReportCard
+              value={"IDR. " + todayBriefData.totalSales}
               description={"Total Sales"}
               withDropdown={true}
+              setTodayTotalSalesDropdown={setTodayTotalSalesDropdown}
             />
           </div>
           <div className="admin-today-brief-lower">
-            <AdminReportCard value={"2"} description={"Pending Order"} />
-            <AdminReportCard value={"28"} description={"Completed Order"} />
+            <AdminReportCard
+              value={todayBriefData.totalPendingOrder}
+              description={"Pending Order"}
+            />
+            <AdminReportCard
+              value={todayBriefData.totalCompletedOrder}
+              description={"Completed Order"}
+            />
           </div>
         </div>
         <div className="admin-report-by-date-header-container">
@@ -120,11 +246,15 @@ function AdminDashboardLayout() {
           />
         </div>
         <div className="admin-dashboard-report-by-date-section">
-          <AdminReportCard value={"30"} description={"Total Order"} />
           <AdminReportCard
-            value={"IDR. 1.999.999"}
+            value={rangedOrderData.length}
+            description={"Total Order"}
+          />
+          <AdminReportCard
+            value={"IDR. " + totalSalesByRange}
             description={"Total Sales"}
             withDropdown={true}
+            setRangedTotalSalesDropdown={setRangedTotalSalesDropdown}
           />
         </div>
         <div className="admin-report-by-date-header-container">
@@ -138,7 +268,7 @@ function AdminDashboardLayout() {
         <Table
           pagination={false}
           style={{ width: "100%" }}
-          dataSource={dataSource}
+          dataSource={(foods.sort((a, b) => (a > b ? -1 : 1))).slice(0,5)}
           columns={columns}
         />
       </div>

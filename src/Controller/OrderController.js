@@ -36,11 +36,11 @@ export class OrderController {
     );
   }
 
-  static getUnpaidOrderByRestaurantId(
-    restaurantId
-  ) {
-    return Database.getUnpaidOrderByRestaurantId(
-      restaurantId
-    );
+  static getUnpaidOrderByRestaurantId(restaurantId) {
+    return Database.getUnpaidOrderByRestaurantId(restaurantId);
+  }
+
+  static async getAllOrderByRestaurantId(restaurantId) {
+    return await Database.getAllOrderByRestaurantId(restaurantId);
   }
 }

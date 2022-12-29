@@ -3,9 +3,12 @@ import dayjs from "dayjs";
 import { DatePicker, Select } from "antd";
 import "./AdminTransactionReport.css";
 import AdminTransactionReportViewer from "../../Component/AdminTransactionReportViewer/AdminTransactionReportViewer";
+import { useState } from "react";
 const { RangePicker } = DatePicker;
 
 function AdminTransactionReport() {
+  const [startDate, setStartDate] = useState(0);
+  const [endDate, setEndDate] = useState(0);
   const rangePresets = [
     {
       label: "Last 7 Days",
@@ -25,16 +28,11 @@ function AdminTransactionReport() {
     },
   ];
 
-  const onSelectChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
   const onRangeChange = (dates, dateStrings) => {
+    
     if (dates) {
-      console.log("From: ", dates[0], ", to: ", dates[1]);
-      console.log("From: ", dateStrings[0], ", to: ", dateStrings[1]);
-    } else {
-      console.log("Clear");
+      setStartDate(new Date(dates[0]).setHours(0, 0, 0, 0));
+      setEndDate(new Date(dates[1]).setHours(23, 59, 59, 999));
     }
   };
   return (
@@ -64,7 +62,7 @@ function AdminTransactionReport() {
           onChange={onRangeChange}
         />
       </div>
-      <AdminTransactionReportViewer />
+      <AdminTransactionReportViewer startDate={startDate} endDate={endDate}/>
     </div>
   );
 }
