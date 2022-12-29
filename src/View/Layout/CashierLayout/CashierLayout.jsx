@@ -64,14 +64,17 @@ function CashierLayout() {
               className="search-input-cashier-navbar"
               id="search-input-cashier-navbar"
               type="text"
-              onChange={(e)=>{setSearchKeyword(e.target.value)}}
+              onChange={(e) => {
+                setSearchKeyword(e.target.value);
+              }}
               placeholder="Search order or menu..."
             />
             <CloseOutlined
               onClick={() => {
-                document.getElementById("search-input-cashier-navbar").value = ""
-                setSearchKeyword("")
-                setShowSearch(false)
+                document.getElementById("search-input-cashier-navbar").value =
+                  "";
+                setSearchKeyword("");
+                setShowSearch(false);
               }}
               className="close-search-navbar-icon"
             />
@@ -150,21 +153,29 @@ function CashierLayout() {
                 QR Codes
               </Link>
             </li>
-            <li
-              onClick={() => setShowSearch(true)}
-              style={{ padding: 0, margin: "0 6px" }}
-              className="navbar-search-icon"
-            >
-              <SearchOutlined className="search-icon-cashier-navbar" />
-            </li>
+            {currentPath !== "/cashier/menuAvailibility" ? (
+              <li
+                onClick={() => setShowSearch(true)}
+                style={{ padding: 0, margin: "0 6px" }}
+                className="navbar-search-icon"
+              >
+                <SearchOutlined className="search-icon-cashier-navbar" />
+              </li>
+            ) : (
+              <></>
+            )}
           </ul>
-          <div
+          {currentPath !== "/cashier/menuAvailibility" ? (
+            <div
               onClick={() => setShowSearch(true)}
               style={{ padding: 0, margin: "0 6px" }}
               className="navbar-search-icon-small"
             >
               <SearchOutlined className="search-icon-cashier-navbar" />
             </div>
+          ) : (
+            <></>
+          )}
         </div>
         {!userLoading && user ? <NavbarUserProfile userData={user} /> : <></>}
       </div>

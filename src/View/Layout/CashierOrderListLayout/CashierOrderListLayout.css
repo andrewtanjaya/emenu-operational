@@ -1,0 +1,10 @@
+.cashier-order-list-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+  flex-wrap: wrap;
+  row-gap: 20px;
+}/*# sourceMappingURL=CashierOrderListLayout.css.map */
