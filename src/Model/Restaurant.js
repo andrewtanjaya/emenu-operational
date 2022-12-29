@@ -12,7 +12,8 @@ export class Restaurant {
     serviceCharge,
     restaurantAddress,
     restaurantBanners,
-    videoUrl
+    videoUrl,
+    takeAwayOrderCounter
   ) {
     this.restaurantId = restaurantId;
     this.restaurantName = restaurantName;
@@ -24,6 +25,7 @@ export class Restaurant {
     this.restaurantAddress = restaurantAddress;
     this.restaurantBanners = restaurantBanners;
     this.videoUrl = videoUrl;
+    this.takeAwayOrderCounter = takeAwayOrderCounter;
   }
 
   static async getRestaurantById(restaurantId) {
@@ -32,7 +34,7 @@ export class Restaurant {
   }
 
   static getRestaurantProfileById(restaurantId) {
-    return doc(restaurantsRef, restaurantId)
+    return doc(restaurantsRef, restaurantId);
   }
 
   static async addRestaurant(restaurant) {
@@ -42,7 +44,7 @@ export class Restaurant {
     );
   }
 
-  static async updateRestaurant(restaurant) {
+  static async updateRestaurantSetting(restaurant) {
     return await updateDoc(doc(restaurantsRef, restaurant.restaurantId), {
       restaurantName: restaurant.restaurantName,
       restaurantAddress: restaurant.restaurantAddress,
@@ -53,6 +55,12 @@ export class Restaurant {
       serviceCharge: restaurant.serviceCharge,
       tax: restaurant.tax,
       videoUrl: restaurant.videoUrl,
+    });
+  }
+
+  static async updateOrderCounter(restaurantId, counter) {
+    return await updateDoc(doc(restaurantsRef, restaurantId), {
+      takeAwayOrderCounter: counter,
     });
   }
 }
