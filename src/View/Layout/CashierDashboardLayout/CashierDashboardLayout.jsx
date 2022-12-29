@@ -11,20 +11,14 @@ import { OrderController } from "../../../Controller/OrderController";
 import { Context } from "../../../Utils/CashierContext";
 
 function CashierDashboardLayout() {
-  const searchKeyword = React.useContext(Context);
+  const searchKeyword = React.useContext(Context).searchKeyword;
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [categoryFilter, setCategoryFilter] = useState("");
   const [groupByCategoryData, setGroupByCategoryData] = useState(null);
   const [groupByTagData, setGroupByTagData] = useState(null);
-  let startDate = new Date().setHours(0, 0, 0, 0);
-  let endDate = new Date().setHours(23, 59, 59, 999);
 
   const [orders, isLoading, error] = useCollectionData(
-    OrderController.getUnpaidOrderByRestaurantIdAndDateBetween(
-      userSession.restaurantId,
-      startDate,
-      endDate
-    ),
+    OrderController.getUnpaidOrderByRestaurantId(userSession.restaurantId),
     {
       idField: "id",
     }
@@ -42,6 +36,7 @@ function CashierDashboardLayout() {
     }
   );
   const [filteredFood, setFilteredFood] = useState([]);
+  const [filteredOrder, setFilteredOrder] = useState([]);
 
   var groupBy = function (targetArr, key) {
     return targetArr.reduce(function (arr, data) {
@@ -56,40 +51,66 @@ function CashierDashboardLayout() {
   useEffect(() => {
     if (categoryFilter && foodData && categoryFilter !== "RECOMMENDED") {
       setFilteredFood(
-        foodData.filter((food) => food.categoryId.includes(categoryFilter))
+        foodData.filter(
+          (food) =>
+            food.categoryId.includes(categoryFilter) &&
+            food.foodName.toLowerCase().includes(searchKeyword.toLowerCase())
+        )
       );
     } else if (categoryFilter === "RECOMMENDED") {
       setFilteredFood(
-        foodData.filter((food) => food.tags.includes(categoryFilter))
+        foodData.filter(
+          (food) =>
+            food.tags.includes(categoryFilter) &&
+            food.foodName.toLowerCase().includes(searchKeyword.toLowerCase())
+        )
       );
     } else {
-      setFilteredFood(foodData);
+      setFilteredFood(
+        foodData
+          ? foodData.filter((food) =>
+              food.foodName.toLowerCase().includes(searchKeyword.toLowerCase())
+            )
+          : foodData
+      );
+      setFilteredOrder(
+        orders ? orders.filter((order) =>
+          order.orderId.toLowerCase().includes(searchKeyword.toLowerCase())
+        ) : orders
+      );
     }
-  }, [categoryFilter, foodData]);
+  }, [categoryFilter, foodData, searchKeyword]);
 
   useEffect(() => {
-    if (categoryData && !isCategoryLoad && foodData) {
-      setGroupByCategoryData(groupBy(foodData, "categoryId"));
-      setGroupByTagData(groupBy(foodData, "tags"));
+    if (categoryData && !isCategoryLoad && filteredFood) {
+      setGroupByCategoryData(groupBy(filteredFood, "categoryId"));
+      setGroupByTagData(groupBy(filteredFood, "tags"));
     }
-  }, [categoryData, foodData]);
+  }, [categoryData, filteredFood]);
 
   useEffect(() => {
     console.log("orders", orders);
+    if(orders){
+      setFilteredOrder(
+        orders.filter((order) =>
+          order.orderId.toLowerCase().includes(searchKeyword.toLowerCase())
+        )
+      );
+    }
   }, [orders]);
-
-  useEffect(()=>{
-    console.log(searchKeyword)
-  }, [searchKeyword])
 
   return (
     <div className="cashier-dashboard-container">
       <h1>Order List</h1>
       <div className="cashier-dashboard-order-list-container">
-        {!isLoading && orders ? (
-          orders.map((order) => (
-            <CashierOrderCard key={order.orderId} order={order} />
-          ))
+        {!isLoading && filteredOrder ? (
+          filteredOrder.map((order) =>
+            order.orderItems.length ? (
+              <CashierOrderCard key={order.orderId} order={order} />
+            ) : (
+              <></>
+            )
+          )
         ) : (
           <>Loading</>
         )}
@@ -103,7 +124,7 @@ function CashierDashboardLayout() {
           active={categoryFilter === ""}
           icon="https://img.icons8.com/fluency/48/null/cake.png"
           categoryName="All Menu"
-          countItem={foodData ? foodData.length : 0}
+          countItem={filteredFood ? filteredFood.length : 0}
         />
         <CashierCategoryCard
           categoryId="RECOMMENDED"

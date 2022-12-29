@@ -77,14 +77,12 @@ export class Database {
     return orderSnap;
   }
 
-  static getUnpaidOrderByRestaurantIdAndDateBetween(
-    restaurantId, startDate, endDate
+  static getUnpaidOrderByRestaurantId(
+    restaurantId
   ) {
     return query(
       ordersRef,
       where("restaurantId", "==", restaurantId),
-      where("orderCreatedDate", ">=", startDate),
-      where("orderCreatedDate", "<=", endDate),
       where("orderPaymentStatus", "==", PaymentStatus.UNPAID)
     );
   }

@@ -62,12 +62,17 @@ function CashierLayout() {
           >
             <input
               className="search-input-cashier-navbar"
+              id="search-input-cashier-navbar"
               type="text"
               onChange={(e)=>{setSearchKeyword(e.target.value)}}
               placeholder="Search order or menu..."
             />
             <CloseOutlined
-              onClick={() => setShowSearch(false)}
+              onClick={() => {
+                document.getElementById("search-input-cashier-navbar").value = ""
+                setSearchKeyword("")
+                setShowSearch(false)
+              }}
               className="close-search-navbar-icon"
             />
           </div>
@@ -207,7 +212,7 @@ function CashierLayout() {
     <div className="cashier-layout-container">
       {renderNavbar()}
       <div className="cashier-layout-content-container">
-        <Context.Provider value={{ foo: searchKeyword }}>
+        <Context.Provider value={{ searchKeyword: searchKeyword }}>
           {outlet}
         </Context.Provider>
       </div>

@@ -97,6 +97,7 @@
 
 .processed-status {
   background-color: #F3CC43;
+  color: black;
 }
 
 .ready-status {

@@ -9,6 +9,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { OrderItemStatus } from "../../../Enum/OrderItemStatus";
+import { OrderType } from "../../../Enum/OrderType";
 import "./CashierOrderCard.css";
 
 function CashierOrderCard(props) {
@@ -33,7 +34,7 @@ function CashierOrderCard(props) {
   return (
     <div className="cashier-order-card-container">
       <div className="order-number-container">
-        <p>06</p>
+        <p>{props.order.orderType === OrderType.DINE_IN ? props.order.orderTable : props.order.orderQueue}</p>
       </div>
       <div className="order-description-container">
         <p>
@@ -64,7 +65,7 @@ function CashierOrderCard(props) {
           {orderItemBadgeStatus === OrderItemStatus.PLACED ? (
             <LockFilled className="badge-icon" />
           ) : orderItemBadgeStatus === OrderItemStatus.PROCESSED ? (
-            <FieldTimeOutlined className="badge-icon" />
+            <FieldTimeOutlined style={{color: "black"}} className="badge-icon" />
           ) : orderItemBadgeStatus === OrderItemStatus.READY ? (
             <CheckOutlined className="badge-icon" />
           ) : orderItemBadgeStatus === OrderItemStatus.DELIVERED ? (
