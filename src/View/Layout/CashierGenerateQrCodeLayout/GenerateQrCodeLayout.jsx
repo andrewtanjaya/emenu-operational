@@ -11,7 +11,10 @@ import { OrderController } from "../../../Controller/OrderController";
 import { Order } from "../../../Model/Order";
 import { OrderType } from "../../../Enum/OrderType";
 import { PaymentStatus } from "../../../Enum/PaymentStatus";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { useEffect } from "react";
 import { RestaurantController } from "../../../Controller/RestaurantController";
 const months = [
@@ -46,32 +49,26 @@ function GenerateQrCodeLayout() {
   let startDate = new Date().setHours(0, 0, 0, 0);
   let endDate = new Date().setHours(23, 59, 59, 999);
 
-  const [orders, isLoading, error] = useCollectionData(
-    OrderController.getTakeAwayOrdersByDateBetween(startDate, endDate),
-    {
-      idField: "id",
-    }
-  );
-
-  useEffect(() => {
-    RestaurantController.getRestaurantById(userSession.restaurantId).then(
-      (resp) => {
-        setTaxRate(resp.tax);
-        setServiceChargeRate(resp.serviceCharge);
+  const [restaurant, restaurantLoading, restaurantError, restaurantSnapshot] =
+    useDocumentData(
+      RestaurantController.getRestaurantProfileById(userSession.restaurantId),
+      {
+        idField: "id",
       }
     );
-  }, []);
+
   useEffect(() => {
-    if (!isLoading) {
-      const orderFiltered = orders.filter((data) => {
-        return (
-          data.restaurantId == userSession.restaurantId &&
-          data.orderType == OrderType.TAKEAWAY
-        );
-      });
-      form.setFieldsValue({ orderQueue: orderFiltered.length + 1 });
+    if (!restaurantLoading) {
+      setTaxRate(restaurant.tax);
+      setServiceChargeRate(restaurant.serviceCharge);
     }
-  }, [orders]);
+  }, []);
+
+  useEffect(() => {
+    if (!restaurantLoading) {
+      form.setFieldsValue({ orderQueue: restaurant.takeAwayOrderCounter + 1 });
+    }
+  }, [restaurant]);
 
   const onFinish = (values) => {
     if (values.orderTable) {
@@ -83,10 +80,25 @@ function GenerateQrCodeLayout() {
           setIsShowErrorMsg(false);
           createOrder(values);
         } else {
+          let orderData = resp.docs[0].data();
+          console.log(orderData.orderCreatedDate);
+          console.log(startDate);
+          console.log(new Date(orderData.orderCreatedDate));
+          console.log(new Date(startDate));
+          if (orderData.orderCreatedDate < startDate) {
+            let d = new Date(orderData.orderCreatedDate);
+            let dateString =
+              d.getDate() + ", " + months[d.getMonth()] + " " + d.getFullYear();
+            setErrorMsg(
+              `Order with table number: ${values.orderTable} already created since ${dateString} `
+            );
+          } else {
+            setErrorMsg(
+              `Order with table number: ${values.orderTable} already created`
+            );
+          }
           setIsGenerated(false);
-          setErrorMsg(
-            `Order with table number: ${values.orderTable} already created`
-          );
+
           setIsShowErrorMsg(true);
         }
       });
@@ -98,6 +110,10 @@ function GenerateQrCodeLayout() {
         if (resp.empty) {
           setIsShowErrorMsg(false);
           createOrder(values);
+          RestaurantController.updateOrderCounter(
+            userSession.restaurantId,
+            values.orderQueue
+          );
         } else {
           setIsGenerated(false);
           setErrorMsg(
@@ -168,7 +184,9 @@ function GenerateQrCodeLayout() {
           <Form.Item
             label="Order Type"
             name="orderType"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[
+              { required: true, message: "Please input your orderType!" },
+            ]}
           >
             <Radio.Group
               onChange={(e) => {

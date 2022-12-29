@@ -54,7 +54,8 @@ function Register() {
           0,
           Object.assign({}, new RestaurantAddress("", "", "", "", "", "")),
           [],
-          []
+          [],
+          0
         );
 
         let newUser = new User(

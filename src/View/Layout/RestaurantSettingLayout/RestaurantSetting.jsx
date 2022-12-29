@@ -222,9 +222,10 @@ function RestaurantSetting() {
       values.serviceCharge,
       Object.assign({}, restaurantAddress),
       bannersUrl,
-      videoUrlsString.split(";")
+      videoUrlsString.split(";"),
+      0
     );
-    RestaurantController.updateRestaurant(restaurant).then(() => {
+    RestaurantController.updateRestaurantSetting(restaurant).then(() => {
       setLogoImage(null);
       setQrisImage(null);
       setBannersImage([]);
