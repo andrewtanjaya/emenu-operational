@@ -4,39 +4,53 @@ import "./AdminReportCard.css";
 
 function AdminReportCard(props) {
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    if (props.setTodayTotalSalesDropdown) {
+      props.setTodayTotalSalesDropdown(value);
+    } else {
+      props.setRangedTotalSalesDropdown(value);
+    }
   };
 
   return (
     <div className="admin-report-card-container">
-      <p className= {props.withDropdown ? "admin-report-card-value small-value-font" : "admin-report-card-value"}>{props.value}</p>
+      <p
+        className={
+          props.withDropdown
+            ? "admin-report-card-value small-value-font"
+            : "admin-report-card-value"
+        }
+      >
+        {props.value}
+      </p>
       <div className="admin-report-card-description">
         <p>{props.description}</p>
-        {
-            props.withDropdown ? <Select
-            defaultValue="all"
+        {props.withDropdown ? (
+          <Select
+            defaultValue="All"
             style={{ width: 100 }}
             onChange={handleChange}
             options={[
               {
-                value: "all",
+                value: "All",
                 label: "All",
               },
               {
-                value: "cash",
+                value: "Cash",
                 label: "Cash",
               },
               {
-                value: "qris",
+                value: "QRIS",
                 label: "QRIS",
               },
               {
-                value: "others",
+                value: "Others",
                 label: "Others",
               },
             ]}
-          /> : <></>
-        }
+          />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

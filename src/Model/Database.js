@@ -77,13 +77,17 @@ export class Database {
     return orderSnap;
   }
 
-  static getUnpaidOrderByRestaurantId(
-    restaurantId
-  ) {
+  static getUnpaidOrderByRestaurantId(restaurantId) {
     return query(
       ordersRef,
       where("restaurantId", "==", restaurantId),
       where("orderPaymentStatus", "==", PaymentStatus.UNPAID)
+    );
+  }
+
+  static async getAllOrderByRestaurantId(restaurantId) {
+    return await getDocs(
+      query(ordersRef, where("restaurantId", "==", restaurantId))
     );
   }
 }

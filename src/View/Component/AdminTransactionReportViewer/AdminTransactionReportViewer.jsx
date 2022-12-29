@@ -1,24 +1,78 @@
 import { Table } from "antd";
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { OrderController } from "../../../Controller/OrderController";
+import { UserController } from "../../../Controller/UserController";
+import { RoleTypes } from "../../../Enum/RoleTypes";
 import AdminTransactionBrief from "../AdminTransactionBrief/AdminTransactionBrief";
 import "./AdminTransactionReportViewer.css";
 
-function AdminTransactionReportViewer() {
+function AdminTransactionReportViewer(props) {
+  const userSession = JSON.parse(sessionStorage.getItem("userData"));
+  const [orderData, setOrderData] = useState([]);
+  const [cashierUser, setCashierUser] = useState([]);
+  const [briefData, setBriefData] = useState({
+    totalOrder: 0,
+    totalServiceCharge: 0,
+    totalSales: 0,
+    totalTax: 0,
+  });
+  const [users, isLoading, error] = useCollectionData(
+    UserController.getAllUsersByRestaurantId(userSession.restaurantId),
+    {
+      idField: "id",
+    }
+  );
+
+  useEffect(() => {
+    if (!isLoading && users) {
+      setCashierUser(
+        users.filter((user) => user.roleType === RoleTypes.CASHIER)
+      );
+    }
+  }, [users]);
+
+  useEffect(() => {
+    if (props.startDate !== 0 && props.endDate !== 0) {
+      OrderController.getAllOrderByRestaurantId(userSession.restaurantId).then(
+        (res) => {
+          let tempOrders = [];
+          let totalServiceCharge = 0;
+          let totalSales = 0;
+          let totalTax = 0;
+          res.docs.map((doc) => {
+            let order = doc.data();
+            order.key = order.orderId;
+            totalServiceCharge += order.serviceChargeAmount;
+            totalSales += order.totalOrderAmount;
+            totalTax += order.taxAmount;
+            tempOrders = [...tempOrders, order];
+          });
+          setBriefData({
+            totalSales: totalSales,
+            totalOrder: tempOrders.length,
+            totalServiceCharge: totalServiceCharge,
+            totalTax: totalTax,
+          });
+          setOrderData(tempOrders);
+        }
+      );
+    }
+  }, [props.startDate, props.endDate]);
+
+  const filterData = (data) => (formatter) =>
+    data.map((item) => ({
+      text: formatter(item),
+      value: formatter(item),
+    }));
+
   const columnsA = [
     {
       title: "Order Id",
       dataIndex: "orderId",
       key: "orderId",
-      filters: [
-        {
-          text: "TRX-001",
-          value: "TRX-001",
-        },
-        {
-          text: "TRX-002",
-          value: "TRX-002",
-        },
-      ],
+      filters: filterData(orderData)((i) => i.orderId),
       filterSearch: true,
       onFilter: (value, record) => record.orderId === value,
     },
@@ -29,7 +83,7 @@ function AdminTransactionReportViewer() {
       filters: [
         {
           text: "DINE IN",
-          value: "DINE IN",
+          value: "DINE-IN",
         },
         {
           text: "TAKEAWAY",
@@ -56,202 +110,131 @@ function AdminTransactionReportViewer() {
           text: "Cash",
           value: "Cash",
         },
+        {
+          text: "Others",
+          value: "Others",
+        },
       ],
       filterSearch: true,
       onFilter: (value, record) => record.paymentMethod === value,
     },
     {
-      title: "Created By",
-      dataIndex: "createdBy",
-      key: "createdBy",
+      title: "Order Created By",
+      dataIndex: "orderCreatedBy",
+      key: "orderCreatedBy",
+      filters: filterData(cashierUser)((i) => i.email),
       sorter: {
-        compare: (a, b) => a.createdBy < b.createdBy,
+        compare: (a, b) => a.orderCreatedBy < b.orderCreatedBy,
         multiple: 3,
       },
-      filters: [
-        {
-          text: "Andrew",
-          value: "Andrew",
-        },
-        {
-          text: "Reinard",
-          value: "Reinard",
-        },
-        {
-          text: "Agus",
-          value: "Agus",
-        },
-      ],
       filterSearch: true,
-      onFilter: (value, record) => record.createdBy === value,
+      onFilter: (value, record) => record.orderCreatedBy === value,
     },
     {
-      title: "Checkout By",
-      dataIndex: "checkoutBy",
-      key: "checkoutBy",
+      title: "Order Checkout By",
+      dataIndex: "orderCheckoutBy",
+      key: "orderCheckoutBy",
+      filters: filterData(cashierUser)((i) => i.email),
       sorter: {
         compare: (a, b) => a.checkoutBy < b.checkoutBy,
         multiple: 4,
       },
-      filters: [
-        {
-          text: "ANDREW",
-          value: "ANDREW",
-        },
-        {
-          text: "REINARD",
-          value: "REINARD",
-        },
-        {
-          text: "AGUS",
-          value: "AGUS",
-        },
-      ],
       filterSearch: true,
-      onFilter: (value, record) => record.checkoutBy === value,
+      onFilter: (value, record) => record.orderCheckoutBy === value,
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
+      title: "Order Created Date",
+      dataIndex: "orderCreatedDate",
+      key: "orderCreatedDate",
+      render: (_, record) => (
+        <p>{new Date(record.orderCreatedDate).toUTCString()}</p>
+      ),
       sorter: {
-        compare: (a, b) => a.date < b.date,
+        compare: (a, b) => a.orderCreatedDate < b.orderCreatedDate,
         multiple: 5,
       },
     },
     {
       title: "Table Number",
-      dataIndex: "tableNumber",
-      key: "tableNumber",
+      dataIndex: "orderTable",
+      key: "orderTable",
       sorter: {
-        compare: (a, b) => a.tableNumber - b.tableNumber,
+        compare: (a, b) => a.orderTable - b.orderTable,
         multiple: 6,
       },
     },
     {
       title: "Queue Number",
-      dataIndex: "queueNumber",
-      key: "queueNumber",
+      dataIndex: "orderQueue",
+      key: "orderQueue",
       sorter: {
-        compare: (a, b) => a.queueNumber - b.queueNumber,
+        compare: (a, b) => a.orderQueue - b.orderQueue,
         multiple: 7,
       },
     },
     {
       title: "Subtotal",
-      dataIndex: "subtotal",
-      key: "subtotal",
+      dataIndex: "totalOrderAmount",
+      key: "totalOrderAmount",
+      render: (_, record) => <p>IDR. {record.totalOrderAmount}</p>,
       sorter: {
-        compare: (a, b) => a.subtotal - b.subtotal,
+        compare: (a, b) => a.totalOrderAmount - b.totalOrderAmount,
         multiple: 8,
       },
     },
     {
       title: "Service Charge",
-      dataIndex: "serviceCharge",
-      key: "serviceCharge",
+      dataIndex: "serviceChargeAmount",
+      key: "serviceChargeAmount",
+      render: (_, record) => <p>IDR. {record.serviceChargeAmount}</p>,
       sorter: {
-        compare: (a, b) => a.serviceCharge - b.serviceCharge,
+        compare: (a, b) => a.serviceChargeAmount - b.serviceChargeAmount,
         multiple: 9,
       },
     },
     {
       title: "Tax",
-      dataIndex: "tax",
-      key: "tax",
+      dataIndex: "taxAmount",
+      key: "taxAmount",
+      render: (_, record) => <p>IDR. {record.taxAmount}</p>,
       sorter: {
-        compare: (a, b) => a.tax - b.tax,
+        compare: (a, b) => a.taxAmount - b.taxAmount,
         multiple: 10,
       },
     },
     {
       title: "Grand Total",
-      dataIndex: "grandTotal",
-      key: "grandTotal",
+      dataIndex: "finalTotalOrderAmount",
+      key: "finalTotalOrderAmount",
+      render: (_, record) => <p>IDR. {record.finalTotalOrderAmount}</p>,
       sorter: {
-        compare: (a, b) => a.grandTotal - b.grandTotal,
+        compare: (a, b) => a.finalTotalOrderAmount - b.finalTotalOrderAmount,
         multiple: 11,
       },
     },
+    {
+      title: "Payment Status",
+      dataIndex: "orderPaymentStatus",
+      key: "orderPaymentStatus",
+      filters: [
+        {
+          text: "Unpaid",
+          value: "UNPAID",
+        },
+        {
+          text: "Paid",
+          value: "PAID",
+        },
+        {
+          text: "Cancel",
+          value: "CANCEL",
+        },
+      ],
+      filterSearch: true,
+      onFilter: (value, record) => record.orderPaymentStatus === value,
+    },
   ];
 
-  const dataA = [
-    {
-      key: "1",
-      date: "2022-02-25",
-      orderId: "TRX-001",
-      createdBy: "ANDREW",
-      checkoutBy: "ANDREW",
-      tableNumber: 1,
-      queueNumber: " ",
-      orderType: "DINE IN",
-      subtotal: "12000",
-      serviceCharge: "1000",
-      tax: "1100",
-      grandTotal: "14100",
-      paymentMethod: "QRIS",
-    },
-    {
-      key: "2",
-      date: "2022-03-25",
-      orderId: "TRX-002",
-      createdBy: "AGUS",
-      checkoutBy: "AGUS",
-      tableNumber: " ",
-      queueNumber: "45",
-      orderType: "TAKEAWAY",
-      subtotal: "1000",
-      serviceCharge: "300",
-      tax: "400",
-      grandTotal: "1700",
-      paymentMethod: "Cash",
-    },
-    {
-      key: "3",
-      date: "2022-01-25",
-      orderId: "TRX-003",
-      createdBy: "REINARD",
-      checkoutBy: "REINARD",
-      tableNumber: " ",
-      queueNumber: 33,
-      orderType: "TAKEAWAY",
-      subtotal: "1100",
-      serviceCharge: "310",
-      tax: "400",
-      grandTotal: "1410",
-      paymentMethod: "Cash",
-    },
-    {
-      key: "4",
-      date: "2022-01-25",
-      orderId: "TRX-004",
-      createdBy: "REINARD",
-      checkoutBy: "REINARD",
-      tableNumber: " ",
-      queueNumber: 33,
-      orderType: "TAKEAWAY",
-      subtotal: "1100",
-      serviceCharge: "310",
-      tax: "400",
-      grandTotal: "1410",
-      paymentMethod: "Cash",
-    },
-    {
-      key: "5",
-      date: "2022-01-25",
-      orderId: "TRX-005",
-      createdBy: "REINARD",
-      checkoutBy: "REINARD",
-      tableNumber: " ",
-      queueNumber: 33,
-      orderType: "TAKEAWAY",
-      subtotal: "1100",
-      serviceCharge: "310",
-      tax: "400",
-      grandTotal: "1410",
-      paymentMethod: "Cash",
-    },
-  ];
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
   };
@@ -259,7 +242,9 @@ function AdminTransactionReportViewer() {
   return (
     <div className="transaction-report-viewer-container">
       <div className="brief-information-container">
-        <AdminTransactionBrief />
+        <AdminTransactionBrief
+          briefData={briefData}
+        />
       </div>
       <Table
         scroll={{
@@ -271,7 +256,7 @@ function AdminTransactionReportViewer() {
           pageSizeOptions: ["20", "50", "100"],
         }}
         columns={columnsA}
-        dataSource={dataA}
+        dataSource={orderData}
         onChange={onChange}
       />
     </div>
@@ -279,4 +264,3 @@ function AdminTransactionReportViewer() {
 }
 
 export default AdminTransactionReportViewer;
-
