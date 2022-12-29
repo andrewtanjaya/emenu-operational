@@ -1,5 +1,6 @@
 export const FoodStatus = {
-  PROCESSED: "PROCESSED ",
-  READY: "READY ",
+  PLACED: "PLACED",
+  PROCESSED: "PROCESSED",
+  READY: "READY",
   DELIVERED: "DELIVERED",
 };

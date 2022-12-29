@@ -35,4 +35,12 @@ export class OrderController {
       restaurantId
     );
   }
+
+  static getUnpaidOrderByRestaurantId(
+    restaurantId
+  ) {
+    return Database.getUnpaidOrderByRestaurantId(
+      restaurantId
+    );
+  }
 }

@@ -27,6 +27,7 @@ function AdminLayout() {
 
   const [currentPath, setCurrentPath] = useState("/admin");
 
+
   useEffect(()=>{
     setCurrentPath(window.location.pathname);
   }, [])

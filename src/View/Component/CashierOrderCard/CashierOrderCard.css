@@ -89,5 +89,29 @@
 .order-status-indicator {
   width: 10px;
   height: 10px;
+}
+
+.placed-status {
+  background-color: #F55353;
+}
+
+.processed-status {
+  background-color: #F3CC43;
+  color: black;
+}
+
+.ready-status {
   background-color: #36AB27;
+}
+
+.placed-color {
+  color: #F55353;
+}
+
+.processed-color {
+  color: #F3CC43;
+}
+
+.ready-color {
+  color: #36AB27;
 }/*# sourceMappingURL=CashierOrderCard.css.map */
