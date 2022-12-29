@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useOutlet } from "react-router-dom";
 import AuthConsumer from "../../../hooks/auth";
 import { Menu, Input, Space } from "antd";
 import { useDocumentData } from "react-firebase-hooks/firestore";
@@ -9,10 +9,12 @@ import NavbarRestaurantProfile from "../../Component/NavbarRestaurantProfile/Nav
 import NavbarUserProfile from "../../Component/NavbarUserProfile/NavbarUserProfile";
 import "./CashierLayout.css";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
+import { Context } from "../../../Utils/CashierContext";
 
 function CashierLayout() {
   const data = JSON.parse(sessionStorage.getItem("userData"));
   const [showSearch, setShowSearch] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const { Search } = Input;
   const [user, userLoading, userError, userSnapshot] = useDocumentData(
     UserController.getUserProfileByEmail(data.email),
@@ -61,6 +63,7 @@ function CashierLayout() {
             <input
               className="search-input-cashier-navbar"
               type="text"
+              onChange={(e)=>{setSearchKeyword(e.target.value)}}
               placeholder="Search order or menu..."
             />
             <CloseOutlined
@@ -199,11 +202,14 @@ function CashierLayout() {
     );
   };
 
+  const outlet = useOutlet();
   return (
     <div className="cashier-layout-container">
       {renderNavbar()}
       <div className="cashier-layout-content-container">
-        <Outlet />
+        <Context.Provider value={{ foo: searchKeyword }}>
+          {outlet}
+        </Context.Provider>
       </div>
     </div>
   );

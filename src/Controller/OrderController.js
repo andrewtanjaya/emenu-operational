@@ -35,4 +35,17 @@ export class OrderController {
       restaurantId
     );
   }
+
+  static  getUnpaidOrderByRestaurantIdAndDateBetween(
+    restaurantId,
+    startDate,
+    endDate
+  ) {
+    console.log(restaurantId, startDate);
+    return Database.getUnpaidOrderByRestaurantIdAndDateBetween(
+      restaurantId,
+      startDate,
+      endDate
+    );
+  }
 }

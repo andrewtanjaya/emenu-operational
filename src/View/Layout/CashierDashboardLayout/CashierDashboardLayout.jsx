@@ -7,12 +7,28 @@ import { CategoryController } from "../../../Controller/CategoryController";
 import { useState } from "react";
 import { FoodController } from "../../../Controller/FoodController";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { OrderController } from "../../../Controller/OrderController";
+import { Context } from "../../../Utils/CashierContext";
 
 function CashierDashboardLayout() {
+  const searchKeyword = React.useContext(Context);
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [categoryFilter, setCategoryFilter] = useState("");
   const [groupByCategoryData, setGroupByCategoryData] = useState(null);
   const [groupByTagData, setGroupByTagData] = useState(null);
+  let startDate = new Date().setHours(0, 0, 0, 0);
+  let endDate = new Date().setHours(23, 59, 59, 999);
+
+  const [orders, isLoading, error] = useCollectionData(
+    OrderController.getUnpaidOrderByRestaurantIdAndDateBetween(
+      userSession.restaurantId,
+      startDate,
+      endDate
+    ),
+    {
+      idField: "id",
+    }
+  );
   const [categoryData, isCategoryLoad, categoryError] = useCollectionData(
     CategoryController.getAllCategoriesByRestaurantId(userSession.restaurantId),
     {
@@ -58,15 +74,25 @@ function CashierDashboardLayout() {
     }
   }, [categoryData, foodData]);
 
+  useEffect(() => {
+    console.log("orders", orders);
+  }, [orders]);
+
+  useEffect(()=>{
+    console.log(searchKeyword)
+  }, [searchKeyword])
+
   return (
     <div className="cashier-dashboard-container">
       <h1>Order List</h1>
       <div className="cashier-dashboard-order-list-container">
-        <CashierOrderCard />
-        <CashierOrderCard />
-        <CashierOrderCard />
-        <CashierOrderCard />
-        <CashierOrderCard />
+        {!isLoading && orders ? (
+          orders.map((order) => (
+            <CashierOrderCard key={order.orderId} order={order} />
+          ))
+        ) : (
+          <>Loading</>
+        )}
       </div>
       <h1>Categories</h1>
 
@@ -77,7 +103,7 @@ function CashierDashboardLayout() {
           active={categoryFilter === ""}
           icon="https://img.icons8.com/fluency/48/null/cake.png"
           categoryName="All Menu"
-          countItem={categoryData ? categoryData.length : 0}
+          countItem={foodData ? foodData.length : 0}
         />
         <CashierCategoryCard
           categoryId="RECOMMENDED"
@@ -85,7 +111,11 @@ function CashierDashboardLayout() {
           active={categoryFilter === "RECOMMENDED"}
           icon="https://img.icons8.com/fluency/48/null/cake.png"
           categoryName="Recommended"
-          countItem={groupByTagData ? groupByTagData["RECOMMENDED"].length : 0}
+          countItem={
+            groupByTagData && groupByTagData["RECOMMENDED"]
+              ? groupByTagData["RECOMMENDED"].length
+              : 0
+          }
         />
         {categoryData && !isCategoryLoad ? (
           categoryData.map((category) => {
@@ -98,7 +128,8 @@ function CashierDashboardLayout() {
                 icon={category.categoryIcon}
                 categoryName={category.categoryName}
                 countItem={
-                  groupByCategoryData
+                  groupByCategoryData &&
+                  groupByCategoryData[category.categoryId]
                     ? groupByCategoryData[category.categoryId].length
                     : 0
                 }

@@ -91,5 +91,29 @@
 .order-status-indicator{
     width: 10px;
     height: 10px;
+    
+}
+
+.placed-status{
+    background-color: $red;
+}
+
+.processed-status{
+    background-color: $yellow;
+}
+
+.ready-status{
     background-color: $primary-color;
+}
+
+.placed-color{
+    color: $red;
+}
+
+.processed-color{
+    color: $yellow;
+}
+
+.ready-color{
+    color: $primary-color;
 }
