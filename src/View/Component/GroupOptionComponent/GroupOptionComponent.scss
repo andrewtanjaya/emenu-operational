@@ -1,0 +1,58 @@
+@import "../../../Utils/variables";
+
+.group-option-container{
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    hr{
+        border: 1px solid $inactive;
+    }
+    p{
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.group-option-title{
+    width: 100%;
+    border-bottom: 1px solid $inactive;
+    p:nth-child(2){
+        color: $primary-color;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        span{
+            color: $inactive;
+            font-weight: 500;
+        }
+    }
+}
+
+.option-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.atc-option-container{
+    width: 100%;
+    display: flex;
+    padding: 12px 0;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $inactive;
+    p{
+        font-size: 14px;
+    }
+}
+
+.option-container-left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
