@@ -10,6 +10,9 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { OrderController } from "../../../Controller/OrderController";
 import { Context } from "../../../Utils/CashierContext";
 import OrderDetailDrawer from "../../Component/OrderDetailDrawer/OrderDetailDrawer";
+import AddFoodDrwaer from "../../Component/AddFoodDrawer/AddFoodDrawer";
+import AddFoodDrawer from "../../Component/AddFoodDrawer/AddFoodDrawer";
+import { Button, Drawer, Space } from "antd";
 
 function CashierDashboardLayout() {
   const searchKeyword = React.useContext(Context).searchKeyword;
@@ -102,7 +105,6 @@ function CashierDashboardLayout() {
   }, [categoryData, filteredFood]);
 
   useEffect(() => {
-    console.log("orders", orders);
     if (orders) {
       setFilteredOrder(
         orders.filter((order) =>
@@ -112,6 +114,11 @@ function CashierDashboardLayout() {
     }
   }, [orders]);
 
+  const [open, setOpen] = useState(false);
+  const [selectedFood, setSelectedFood] = useState(null);
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="cashier-dashboard-container">
       <OrderDetailDrawer
@@ -196,17 +203,41 @@ function CashierDashboardLayout() {
         /> */}
         {filteredFood && !isFoodLoad ? (
           filteredFood.map((food) => (
-            <CashierMenuCard
-              key={food.foodId}
-              foodName={food.foodName}
-              foodPrice={food.foodPrice}
-              foodImage={food.foodPictures[0]}
-            />
+            <>
+              <CashierMenuCard
+                key={food.foodId}
+                foodName={food.foodName}
+                foodPrice={food.foodPrice}
+                foodImage={food.foodPictures[0]}
+                setOpen={setOpen}
+                food={food}
+                setSelectedFood={setSelectedFood}
+              />
+            </>
           ))
         ) : (
           <div>Loading...</div>
         )}
       </div>
+      <Drawer
+        className="atc-drawer"
+        placement="right"
+        width={450}
+        onClose={onClose}
+        closable={false}
+        open={open}
+      >
+        {selectedFood && (
+          <>
+            <div className="add-to-cart-drawer-container">
+              <AddFoodDrawer
+                foodData={selectedFood}
+                setOpen={setOpen}
+              ></AddFoodDrawer>
+            </div>
+          </>
+        )}
+      </Drawer>
     </div>
   );
 }

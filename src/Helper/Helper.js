@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import { CartController } from "../Controller/CartController";
 import { CategoryController } from "../Controller/CategoryController";
 import { FoodController } from "../Controller/FoodController";
 import { GroupController } from "../Controller/GroupController";
@@ -13,6 +14,7 @@ const FOOD_PREFIX = "FOD-";
 const GROUP_PREFIX = "GRP-";
 const OPTION_PREFIX = "OPT-";
 const ORDER_PREFIX = "TRX-";
+const CART_PREFIX = "CRT-";
 export const generateRandomId = (type) => {
   let unique_id = uuid().slice(0, 8);
 
@@ -77,6 +79,16 @@ export const generateRandomId = (type) => {
           return unique_id;
         } else {
           generateRandomId(IdTypes.ORDER, "");
+        }
+      });
+      return unique_id;
+    case IdTypes.CART:
+      unique_id = CART_PREFIX + unique_id;
+      CartController.getCartById(unique_id).then((cart) => {
+        if (cart === null) {
+          return unique_id;
+        } else {
+          generateRandomId(IdTypes.CART, "");
         }
       });
       return unique_id;
