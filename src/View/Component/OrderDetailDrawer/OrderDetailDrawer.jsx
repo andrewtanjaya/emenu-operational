@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { OrderController } from "../../../Controller/OrderController";
 import CashierOrderDetailsDrawerContent from "../CashierOrderDetailsDrawerContent/CashierOrderDetailsDrawerContent";
 import CashierPaymentDrawerContent from "../CashierPaymentDrawerContent/CashierPaymentDrawerContent";
+import CashierThankyouDrawerContent from "../CashierThankyouDrawerContent/CashierThankyouDrawerContent";
 
 function OrderDetailDrawer(props) {
   const [page, setPage] = useState(0);
@@ -20,7 +21,15 @@ function OrderDetailDrawer(props) {
   return (
     <div>
       <Drawer
-        title={page === 0 ? "Order Detail" : page === 1 ? "Payment" : "none"}
+        title={
+          page === 0
+            ? "Order Detail"
+            : page === 1
+            ? "Payment"
+            : page === 2
+            ? "Thank you"
+            : "none"
+        }
         placement="right"
         width={500}
         onClose={() => {
@@ -39,14 +48,17 @@ function OrderDetailDrawer(props) {
           />
         ) : page === 1 ? (
           <CashierPaymentDrawerContent
+            allOrder={props.allOrder}
             paymentMethod={paymentMethod}
             setPaymentMethod={setPaymentMethod}
             page={page}
             setPage={setPage}
             order={props.selectedOrder}
           />
+        ) : page === 2 ? (
+          <CashierThankyouDrawerContent orderId={props.selectedOrder.orderId} />
         ) : (
-          <>{page}</>
+          <>Not Found</>
         )}
       </Drawer>
     </div>

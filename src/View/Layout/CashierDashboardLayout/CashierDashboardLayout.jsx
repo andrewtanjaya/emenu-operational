@@ -19,15 +19,14 @@ function CashierDashboardLayout() {
   const [groupByTagData, setGroupByTagData] = useState(null);
 
   const [openOrderDetailDrawer, setOpenOrderDetailDrawer] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const onOrderDetailDrawerClose = () => {
     setOpenOrderDetailDrawer(false);
   };
   const showOrderDetailDrawer = (order) => {
-    setSelectedOrder(order)
+    setSelectedOrder(order);
     setOpenOrderDetailDrawer(true);
   };
-
 
   const [orders, isLoading, error] = useCollectionData(
     OrderController.getUnpaidOrderByRestaurantId(userSession.restaurantId),
@@ -86,9 +85,11 @@ function CashierDashboardLayout() {
           : foodData
       );
       setFilteredOrder(
-        orders ? orders.filter((order) =>
-          order.orderId.toLowerCase().includes(searchKeyword.toLowerCase())
-        ) : orders
+        orders
+          ? orders.filter((order) =>
+              order.orderId.toLowerCase().includes(searchKeyword.toLowerCase())
+            )
+          : orders
       );
     }
   }, [categoryFilter, foodData, searchKeyword]);
@@ -102,7 +103,7 @@ function CashierDashboardLayout() {
 
   useEffect(() => {
     console.log("orders", orders);
-    if(orders){
+    if (orders) {
       setFilteredOrder(
         orders.filter((order) =>
           order.orderId.toLowerCase().includes(searchKeyword.toLowerCase())
@@ -113,13 +114,22 @@ function CashierDashboardLayout() {
 
   return (
     <div className="cashier-dashboard-container">
-      <OrderDetailDrawer selectedOrder={selectedOrder} open={openOrderDetailDrawer} onClose={onOrderDetailDrawerClose}/>
+      <OrderDetailDrawer
+        allOrder={orders}
+        selectedOrder={selectedOrder}
+        open={openOrderDetailDrawer}
+        onClose={onOrderDetailDrawerClose}
+      />
       <h1>Order List</h1>
       <div className="cashier-dashboard-order-list-container">
         {!isLoading && filteredOrder ? (
           filteredOrder.map((order) =>
             order.orderItems.length ? (
-              <CashierOrderCard showOrderDetailDrawer={showOrderDetailDrawer} key={order.orderId} order={order} />
+              <CashierOrderCard
+                showOrderDetailDrawer={showOrderDetailDrawer}
+                key={order.orderId}
+                order={order}
+              />
             ) : (
               <></>
             )
