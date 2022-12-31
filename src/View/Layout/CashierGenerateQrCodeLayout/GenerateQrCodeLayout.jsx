@@ -59,13 +59,6 @@ function GenerateQrCodeLayout() {
 
   useEffect(() => {
     if (!restaurantLoading) {
-      setTaxRate(restaurant.tax);
-      setServiceChargeRate(restaurant.serviceCharge);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!restaurantLoading) {
       form.setFieldsValue({ orderQueue: restaurant.takeAwayOrderCounter + 1 });
     }
   }, [restaurant]);
@@ -81,10 +74,6 @@ function GenerateQrCodeLayout() {
           createOrder(values);
         } else {
           let orderData = resp.docs[0].data();
-          console.log(orderData.orderCreatedDate);
-          console.log(startDate);
-          console.log(new Date(orderData.orderCreatedDate));
-          console.log(new Date(startDate));
           if (orderData.orderCreatedDate < startDate) {
             let d = new Date(orderData.orderCreatedDate);
             let dateString =
@@ -139,8 +128,8 @@ function GenerateQrCodeLayout() {
       Date.now(),
       null,
       [],
-      taxRate,
-      serviceChargeRate,
+      restaurant.tax,
+      restaurant.serviceCharge,
       0,
       0,
       0,

@@ -5,6 +5,7 @@ import { FoodController } from "../Controller/FoodController";
 import { GroupController } from "../Controller/GroupController";
 import { OptionController } from "../Controller/OptionController";
 import { OrderController } from "../Controller/OrderController";
+import { OrderQueueController } from "../Controller/OrderQueueController";
 import { RestaurantController } from "../Controller/RestaurantController";
 import { IdTypes } from "../Enum/IdTypes";
 
@@ -15,6 +16,7 @@ const GROUP_PREFIX = "GRP-";
 const OPTION_PREFIX = "OPT-";
 const ORDER_PREFIX = "TRX-";
 const CART_PREFIX = "CRT-";
+const ORDER_QUEUE_PREFIX = "OQU-";
 export const generateRandomId = (type) => {
   let unique_id = uuid().slice(0, 8);
 
@@ -89,6 +91,16 @@ export const generateRandomId = (type) => {
           return unique_id;
         } else {
           generateRandomId(IdTypes.CART, "");
+        }
+      });
+      return unique_id;
+    case IdTypes.ORDER_QUEUE:
+      unique_id = ORDER_QUEUE_PREFIX + unique_id;
+      OrderQueueController.getOrderQueueById(unique_id).then((orderQueue) => {
+        if (orderQueue === null) {
+          return unique_id;
+        } else {
+          generateRandomId(IdTypes.ORDER_QUEUE, "");
         }
       });
       return unique_id;

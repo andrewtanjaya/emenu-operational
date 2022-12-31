@@ -13,23 +13,6 @@ import { OrderType } from "../../../Enum/OrderType";
 import { CartController } from "../../../Controller/CartController";
 import { Cart } from "../../../Model/Cart";
 
-// const foodTypeOption = {
-//     groupId:"GRP-11111",
-//     groupName:"Food Order Type",
-//     isRequired:true,
-//     option:[
-//         {
-//             optionId:"OPT-11111",
-//             optionName:"Dine In",
-//             optionPrice:0
-//         },
-//         {
-//             optionId:"OPT-11111",
-//             optionName:"Take ",
-//             optionPrice:0
-//         }
-//     ]
-// }
 const AddFoodDrawer = (props) => {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   const [form] = Form.useForm();
@@ -41,6 +24,7 @@ const AddFoodDrawer = (props) => {
   useEffect(() => {
     form.resetFields();
     setIsLoading(true);
+    setQty(1);
     GroupController.getAllGroupsByFoodIdDocs(props.foodData.foodId).then(
       (groupSnap) => {
         let groupTemp = [];
@@ -171,6 +155,7 @@ const AddFoodDrawer = (props) => {
   function resetAndCloseModal() {
     setGroupData([]);
     form.resetFields();
+    setQty(1);
     props.setOpen(false);
   }
 

@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { ordersRef } from "../Config/Firebase";
 
 export class Order {
@@ -51,5 +51,15 @@ export class Order {
       doc(ordersRef, order.orderId),
       Object.assign({}, order)
     );
+  }
+
+  static async updateOrderItems(order) {
+    return await updateDoc(doc(ordersRef, order.orderId), {
+      orderItems: order.orderItems,
+      totalOrderAmount: order.totalOrderAmount,
+      serviceChargeAmount: order.serviceChargeAmount,
+      taxAmount: order.taxAmount,
+      finalTotalOrderAmount: order.finalTotalOrderAmount,
+    });
   }
 }

@@ -1,0 +1,122 @@
+@import "../../../Utils/variables";
+
+.cart-item-card-container{
+    display: flex;
+    width: 100%;
+    background-color: $white;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    column-gap: 10px;
+    cursor: pointer;
+    p{
+        font-size: 14px;
+    }
+    span{
+        font-size: 14px;
+    }
+    border-radius: 10px;
+    box-shadow: 0 0 8px $inactive;
+}
+
+.cart-item-picture{
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    align-self: center;
+}
+
+.cart-item-card-description{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 60%;
+    column-gap: 0;
+
+}
+
+.cart-item-card-price{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: $primary-color;
+    p {
+        font-size: 14px;
+    }
+}
+
+.info-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    p{
+        word-break: break-all;
+        margin: 0;
+        padding: 0;
+        color: $inactive;
+    }
+}
+
+.action-button-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top:5px;
+    column-gap: 10px;
+    button{
+        padding: 4px 10px;
+        background-color: $white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    button:nth-child(1){
+        border: 1px solid $primary-color;
+        color: $primary-color;
+    }
+    button:nth-child(2){
+        border: 1px solid $red;
+        color: $red;
+    }
+}
+
+.group-option-cart-name{
+    min-width: 52px;
+}
+
+@media only screen and (max-width: $md) {
+    .cart-item-picture{
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        align-self: center;
+    }
+    .cart-item-card-container{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        column-gap: 10px;
+        cursor: pointer;
+        p{
+            font-size: 14px;
+        }
+        span{
+            font-size: 14px;
+        }
+
+    }
+
+    .cart-item-card-price{
+        width: 30%;
+    }
+}
+
+
