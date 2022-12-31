@@ -25,6 +25,7 @@ export const categoriesRef = collection(firestore, "categories");
 export const cartsRef = collection(firestore, "carts");
 export const ordersRef = collection(firestore, "orders");
 export const orderQueuesRef = collection(firestore, "orderQueues");
+export const orderSummaryRef = collection(firestore, "orderSummaries");
 export const restaurantQrisRef = (fileName) => {
   return ref(storage, "restaurant-qris/" + fileName);
 };

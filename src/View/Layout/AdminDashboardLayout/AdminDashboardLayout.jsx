@@ -268,9 +268,10 @@ function AdminDashboardLayout() {
         <Table
           pagination={false}
           style={{ width: "100%" }}
-          dataSource={(foods.sort((a, b) => (a > b ? -1 : 1))).slice(0,5)}
+          dataSource={foods ? (foods.sort((a, b) => (a > b ? -1 : 1))).slice(0,5) : foods}
           columns={columns}
         />
+
       </div>
     </div>
   );

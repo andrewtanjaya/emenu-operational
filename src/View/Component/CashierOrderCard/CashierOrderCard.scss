@@ -10,6 +10,7 @@
     box-sizing: border-box;
     border-radius: 4px;
     border: 1px solid #cacaca74;
+    cursor: pointer;
 }
 
 .order-number-container{
@@ -95,7 +96,7 @@
 }
 
 .placed-status{
-    background-color: $red;
+    background-color: $purple;
 }
 
 .processed-status{
@@ -108,7 +109,7 @@
 }
 
 .placed-color{
-    color: $red;
+    color: $purple;
 }
 
 .processed-color{
