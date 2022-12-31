@@ -6,4 +6,5 @@ export const IdTypes = {
   OPTION: "OPTION",
   ORDER: "ORDER",
   CART: "CART",
+  ORDER_QUEUE: "ORDER_QUEUE",
 };

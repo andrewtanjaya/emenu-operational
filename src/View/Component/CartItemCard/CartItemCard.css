@@ -1,0 +1,119 @@
+.cart-item-card-container {
+  display: flex;
+  width: 100%;
+  background-color: #FFFFFF;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0 0 8px #CACACA;
+}
+.cart-item-card-container p {
+  font-size: 14px;
+}
+.cart-item-card-container span {
+  font-size: 14px;
+}
+
+.cart-item-picture {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  align-self: center;
+}
+
+.cart-item-card-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 60%;
+  -moz-column-gap: 0;
+       column-gap: 0;
+}
+
+.cart-item-card-price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #36AB27;
+}
+.cart-item-card-price p {
+  font-size: 14px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+.info-container p {
+  word-break: break-all;
+  margin: 0;
+  padding: 0;
+  color: #CACACA;
+}
+
+.action-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5px;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+.action-button-container button {
+  padding: 4px 10px;
+  background-color: #FFFFFF;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.action-button-container button:nth-child(1) {
+  border: 1px solid #36AB27;
+  color: #36AB27;
+}
+.action-button-container button:nth-child(2) {
+  border: 1px solid #F55353;
+  color: #F55353;
+}
+
+.group-option-cart-name {
+  min-width: 52px;
+}
+
+@media only screen and (max-width: 768px) {
+  .cart-item-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    align-self: center;
+  }
+  .cart-item-card-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+    cursor: pointer;
+  }
+  .cart-item-card-container p {
+    font-size: 14px;
+  }
+  .cart-item-card-container span {
+    font-size: 14px;
+  }
+  .cart-item-card-price {
+    width: 30%;
+  }
+}/*# sourceMappingURL=CartItemCard.css.map */

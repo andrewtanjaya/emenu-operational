@@ -26,6 +26,7 @@ import CashierDashboardLayout from "./View/Layout/CashierDashboardLayout/Cashier
 import GenerateQrCodeLayout from "./View/Layout/CashierGenerateQrCodeLayout/GenerateQrCodeLayout";
 import AdminDashboardLayout from "./View/Layout/AdminDashboardLayout/AdminDashboardLayout";
 import CashierOrderListLayout from "./View/Layout/CashierOrderListLayout/CashierOrderListLayout";
+import CashierCartPage from "./View/Layout/CashierCartPage/CashierCartPage";
 
 function App() {
   return (
@@ -87,10 +88,8 @@ function App() {
             path="/cashier/generateQrCode"
             element={<GenerateQrCodeLayout />}
           />
-          <Route
-            path="/cashier/orders"
-            element={<CashierOrderListLayout />}
-          />
+          <Route path="/cashier/orders" element={<CashierOrderListLayout />} />
+          <Route path="/cashier/cart" element={<CashierCartPage />} />
         </Route>
         <Route
           path="/kitchen"

@@ -53,10 +53,20 @@ export class Order {
     );
   }
 
+
   static async updateOrder(order) {
     return await updateDoc(
       doc(ordersRef, order.orderId),
       Object.assign({}, order)
     );
   }
+  
+  static async updateOrderItems(order) {
+    return await updateDoc(doc(ordersRef, order.orderId), {
+      orderItems: order.orderItems,
+      totalOrderAmount: order.totalOrderAmount,
+      serviceChargeAmount: order.serviceChargeAmount,
+      taxAmount: order.taxAmount,
+      finalTotalOrderAmount: order.finalTotalOrderAmount,
+    });
 }
