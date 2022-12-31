@@ -9,6 +9,7 @@ import { FoodController } from "../../../Controller/FoodController";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { OrderController } from "../../../Controller/OrderController";
 import { Context } from "../../../Utils/CashierContext";
+import OrderDetailDrawer from "../../Component/OrderDetailDrawer/OrderDetailDrawer";
 import AddFoodDrwaer from "../../Component/AddFoodDrawer/AddFoodDrawer";
 import AddFoodDrawer from "../../Component/AddFoodDrawer/AddFoodDrawer";
 import { Button, Drawer, Space } from "antd";
@@ -19,6 +20,16 @@ function CashierDashboardLayout() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [groupByCategoryData, setGroupByCategoryData] = useState(null);
   const [groupByTagData, setGroupByTagData] = useState(null);
+
+  const [openOrderDetailDrawer, setOpenOrderDetailDrawer] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const onOrderDetailDrawerClose = () => {
+    setOpenOrderDetailDrawer(false);
+  };
+  const showOrderDetailDrawer = (order) => {
+    setSelectedOrder(order);
+    setOpenOrderDetailDrawer(true);
+  };
 
   const [orders, isLoading, error] = useCollectionData(
     OrderController.getUnpaidOrderByRestaurantId(userSession.restaurantId),
@@ -110,12 +121,22 @@ function CashierDashboardLayout() {
   };
   return (
     <div className="cashier-dashboard-container">
+      <OrderDetailDrawer
+        allOrder={orders}
+        selectedOrder={selectedOrder}
+        open={openOrderDetailDrawer}
+        onClose={onOrderDetailDrawerClose}
+      />
       <h1>Order List</h1>
       <div className="cashier-dashboard-order-list-container">
         {!isLoading && filteredOrder ? (
           filteredOrder.map((order) =>
             order.orderItems.length ? (
-              <CashierOrderCard key={order.orderId} order={order} />
+              <CashierOrderCard
+                showOrderDetailDrawer={showOrderDetailDrawer}
+                key={order.orderId}
+                order={order}
+              />
             ) : (
               <></>
             )
@@ -128,6 +149,7 @@ function CashierDashboardLayout() {
 
       <div className="cashier-dashboard-category-list-container">
         <CashierCategoryCard
+          key="all"
           categoryId=""
           setCategoryFilter={setCategoryFilter}
           active={categoryFilter === ""}
@@ -136,6 +158,7 @@ function CashierDashboardLayout() {
           countItem={filteredFood ? filteredFood.length : 0}
         />
         <CashierCategoryCard
+          key="recommended"
           categoryId="RECOMMENDED"
           setCategoryFilter={setCategoryFilter}
           active={categoryFilter === "RECOMMENDED"}

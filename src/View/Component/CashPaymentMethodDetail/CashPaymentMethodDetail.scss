@@ -1,0 +1,40 @@
+@import "../../../Utils/variables";
+
+.cash-payment-method-detail-container{
+    margin-top: 20px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: $bg-color;
+}
+
+.cash-grand-total-container{
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    p{
+        margin: 0 !important;
+        padding: 0;
+    }
+}
+
+.cash-grand-total-container{
+    input{
+        padding: 4px;
+        border: 1px solid $inactive;
+        width: 100px;
+    }
+}
+
+.change-container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    p{
+        margin: 0 !important;
+    }
+    align-items: center;
+    background-color: #36ab277d;
+}

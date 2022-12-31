@@ -1,0 +1,53 @@
+@import "../../../Utils/variables";
+
+.order-item-detail-container{
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    p{
+        margin: 0;
+        padding: 0;
+    }
+    border-top: 1px solid $inactive;
+}
+.order-item-detail-right{
+    row-gap: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.order-item-detail-left{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    ul{
+        list-style: none;
+        margin: 0;
+        padding: 0 22px;
+    }
+}
+
+.order-item-price{
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.order-status-indicator {
+    width: 10px;
+    height: 10px;
+}
+
+.delete-order-item-button{
+    background-color: white;
+    border: 1px solid $red;
+    color: $red;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
