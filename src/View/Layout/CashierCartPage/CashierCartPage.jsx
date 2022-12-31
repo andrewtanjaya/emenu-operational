@@ -1,4 +1,4 @@
-import { Form, InputNumber, Radio } from "antd";
+import { Drawer, Form, InputNumber, Radio } from "antd";
 import Input from "antd/es/input/Input";
 import md5 from "md5";
 import React, { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import { generateRandomId } from "../../../Helper/Helper";
 import { OrderItem } from "../../../Model/OrderItem";
 import { OrderQueue } from "../../../Model/OrderQueue";
 import CartItemCard from "../../Component/CartItemCard/CartItemCard";
+import EditFoodDrawer from "../../Component/EditFoodDrawer/EditFoodDrawer";
 import "./CashierCartPage.css";
 
 function CashierCartPage() {
@@ -172,6 +173,12 @@ function CashierCartPage() {
     OrderQueueController.addOrderQueue(newOrderQueue).then(() => {});
   }
 
+  const [open, setOpen] = useState(false);
+  const [selectedCartItem, setSelectedCartItem] = useState(null);
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     !cartLoading && (
       <>
@@ -260,6 +267,8 @@ function CashierCartPage() {
                                 key={item.cartItemId}
                                 cartItem={item}
                                 cartData={cart}
+                                setOpen={setOpen}
+                                setSelectedCartItem={setSelectedCartItem}
                               ></CartItemCard>
                             );
                           })}
@@ -278,6 +287,8 @@ function CashierCartPage() {
                                 key={item.cartItemId}
                                 cartItem={item}
                                 cartData={cart}
+                                setOpen={setOpen}
+                                setSelectedCartItem={setSelectedCartItem}
                               ></CartItemCard>
                             );
                           })}
@@ -295,6 +306,27 @@ function CashierCartPage() {
                   ></img> */}
                 </>
               )}
+              <Drawer
+                className="atc-drawer"
+                placement="right"
+                width={450}
+                onClose={onClose}
+                closable={false}
+                open={open}
+              >
+                {selectedCartItem && (
+                  <>
+                    <div className="add-to-cart-drawer-container">
+                      <EditFoodDrawer
+                        cartItemId={selectedCartItem.cartItemId}
+                        cartItem={selectedCartItem}
+                        cart={cart}
+                        setOpen={setOpen}
+                      ></EditFoodDrawer>
+                    </div>
+                  </>
+                )}
+              </Drawer>
             </div>
             <div className="cart-right-container">
               <div className="cart-summary-container">
