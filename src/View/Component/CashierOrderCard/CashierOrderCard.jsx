@@ -32,9 +32,16 @@ function CashierOrderCard(props) {
     }
   }, [props.order]);
   return (
-    <div className="cashier-order-card-container">
+    <div
+      className="cashier-order-card-container"
+      onClick={() => props.showOrderDetailDrawer(props.order)}
+    >
       <div className="order-number-container">
-        <p>{props.order.orderType === OrderType.DINE_IN ? props.order.orderTable : props.order.orderQueue}</p>
+        <p>
+          {props.order.orderType === OrderType.DINE_IN
+            ? props.order.orderTable
+            : props.order.orderQueue}
+        </p>
       </div>
       <div className="order-description-container">
         <p>
@@ -65,7 +72,10 @@ function CashierOrderCard(props) {
           {orderItemBadgeStatus === OrderItemStatus.PLACED ? (
             <LockFilled className="badge-icon" />
           ) : orderItemBadgeStatus === OrderItemStatus.PROCESSED ? (
-            <FieldTimeOutlined style={{color: "black"}} className="badge-icon" />
+            <FieldTimeOutlined
+              style={{ color: "black" }}
+              className="badge-icon"
+            />
           ) : orderItemBadgeStatus === OrderItemStatus.READY ? (
             <CheckOutlined className="badge-icon" />
           ) : orderItemBadgeStatus === OrderItemStatus.DELIVERED ? (

@@ -1,0 +1,35 @@
+.cash-payment-method-detail-container {
+  margin-top: 20px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cash-grand-total-container {
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+.cash-grand-total-container p {
+  margin: 0 !important;
+  padding: 0;
+}
+
+.cash-grand-total-container input {
+  padding: 4px;
+  border: 1px solid #CACACA;
+  width: 100px;
+}
+
+.change-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+  background-color: rgba(54, 171, 39, 0.4901960784);
+}
+.change-container p {
+  margin: 0 !important;
+}/*# sourceMappingURL=CashPaymentMethodDetail.css.map */

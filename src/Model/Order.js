@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { ordersRef } from "../Config/Firebase";
 
 export class Order {
@@ -48,6 +48,13 @@ export class Order {
 
   static async addOrder(order) {
     return await setDoc(
+      doc(ordersRef, order.orderId),
+      Object.assign({}, order)
+    );
+  }
+
+  static async updateOrder(order) {
+    return await updateDoc(
       doc(ordersRef, order.orderId),
       Object.assign({}, order)
     );

@@ -8,6 +8,7 @@
   box-sizing: border-box;
   border-radius: 4px;
   border: 1px solid rgba(202, 202, 202, 0.4549019608);
+  cursor: pointer;
 }
 
 .order-number-container {
@@ -92,7 +93,7 @@
 }
 
 .placed-status {
-  background-color: #F55353;
+  background-color: #4F49F7;
 }
 
 .processed-status {
@@ -105,7 +106,7 @@
 }
 
 .placed-color {
-  color: #F55353;
+  color: #4F49F7;
 }
 
 .processed-color {

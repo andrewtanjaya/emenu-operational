@@ -12,6 +12,10 @@ export class OrderController {
     return Order.addOrder(order);
   }
 
+  static async updateOrder(order) {
+    return Order.updateOrder(order);
+  }
+
   static getTakeAwayOrdersByDateBetween(startDate, endDate) {
     return Database.getTakeAwayOrdersByDateBetween(startDate, endDate);
   }

@@ -1,0 +1,88 @@
+.order-details-drawer-container {
+  height: 100%;
+  min-height: 100%;
+}
+
+.payment-total-text {
+  margin-bottom: 0;
+}
+
+#secondary-button-drawer {
+  background-color: white;
+  border: 1px solid #36AB27;
+  color: #36AB27;
+  margin-top: 10px;
+}
+
+.payment-method-title {
+  margin-top: 40px;
+}
+
+.radio-button-payment-method {
+  padding: 0 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.payment-method-content {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+}
+.payment-method-content p {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+.payment-method-content p b {
+  font-size: 16px;
+}
+.payment-method-content hr {
+  width: 100%;
+  height: 0px;
+}
+.payment-method-content button {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: #36AB27;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.other-payment-method-input {
+  border: 1px solid #CACACA;
+  padding: 4px;
+}
+
+.qris-payment-method-container {
+  margin-top: 20px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F9F9F9;
+}
+.qris-payment-method-container img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}/*# sourceMappingURL=CashierPaymentDrawerContent.css.map */
