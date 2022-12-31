@@ -21,12 +21,14 @@ function CartItemCard(props) {
   }
 
   function handleEdit(cartItem) {
-    navigate(`/edit/${cartItem.cartItemId}`, {
-      state: {
-        cartItem: cartItem,
-        cartData: props.cartData,
-      },
-    });
+    // navigate(`/edit/${cartItem.cartItemId}`, {
+    //   state: {
+    //     cartItem: cartItem,
+    //     cartData: props.cartData,
+    //   },
+    // });
+    props.setSelectedCartItem(cartItem);
+    props.setOpen(true);
   }
   return (
     <div className="cart-item-card-container">
