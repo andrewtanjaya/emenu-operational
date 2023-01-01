@@ -5,6 +5,7 @@ import {
   groupsRef,
   optionsRef,
   ordersRef,
+  orderSummaryRef,
   usersRef,
 } from "../Config/Firebase";
 import { PaymentStatus } from "../Enum/PaymentStatus";
@@ -75,6 +76,16 @@ export class Database {
       where("orderCreatedDate", "<=", endDate)
     );
     return orderSnap;
+  }
+
+  static async getOrderSummaryByDateBetween(startDate, endDate) {
+    return await getDocs(
+      query(
+        orderSummaryRef,
+        where("orderPaidDate", ">=", startDate),
+        where("orderPaidDate", "<=", endDate)
+      )
+    );
   }
 
   static getUnpaidOrderByRestaurantId(restaurantId) {
