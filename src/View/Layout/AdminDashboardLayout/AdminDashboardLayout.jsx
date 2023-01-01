@@ -7,6 +7,7 @@ import { OrderController } from "../../../Controller/OrderController";
 import { useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { FoodController } from "../../../Controller/FoodController";
+import { OrderSummaryController } from "../../../Controller/OrderSummaryController";
 
 function AdminDashboardLayout() {
   const { RangePicker } = DatePicker;
@@ -24,8 +25,12 @@ function AdminDashboardLayout() {
   const [allOrderData, setAllOrderData] = useState([]);
   const [todayOrderData, setTodayOrderData] = useState([]);
   const [rangedOrderData, setRangedOrderData] = useState([]);
+  const [orderSummaryData, setOrderSummaryData] = useState(null);
+  const [menuRankData, setMenuRankData] = useState([]);
   const [startDateReport, setStartDateReport] = useState(0);
   const [endDateReport, setEndDateReport] = useState(0);
+  const [startDateMenu, setStartDateMenu] = useState(0);
+  const [endDateMenu, setEndDateMenu] = useState(0);
 
   let todayStartDate = new Date().setHours(0, 0, 0, 0);
   let todayEndDate = new Date().setHours(23, 59, 59, 999);
@@ -36,6 +41,78 @@ function AdminDashboardLayout() {
       idField: "id",
     }
   );
+
+  useEffect(() => {
+    if (startDateMenu && endDateMenu) {
+      OrderSummaryController.getOrderSummaryByDateBetween(
+        startDateMenu,
+        endDateMenu
+      ).then((res) => {
+        let tempOrderSum = [];
+        res.docs.map((doc) => {
+          let order = doc.data();
+          order.key = order.orderSummaryId;
+          tempOrderSum = [...tempOrderSum, order];
+        });
+        setOrderSummaryData(tempOrderSum);
+      });
+    }
+  }, [startDateMenu, endDateMenu]);
+
+  useEffect(() => {
+    if (orderSummaryData) {
+      let menuRankTemp = {};
+      for (let i = 0; i < orderSummaryData.length; i++) {
+        for (
+          let j = 0;
+          j < Object.keys(orderSummaryData[i].soldItemSummary).length;
+          j++
+        ) {
+          if (
+            menuRankTemp[Object.keys(orderSummaryData[i].soldItemSummary)[j]]
+          ) {
+            menuRankTemp[
+              Object.keys(orderSummaryData[i].soldItemSummary)[j]
+            ].totalSoldQty +=
+              orderSummaryData[i].soldItemSummary[
+                Object.keys(orderSummaryData[i].soldItemSummary)[j]
+              ].totalSoldQty;
+            menuRankTemp[
+              Object.keys(orderSummaryData[i].soldItemSummary)[j]
+            ].totalSales +=
+              orderSummaryData[i].soldItemSummary[
+                Object.keys(orderSummaryData[i].soldItemSummary)[j]
+              ].totalSales;
+          } else {
+            menuRankTemp[Object.keys(orderSummaryData[i].soldItemSummary)[j]] =
+              {
+                totalSoldQty:
+                  orderSummaryData[i].soldItemSummary[
+                    Object.keys(orderSummaryData[i].soldItemSummary)[j]
+                  ].totalSoldQty,
+                totalSales:
+                  orderSummaryData[i].soldItemSummary[
+                    Object.keys(orderSummaryData[i].soldItemSummary)[j]
+                  ].totalSales,
+              };
+          }
+        }
+      }
+      menuRankTemp = Object.keys(menuRankTemp).map((k) => ({
+        key: k,
+        foodName: k,
+        totalSold: menuRankTemp[k].totalSoldQty,
+        totalSales: menuRankTemp[k].totalSales,
+      }));
+      console.log("before", menuRankTemp);
+      menuRankTemp = menuRankTemp.sort((a, b) =>
+        a.totalSold > b.totalSold ? -1 : 1
+      );
+      menuRankTemp = menuRankTemp.slice(0, 5);
+      console.log("after", menuRankTemp);
+      setMenuRankData(menuRankTemp);
+    }
+  }, [orderSummaryData]);
 
   useEffect(() => {
     OrderController.getAllOrderByRestaurantId(userSession.restaurantId).then(
@@ -73,7 +150,7 @@ function AdminDashboardLayout() {
   }, []);
 
   useEffect(() => {
-    console.log(foods)
+    console.log(foods);
     let tempTodayData = todayOrderData;
     if (todayTotalSalesDropdown !== "All") {
       tempTodayData = todayOrderData.filter((order) =>
@@ -111,17 +188,25 @@ function AdminDashboardLayout() {
   }, [rangedTotalSalesDropdown]);
 
   useEffect(() => {
-    let tempRangeData = allOrderData.filter(
-      (order) =>
-        order.orderCreatedDate >= startDateReport &&
-        order.orderCreatedDate <= endDateReport
-    );
-    let tempTotalSalesRanged = 0;
-    tempRangeData.forEach((order) => {
-      tempTotalSalesRanged += order.totalOrderAmount;
-    });
-    setTotalSalesByRange(tempTotalSalesRanged);
-    setRangedOrderData(tempRangeData);
+    if (startDateReport && endDateReport) {
+      OrderSummaryController.getOrderSummaryByDateBetween(
+        startDateReport,
+        endDateReport
+      ).then((res) => {
+        let tempOrderSum = [];
+        res.docs.map((doc) => {
+          let order = doc.data();
+          order.key = order.orderSummaryId;
+          tempOrderSum = [...tempOrderSum, order];
+        });
+        let tempTotalSalesRanged = 0;
+        tempOrderSum.forEach((order) => {
+          tempTotalSalesRanged += order.totalOrderAmount;
+        });
+        setTotalSalesByRange(tempTotalSalesRanged);
+        setRangedOrderData(tempOrderSum);
+      });
+    }
   }, [startDateReport, endDateReport]);
 
   const rangePresets = [
@@ -143,45 +228,19 @@ function AdminDashboardLayout() {
     },
   ];
 
+  const onMenuRangeChange = (dates, dateStrings) => {
+    if (dates) {
+      setStartDateMenu(new Date(dates[0]).setHours(0, 0, 0, 0));
+      setEndDateMenu(new Date(dates[1]).setHours(23, 59, 59, 999));
+    }
+  };
+
   const onRangeChange = (dates, dateStrings) => {
     if (dates) {
       setStartDateReport(new Date(dates[0]).setHours(0, 0, 0, 0));
       setEndDateReport(new Date(dates[1]).setHours(23, 59, 59, 999));
     }
   };
-
-  const dataSource = [
-    {
-      key: "1",
-      menuName: "Mie Goreng",
-      totalSold: 99,
-      totalSales: "IDR. 1.999.999",
-    },
-    {
-      key: "2",
-      menuName: "Ayam Goreng",
-      totalSold: 42,
-      totalSales: "IDR. 199.999",
-    },
-    {
-      key: "23",
-      menuName: "Ayam Goreng",
-      totalSold: 42,
-      totalSales: "IDR. 199.999",
-    },
-    {
-      key: "4",
-      menuName: "Ayam Goreng",
-      totalSold: 42,
-      totalSales: "IDR. 199.999",
-    },
-    {
-      key: "5",
-      menuName: "Ayam Goreng",
-      totalSold: 42,
-      totalSales: "IDR. 199.999",
-    },
-  ];
 
   const columns = [
     {
@@ -206,6 +265,7 @@ function AdminDashboardLayout() {
       title: "Total Sales",
       dataIndex: "totalSales",
       key: "totalSales",
+      render: (_, record) => <p>IDR. {record.totalSales}</p>,
     },
   ];
 
@@ -262,16 +322,15 @@ function AdminDashboardLayout() {
           <RangePicker
             presets={rangePresets}
             format="DD/MM/YYYY"
-            onChange={onRangeChange}
+            onChange={onMenuRangeChange}
           />
         </div>
         <Table
           pagination={false}
           style={{ width: "100%" }}
-          dataSource={foods ? (foods.sort((a, b) => (a > b ? -1 : 1))).slice(0,5) : foods}
+          dataSource={menuRankData}
           columns={columns}
         />
-
       </div>
     </div>
   );

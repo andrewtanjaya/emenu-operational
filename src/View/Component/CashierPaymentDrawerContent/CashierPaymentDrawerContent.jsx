@@ -19,7 +19,7 @@ function CashierPaymentDrawerContent(props) {
     if (props.paymentMethod === "Others") {
       payMethod =
         "Others (" +
-        document.querySelector('input[name="otherPaymentMethod"]').value +
+        document.getElementById("otherPaymentMethod").value +
         ")";
     }
     updatedOrder.paymentMethod = payMethod;
@@ -60,6 +60,15 @@ function CashierPaymentDrawerContent(props) {
         };
       }
     }
+
+    let payMethod = props.paymentMethod;
+    if (props.paymentMethod === "Others") {
+      payMethod =
+        "Others (" +
+        document.getElementById("otherPaymentMethod").value +
+        ")";
+    }
+    
     let orderSummary = {
       orderSummaryId: props.order.orderId,
       orderPaidDate: new Date().getTime(),
@@ -68,9 +77,11 @@ function CashierPaymentDrawerContent(props) {
       serviceChargeAmount: props.order.serviceChargeAmount,
       totalOrderAmount: props.order.totalOrderAmount,
       finalTotalOrderAmount: props.order.finalTotalOrderAmount,
+      paymentMethod: payMethod
     };
 
     OrderSummaryController.addOrderSummary(orderSummary);
+    props.setPage(2);
   };
 
   useEffect(() => {
@@ -146,7 +157,7 @@ function CashierPaymentDrawerContent(props) {
             className="other-payment-method-input"
             type="text"
             name="otherPaymentMethod"
-            id=""
+            id="otherPaymentMethod"
             placeholder="others"
           />
         </div>
@@ -185,7 +196,7 @@ function CashierPaymentDrawerContent(props) {
         <button
           onClick={() => {
             if (props.paymentMethod) {
-              props.setPage(2);
+              
               verifyPayment();
             } else {
               setIsError(true);
