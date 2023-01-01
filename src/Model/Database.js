@@ -101,4 +101,7 @@ export class Database {
       query(ordersRef, where("restaurantId", "==", restaurantId))
     );
   }
+  static getAllOrderByRestaurantIdQuery(restaurantId) {
+    return query(ordersRef, where("restaurantId", "==", restaurantId));
+  }
 }
