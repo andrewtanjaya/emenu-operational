@@ -1,0 +1,43 @@
+@import "../../../Utils/variables";
+
+.cashier-report-container{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 30px;
+}
+.cashier-report-card-container{
+    display: flex;
+    column-gap: 50px;
+    row-gap: 50px;
+    flex-wrap: wrap;
+}
+
+.cashier-report-table{
+    margin-top: 50px;
+    
+}
+.report-card{
+    width: 200px;
+    background-color: $white;
+    border-radius: 12px;
+    box-shadow: 0 0 8px $inactive;
+    padding: 20px 0 30px 20px ;
+}
+
+.card-title-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.payment-type-dropdown-container{
+    margin-right: 25px;
+}
+
+@media only screen and (max-width: $lg) {
+
+}
+
+@media only screen and (max-width: $md) {
+    
+}

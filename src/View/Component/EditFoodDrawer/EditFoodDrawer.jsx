@@ -50,7 +50,7 @@ const EditFoodDrawer = (props) => {
     });
     setQty(props.cartItem.cartItemQuantity);
     setIsLoading(false);
-  }, [props.cartItemId]);
+  }, [props.cartItem]);
 
   function handleAddToCart() {
     form.submit();
@@ -123,6 +123,7 @@ const EditFoodDrawer = (props) => {
       (obj) => obj.cartItemId === props.cartItemId
     );
     cart.cartItems[cartItemIndex].cartItemId = cartItemId;
+    cart.cartItems[cartItemIndex].cartItemType = values.foodOrderType;
     cart.cartItems[cartItemIndex].cartItemNotes = values.notes;
     cart.cartItems[cartItemIndex].cartItemOption = selectedGroups;
     cart.cartItems[cartItemIndex].cartItemQuantity = qty;

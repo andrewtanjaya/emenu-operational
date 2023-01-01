@@ -115,62 +115,69 @@ function CashierCartPage() {
     form.submit();
   }
   function onFinish(values) {
-    let newOrderQueueId = generateRandomId(IdTypes.ORDER_QUEUE);
-    let timestamp = Date.now();
-    let orderItems = cart.cartItems.map((item) => {
-      let orderItem = new OrderItem(
-        item.cartItemId,
-        OrderItemStatus.PLACED,
-        timestamp,
-        item.cartItemQuantity,
-        item.cartItemName,
-        item.cartItemPrice,
-        item.cartItemPicUrl,
-        item.cartItemType,
-        item.cartItemOption,
-        item.cartItemNotes,
-        item.subTotalFoodPrice,
-        item.subTotalAddedValuePrice,
-        item.subTotalPrice
-      );
-      return Object.assign({}, orderItem);
-    });
+    if (cart.cartItems.length > 0) {
+      if (values.orderId && values.orderId !== "Order Not Found") {
+        let newOrderQueueId = generateRandomId(IdTypes.ORDER_QUEUE);
+        let timestamp = Date.now();
+        let orderItems = cart.cartItems.map((item) => {
+          let orderItem = new OrderItem(
+            item.cartItemId,
+            OrderItemStatus.PLACED,
+            timestamp,
+            item.cartItemQuantity,
+            item.cartItemName,
+            item.cartItemPrice,
+            item.cartItemPicUrl,
+            item.cartItemType,
+            item.cartItemOption,
+            item.cartItemNotes,
+            item.subTotalFoodPrice,
+            item.subTotalAddedValuePrice,
+            item.subTotalPrice
+          );
+          return Object.assign({}, orderItem);
+        });
 
-    orderData.orderItems = [...orderData.orderItems, ...orderItems];
+        orderData.orderItems = [...orderData.orderItems, ...orderItems];
 
-    let totalOrderAmount = 0;
-    orderData.orderItems.forEach((item) => {
-      totalOrderAmount += item.subTotalPrice;
-    });
+        let totalOrderAmount = 0;
+        orderData.orderItems.forEach((item) => {
+          totalOrderAmount += item.subTotalPrice;
+        });
 
-    let taxAmount = Math.ceil(totalOrderAmount * (orderData.taxRate / 100));
-    let serviceChargeAmount = Math.ceil(
-      totalOrderAmount * (orderData.serviceChargeRate / 100)
-    );
+        let taxAmount = Math.ceil(totalOrderAmount * (orderData.taxRate / 100));
+        let serviceChargeAmount = Math.ceil(
+          totalOrderAmount * (orderData.serviceChargeRate / 100)
+        );
 
-    orderData.taxAmount = taxAmount;
-    orderData.serviceChargeAmount = serviceChargeAmount;
-    orderData.totalOrderAmount = totalOrderAmount;
-    orderData.finalTotalOrderAmount =
-      totalOrderAmount + taxAmount + serviceChargeAmount;
+        orderData.taxAmount = taxAmount;
+        orderData.serviceChargeAmount = serviceChargeAmount;
+        orderData.totalOrderAmount = totalOrderAmount;
+        orderData.finalTotalOrderAmount =
+          totalOrderAmount + taxAmount + serviceChargeAmount;
 
-    cart.cartItems = [];
-    cart.totalPrice = 0;
+        cart.cartItems = [];
+        cart.totalPrice = 0;
 
-    CartController.updateCart(cart).then(() => {
-      OrderController.updateOrderItems(orderData).then(() => {});
-    });
+        CartController.updateCart(cart).then(() => {
+          OrderController.updateOrderItems(orderData).then(() => {});
+        });
 
-    let newOrderQueue = new OrderQueue(
-      newOrderQueueId,
-      orderData.orderId,
-      orderData.orderType,
-      orderData.orderType === OrderType.DINE_IN ? values.tableNumber : null,
-      orderData.orderType === OrderType.TAKEAWAY ? values.queueNumber : null,
-      orderData.restaurantId,
-      timestamp
-    );
-    OrderQueueController.addOrderQueue(newOrderQueue).then(() => {});
+        let newOrderQueue = new OrderQueue(
+          newOrderQueueId,
+          orderData.orderId,
+          orderData.orderType,
+          orderData.orderType === OrderType.DINE_IN ? values.tableNumber : null,
+          orderData.orderType === OrderType.TAKEAWAY
+            ? values.queueNumber
+            : null,
+          orderData.restaurantId,
+          timestamp
+        );
+        OrderQueueController.addOrderQueue(newOrderQueue).then(() => {});
+        form.resetFields();
+      }
+    }
   }
 
   const [open, setOpen] = useState(false);

@@ -48,6 +48,10 @@ export class OrderController {
     return await Database.getAllOrderByRestaurantId(restaurantId);
   }
 
+  static getAllOrderByRestaurantIdQuery(restaurantId) {
+    return Database.getAllOrderByRestaurantIdQuery(restaurantId);
+  }
+
   static async updateOrderItems(order) {
     return Order.updateOrderItems(order);
   }
