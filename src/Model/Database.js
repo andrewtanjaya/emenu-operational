@@ -4,6 +4,7 @@ import {
   foodsRef,
   groupsRef,
   optionsRef,
+  orderQueuesRef,
   ordersRef,
   orderSummaryRef,
   usersRef,
@@ -103,5 +104,9 @@ export class Database {
   }
   static getAllOrderByRestaurantIdQuery(restaurantId) {
     return query(ordersRef, where("restaurantId", "==", restaurantId));
+  }
+
+  static getAllOrderQueueByRestaurantIdQuery(restaurantId) {
+    return query(orderQueuesRef, where("restaurantId", "==", restaurantId));
   }
 }

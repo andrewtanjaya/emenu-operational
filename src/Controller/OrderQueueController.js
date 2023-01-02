@@ -1,3 +1,4 @@
+import { Database } from "../Model/Database";
 import { OrderQueue } from "../Model/OrderQueue";
 
 export class OrderQueueController {
@@ -14,5 +15,9 @@ export class OrderQueueController {
 
   static async deleteOrderQueueById(orderQueueId) {
     return OrderQueue.deleteOrderQueueById(orderQueueId);
+  }
+
+  static getAllOrderQueueByRestaurantIdQuery(restaurantId) {
+    return Database.getAllOrderQueueByRestaurantIdQuery(restaurantId);
   }
 }

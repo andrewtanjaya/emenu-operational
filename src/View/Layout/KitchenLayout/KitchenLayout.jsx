@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Menu } from "antd";
 import { useDocumentData } from "react-firebase-hooks/firestore";
@@ -23,26 +23,50 @@ function KitchenLayout() {
       }
     );
 
+  const [currentPath, setCurrentPath] = useState("/kitchen");
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+  }, []);
+
+  const changeActive = (url) => {
+    setCurrentPath(url);
+  };
+
   const renderNavbar = () => {
     return (
-      <nav>
-        <Menu className="navbar" mode={"horizontal"}>
-          {!restaurantLoading ? (
-            <NavbarRestaurantProfile
-              restaurantData={restaurant}
-            />
-          ) : (
-            <></>
-          )}
-          <Menu.Item key="dashboard">
-            <Link to="/kitchen">Dashboard</Link>
-          </Menu.Item>
-          <Menu.Item key="menu">
-            <Link to="/kitchen/menu">Menu</Link>
-          </Menu.Item>
-          {!userLoading ? <NavbarUserProfile userData={user} /> : <></>}
-        </Menu>
-      </nav>
+      <div className="admin-restaurant-navbar">
+        {!restaurantLoading && restaurant ? (
+          <NavbarRestaurantProfile restaurantData={restaurant} />
+        ) : (
+          <></>
+        )}
+        <ul className="admin-navbar-item">
+          <li>
+            <Link
+              to="/kitchen"
+              style={{ textDecoration: "none", color: "black" }}
+              onClick={() => changeActive("/kitchen")}
+              className={currentPath === "/kitchen" ? "active-nav" : ""}
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              onClick={() => changeActive("/kitchen/menu-availability")}
+              className={
+                currentPath === "/kitchen/menu-availability" ? "active-nav" : ""
+              }
+              to="/kitchen/menu-availability"
+            >
+              Menu
+            </Link>
+          </li>
+        </ul>
+        {!userLoading && user ? <NavbarUserProfile userData={user} /> : <></>}
+      </div>
     );
   };
 

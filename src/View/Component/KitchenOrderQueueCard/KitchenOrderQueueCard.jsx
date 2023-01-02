@@ -1,104 +1,84 @@
 import React from "react";
 import { useEffect } from "react";
+import { OrderController } from "../../../Controller/OrderController";
+import { OrderQueueController } from "../../../Controller/OrderQueueController";
+import { FoodStatus } from "../../../Enum/FoodStatus";
+import { OrderType } from "../../../Enum/OrderType";
 import "./KitchenOrderQueueCard.css";
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
-function KitchenOrderQueueCard({ data }) {
-  useEffect(() => {
-    console.log("tested", data);
-  }, [data]);
-  const foods = [
-    {
-      itemId: "DKS-001",
-      itemName: "Nasi Goreng Ayam",
-      status: "PROCESSED || READY || DELIVERED",
-      price: 18000,
-      quantity: 2,
-      notes: "jangan pedas ya!",
-      orderPlacedTimeStamps: 1887877,
-      option: [
-        {
-          groupName: "Porsi",
-          option: "Besar",
-          addedValue: 4000,
-        },
-        {
-          groupName: "Level Pedas",
-          option: "5",
-          addedValue: 0,
-        },
-        {
-          groupName: "Toppings",
-          option: "Telur Ceplok",
-          addedValue: 5000,
-        },
-        {
-          groupName: "Toppings",
-          option: "Kerupuk Udang",
-          addedValue: 1000,
-        },
-      ],
-      totalPrice: 36000,
-      totalAddedValue: 20000,
-      totalPriceAndAddedValue: 56000,
-    },
-    {
-      itemId: "DKS-001",
-      itemName: "Kwetiau Goreng Sapi",
-      status: "PROCESSED || READY || DELIVERED",
-      price: 25000,
-      quantity: 2,
-      notes: "jangan pedas ya!",
-      orderPlacedTimeStamps: 1887877,
-      option: [
-        {
-          groupName: "Porsi",
-          option: "Normal",
-          addedValue: 0,
-        },
-        {
-          groupName: "Level Pedas",
-          option: "5",
-          addedValue: 0,
-        },
-        {
-          groupName: "Toppings",
-          option: "Telur Ceplok",
-          addedValue: 5000,
-        },
-        {
-          groupName: "Toppings",
-          option: "Extra Kerupuk",
-          addedValue: 1000,
-        },
-      ],
-      totalPrice: 50000,
-      totalAddedValue: 12000,
-      totalPriceAndAddedValue: 62000,
-    },
-  ];
+function KitchenOrderQueueCard(props) {
+  function changeItemStatus(status, orderItemId) {
+    let index = props.orderData.orderItems.findIndex(
+      (obj) => obj.orderItemId === orderItemId
+    );
+    props.orderData.orderItems[index].orderItemStatus = status;
+    OrderController.updateOrderItems(props.orderData);
+    let isOrderDone = props.orderData.orderItems.filter((data) => {
+      return data.orderItemStatus === FoodStatus.DELIVERED;
+    });
+    if (props.orderQueueItemCount === isOrderDone.length) {
+      OrderQueueController.deleteOrderQueueById(props.orderQueueId);
+    }
+  }
   return (
     <div className="order-queue-card-container">
-      <div  className={data.orderTable? "order-queue-card-header dine-in-header" : "order-queue-card-header takeaway-header"}>
+      <div
+        className={
+          props.orderItemType === OrderType.DINE_IN
+            ? "order-queue-card-header dine-in-header"
+            : "order-queue-card-header takeaway-header"
+        }
+      >
         <p>
-          {data.orderTable
-            ? `DINE-IN • TABLE#${data.orderTable}`
-            : `TAKEAWAY • QUEUE#${data.orderQueueNumber}`}
+          {props.orderItemType === OrderType.DINE_IN
+            ? `DINE-IN • TABLE#${props.orderTable}`
+            : `TAKEAWAY • ${
+                props.orderType === OrderType.DINE_IN
+                  ? `TABLE#${props.orderTable}`
+                  : `QUEUE#${props.queueNumber}`
+              }`}
         </p>
-        <p>{data.orderPlacedTimestamp}</p>
+        <p>
+          {props.date.getDate() +
+            " " +
+            months[props.date.getMonth()] +
+            " " +
+            props.date.getHours() +
+            ":" +
+            props.date.getMinutes()}
+        </p>
       </div>
-      {foods ? (
-        foods.map((food) => {
+      {props.foods ? (
+        props.foods.map((food) => {
           return (
-            <div className="order-food-list">
-              <div className="order-food-quantity"><b>{food.quantity} x</b></div>
+            <div key={food.orderItemId} className="order-food-list">
+              <div className="order-food-quantity">
+                <b>{food.orderItemQuantity} x</b>
+              </div>
               <div className="order-food-description">
-                <p><b>{food.itemName}</b></p>
-                {food.option ? (
-                  food.option.map((op) => {
+                <p>
+                  <b>{food.orderItemName}</b>
+                </p>
+                {food.orderItemOption ? (
+                  food.orderItemOption.map((op) => {
                     return (
-                      <div>
+                      <div key={op.groupId}>
                         <p>
-                        <b>{op.groupName}</b> : <i>{op.option}</i>
+                          <b>{op.groupName}</b> : <i>{op.optionName}</i>
                         </p>
                       </div>
                     );
@@ -106,9 +86,47 @@ function KitchenOrderQueueCard({ data }) {
                 ) : (
                   <></>
                 )}
-                
+                <div>
+                  <p>
+                    <b>Notes</b> : <i>{food.orderItemNotes}</i>
+                  </p>
+                </div>
               </div>
-              <div className="change-order-status-button on-progress"><b>COOK</b></div>
+              {food.orderItemStatus === FoodStatus.PLACED && (
+                <div
+                  className="change-order-status-button on-progress"
+                  onClick={() => {
+                    changeItemStatus(FoodStatus.PROCESSED, food.orderItemId);
+                  }}
+                >
+                  <b>START COOK</b>
+                </div>
+              )}
+              {food.orderItemStatus === FoodStatus.PROCESSED && (
+                <div
+                  className="change-order-status-button ready"
+                  onClick={() => {
+                    changeItemStatus(FoodStatus.READY, food.orderItemId);
+                  }}
+                >
+                  <b>READY TO SERVE</b>
+                </div>
+              )}
+              {food.orderItemStatus === FoodStatus.READY && (
+                <div
+                  className="change-order-status-button deliver"
+                  onClick={() => {
+                    changeItemStatus(FoodStatus.DELIVERED, food.orderItemId);
+                  }}
+                >
+                  <b>DELIVER</b>
+                </div>
+              )}
+              {food.orderItemStatus === FoodStatus.DELIVERED && (
+                <div className="change-order-status-button delivered">
+                  <b>DELIVERED</b>
+                </div>
+              )}
             </div>
           );
         })

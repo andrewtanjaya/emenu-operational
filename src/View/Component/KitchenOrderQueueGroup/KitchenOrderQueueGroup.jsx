@@ -1,22 +1,67 @@
-import React, { useEffect } from 'react'
-import KitchenOrderQueueCard from '../KitchenOrderQueueCard/KitchenOrderQueueCard'
-import './KitchenOrderQueueGroup.css'
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { OrderType } from "../../../Enum/OrderType";
+import KitchenOrderQueueCard from "../KitchenOrderQueueCard/KitchenOrderQueueCard";
+import "./KitchenOrderQueueGroup.css";
 
-function KitchenOrderQueueGroup({data}) {
-    useEffect(() => {
-      console.log("luar",data)
-    }, [])
-    
+function KitchenOrderQueueGroup(props) {
+  const [dineInItems, setDineInItems] = useState([]);
+  const [takeawayItems, setTakeawayItems] = useState([]);
+  useEffect(() => {
+    setDineInItems(
+      props.orderData.orderItems.filter((data) => {
+        return (
+          data.orderItemType === OrderType.DINE_IN &&
+          data.orderItemTimestamp === props.queueData.orderPlacedTimestamp
+        );
+      })
+    );
+    setTakeawayItems(
+      props.orderData.orderItems.filter((data) => {
+        return (
+          data.orderItemType === OrderType.TAKEAWAY &&
+          data.orderItemTimestamp === props.queueData.orderPlacedTimestamp
+        );
+      })
+    );
+  }, [props.orderData, props.queueData]);
+
   return (
-    <div className='order-queue-group-container'>
-        {
-            data ? data[1].map((d) => {
-                return <KitchenOrderQueueCard data={d}/>
-            }) : <></>
-        }
-        <div className='order-queue-group-footer'><p><b>#{data[1][0].orderId}</b></p></div>
+    <div className="order-queue-group-container">
+      {dineInItems.length > 0 && (
+        <KitchenOrderQueueCard
+          foods={dineInItems}
+          date={new Date(props.queueData.orderPlacedTimestamp)}
+          orderQueueId={props.queueData.orderQueueId}
+          orderItemType={OrderType.DINE_IN}
+          orderType={props.orderData.orderType}
+          queueNumber={props.orderData.orderQueue}
+          orderTable={props.orderData.orderTable}
+          orderData={props.orderData}
+          orderQueueItemCount={dineInItems.length + takeawayItems.length}
+        />
+      )}
+      {takeawayItems.length > 0 && (
+        <KitchenOrderQueueCard
+          foods={takeawayItems}
+          date={new Date(props.queueData.orderPlacedTimestamp)}
+          orderQueueId={props.queueData.orderQueueId}
+          orderItemType={OrderType.TAKEAWAY}
+          orderType={props.orderData.orderType}
+          queueNumber={props.orderData.orderQueue}
+          orderTable={props.orderData.orderTable}
+          orderData={props.orderData}
+          orderQueueItemCount={dineInItems.length + takeawayItems.length}
+        />
+      )}
+
+      <div className="order-queue-group-footer">
+        <p>
+          <b>#{props.orderData.orderId}</b>
+        </p>
+      </div>
     </div>
-  )
+  );
 }
 
-export default KitchenOrderQueueGroup
+export default KitchenOrderQueueGroup;

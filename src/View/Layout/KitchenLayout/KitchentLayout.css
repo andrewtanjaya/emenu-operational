@@ -1,15 +1,74 @@
 .kitchen-layout-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .kitchen-layout-content-container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
 }
 
 #saveButton, #addButton {
   background-color: #36AB27;
+}
+
+.admin-restaurant-navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+  align-content: center;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #CACACA;
+  height: 80px;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+  box-sizing: border-box;
+}
+
+.admin-restaurant-navbar .admin-navbar-item {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-restaurant-navbar .admin-navbar-item li {
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  font-size: 14px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.active-nav {
+  font-weight: 700;
+  color: #36AB27 !important;
+}
+
+@media only screen and (max-width: 992px) {
+  .admin-restaurant-navbar {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+  }
+  .admin-restaurant-navbar .admin-navbar-item li {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  .admin-restaurant-navbar {
+    padding: 0 20px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .admin-restaurant-navbar {
+    height: 60px;
+  }
+  .admin-restaurant-navbar .admin-navbar-item {
+    display: none;
+  }
 }/*# sourceMappingURL=KitchentLayout.css.map */
