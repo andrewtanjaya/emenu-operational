@@ -82,15 +82,14 @@ function AdminTransactionReportViewer(props) {
       key: "orderType",
       filters: [
         {
-          text: "DINE IN",
+          text: "Dine In",
           value: "DINE-IN",
         },
         {
-          text: "TAKEAWAY",
+          text: "Takeaway",
           value: "TAKEAWAY",
         },
       ],
-      filterSearch: true,
       onFilter: (value, record) => record.orderType === value,
     },
     {
@@ -147,7 +146,11 @@ function AdminTransactionReportViewer(props) {
       dataIndex: "orderCreatedDate",
       key: "orderCreatedDate",
       render: (_, record) => (
-        <p>{new Date(record.orderCreatedDate).toUTCString()}</p>
+        <p>
+          {record.orderCreatedDate
+            ? new Date(record.orderCreatedDate).toUTCString()
+            : "-"}
+        </p>
       ),
       sorter: {
         compare: (a, b) => a.orderCreatedDate < b.orderCreatedDate,
@@ -155,21 +158,43 @@ function AdminTransactionReportViewer(props) {
       },
     },
     {
+      title: "Order Paid Date",
+      dataIndex: "orderPaidDate",
+      key: "orderCreatedDate",
+      render: (_, record) => (
+        <p>
+          {record.orderPaidDate
+            ? new Date(record.orderPaidDate).toUTCString()
+            : "-"}
+        </p>
+      ),
+      sorter: {
+        compare: (a, b) => a.orderPaidDate < b.orderPaidDate,
+        multiple: 6,
+      },
+    },
+    {
       title: "Table Number",
       dataIndex: "orderTable",
       key: "orderTable",
+      render: (_, record) => (
+        <>{record.orderTable ? <p>{record.orderTable}</p> : <p>-</p>}</>
+      ),
       sorter: {
         compare: (a, b) => a.orderTable - b.orderTable,
-        multiple: 6,
+        multiple: 7,
       },
     },
     {
       title: "Queue Number",
       dataIndex: "orderQueue",
       key: "orderQueue",
+      render: (_, record) => (
+        <>{record.orderQueue ? <p>{record.orderQueue}</p> : <p>-</p>}</>
+      ),
       sorter: {
         compare: (a, b) => a.orderQueue - b.orderQueue,
-        multiple: 7,
+        multiple: 8,
       },
     },
     {
@@ -179,7 +204,7 @@ function AdminTransactionReportViewer(props) {
       render: (_, record) => <p>IDR. {record.totalOrderAmount}</p>,
       sorter: {
         compare: (a, b) => a.totalOrderAmount - b.totalOrderAmount,
-        multiple: 8,
+        multiple: 9,
       },
     },
     {
@@ -189,7 +214,7 @@ function AdminTransactionReportViewer(props) {
       render: (_, record) => <p>IDR. {record.serviceChargeAmount}</p>,
       sorter: {
         compare: (a, b) => a.serviceChargeAmount - b.serviceChargeAmount,
-        multiple: 9,
+        multiple: 10,
       },
     },
     {
@@ -199,7 +224,7 @@ function AdminTransactionReportViewer(props) {
       render: (_, record) => <p>IDR. {record.taxAmount}</p>,
       sorter: {
         compare: (a, b) => a.taxAmount - b.taxAmount,
-        multiple: 10,
+        multiple: 11,
       },
     },
     {
@@ -209,7 +234,7 @@ function AdminTransactionReportViewer(props) {
       render: (_, record) => <p>IDR. {record.finalTotalOrderAmount}</p>,
       sorter: {
         compare: (a, b) => a.finalTotalOrderAmount - b.finalTotalOrderAmount,
-        multiple: 11,
+        multiple: 12,
       },
     },
     {
@@ -242,9 +267,7 @@ function AdminTransactionReportViewer(props) {
   return (
     <div className="transaction-report-viewer-container">
       <div className="brief-information-container">
-        <AdminTransactionBrief
-          briefData={briefData}
-        />
+        <AdminTransactionBrief briefData={briefData} />
       </div>
       <Table
         scroll={{

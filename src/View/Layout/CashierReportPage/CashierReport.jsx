@@ -80,12 +80,16 @@ function CashierReport() {
       dataIndex: "orderPaymentStatus",
       filters: [
         {
+          text: "Unpaid",
+          value: "UNPAID",
+        },
+        {
           text: "Paid",
           value: "PAID",
         },
         {
-          text: "Unpaid",
-          value: "UNPAID",
+          text: "Cancel",
+          value: "CANCEL",
         },
       ],
       onFilter: (value, record) => record.orderPaymentStatus === value,
