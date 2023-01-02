@@ -106,7 +106,7 @@ function App() {
         >
           <Route index element={<KitchenOrderQueueLayout />} />
           <Route
-            path="/kitchen/menu"
+            path="/kitchen/menu-availability"
             element={<CashierKitchenUpdateMenuAvailableLayout />}
           />
         </Route>

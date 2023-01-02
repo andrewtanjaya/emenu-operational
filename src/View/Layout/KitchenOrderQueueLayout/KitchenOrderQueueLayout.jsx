@@ -1,6 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { OrderController } from "../../../Controller/OrderController";
+import { OrderQueueController } from "../../../Controller/OrderQueueController";
 import KitchenOrderQueueGroup from "../../Component/KitchenOrderQueueGroup/KitchenOrderQueueGroup";
 import "./KitchenOrderQueueLayout.css";
 
@@ -36,38 +39,64 @@ function KitchenOrderQueueLayout() {
       orderPlacedTimestamp: "3",
     },
     {
-        orderId: "TRX-123456783",
-        orderTable: 2,
-        orderQueueNumber: null,
-        restaurantId: "RES-0001",
-        orderPlacedTimestamp: "6",
-      },
+      orderId: "TRX-123456783",
+      orderTable: 2,
+      orderQueueNumber: null,
+      restaurantId: "RES-0001",
+      orderPlacedTimestamp: "6",
+    },
   ];
 
+  const userSession = JSON.parse(sessionStorage.getItem("userData"));
+  const [orders, isOrderLoading, orderError] = useCollectionData(
+    OrderController.getAllOrderByRestaurantIdQuery(userSession.restaurantId),
+    {
+      idField: "id",
+    }
+  );
+
+  const [orderQueue, isOrderQueueLoading, orderQueueError] = useCollectionData(
+    OrderQueueController.getAllOrderQueueByRestaurantIdQuery(
+      userSession.restaurantId
+    ),
+    {
+      idField: "id",
+    }
+  );
+
+  const [sortedQueue, setSortedQueue] = useState([]);
   useEffect(() => {
-    setDataOrder(
-      data.reduce((group, order) => {
-        const { orderPlacedTimestamp } = order;
-        group[orderPlacedTimestamp] = group[orderPlacedTimestamp] ?? [];
-        group[orderPlacedTimestamp].push(order);
-        return group;
-      }, {})
-    );
-  }, []);
+    if (!isOrderQueueLoading) {
+      let sortedOrderQueue = orderQueue.sort(
+        (a, b) => a.orderPlacedTimestamp - b.orderPlacedTimestamp
+      );
+
+      setSortedQueue(sortedOrderQueue);
+    }
+  }, [orderQueue]);
 
   return (
-    <div className="order-queue-wrapper">
-      <h1>ORDER QUEUE LIST</h1>
-      <div className="order-queue-container">
-        {dataOrder ? (
-          Object.entries(dataOrder).map((d) => {
-            return <KitchenOrderQueueGroup data={d} />;
-          })
-        ) : (
-          <></>
-        )}
+    !isOrderLoading &&
+    sortedQueue.length > 0 && (
+      <div className="order-queue-wrapper">
+        <h1>ORDER QUEUE LIST</h1>
+        <div className="order-queue-container">
+          {sortedQueue.map((queueData) => {
+            let orderData = orders.filter((data) => {
+              return data.orderId === queueData.orderId;
+            });
+
+            return (
+              <KitchenOrderQueueGroup
+                key={queueData.orderQueueId}
+                queueData={queueData}
+                orderData={orderData[0]}
+              ></KitchenOrderQueueGroup>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    )
   );
 }
 

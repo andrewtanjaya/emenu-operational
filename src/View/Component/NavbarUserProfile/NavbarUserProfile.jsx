@@ -105,7 +105,6 @@ function NavbarUserProfile(props) {
     );
   };
   const renderManagerDropDown = () => {
-
     return (
       <ul
         className="navbar-user-profile-hover-container"
@@ -175,6 +174,48 @@ function NavbarUserProfile(props) {
       </ul>
     );
   };
+
+  const renderKitchenDropDown = () => {
+    return (
+      <ul
+        className="navbar-user-profile-hover-container"
+        style={{ margin: 0, padding: 0 }}
+      >
+        <li>
+          <Link
+            to="/kitchen"
+            style={{ textDecoration: "none", color: "black" }}
+            onClick={() => changeActive("/kitchen")}
+            className={currentPath === "/kitchen" ? "active-nav" : ""}
+          >
+            Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/kitchen/menu-availability"
+            style={{ textDecoration: "none", color: "black" }}
+            onClick={() => changeActive("/kitchen/menu-availability")}
+            className={
+              currentPath === "/kitchen/menu-availability" ? "active-nav" : ""
+            }
+          >
+            Menu
+          </Link>
+        </li>
+        <li
+          onClick={() => {
+            sessionStorage.removeItem("userData");
+            dispatch({ type: "LOGOUT" });
+            navigate("/login");
+          }}
+        >
+          Log Out
+        </li>
+      </ul>
+    );
+  };
+
   return (
     <div className="navbar-user-profile-container">
       <div className="navbar-user-profile-left">
@@ -193,6 +234,8 @@ function NavbarUserProfile(props) {
           renderManagerDropDown()
         ) : props.userData.roleType === "CASHIER" ? (
           renderCashierDropDown()
+        ) : props.userData.roleType === "KITCHEN" ? (
+          renderKitchenDropDown()
         ) : (
           <></>
         )
