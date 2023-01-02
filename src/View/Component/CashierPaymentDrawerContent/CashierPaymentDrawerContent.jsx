@@ -18,11 +18,11 @@ function CashierPaymentDrawerContent(props) {
     let payMethod = props.paymentMethod;
     if (props.paymentMethod === "Others") {
       payMethod =
-        "Others (" +
-        document.getElementById("otherPaymentMethod").value +
-        ")";
+        "Others (" + document.getElementById("otherPaymentMethod").value + ")";
     }
     updatedOrder.paymentMethod = payMethod;
+    updatedOrder.orderPaidDate = Date.now();
+    updatedOrder.orderCheckoutBy = userSession.email;
     OrderController.updateOrder(updatedOrder).then(() => {
       resetCounterIfAllPaid();
       generateSummaryMenuRanking();
@@ -64,11 +64,9 @@ function CashierPaymentDrawerContent(props) {
     let payMethod = props.paymentMethod;
     if (props.paymentMethod === "Others") {
       payMethod =
-        "Others (" +
-        document.getElementById("otherPaymentMethod").value +
-        ")";
+        "Others (" + document.getElementById("otherPaymentMethod").value + ")";
     }
-    
+
     let orderSummary = {
       orderSummaryId: props.order.orderId,
       orderPaidDate: new Date().getTime(),
@@ -77,7 +75,7 @@ function CashierPaymentDrawerContent(props) {
       serviceChargeAmount: props.order.serviceChargeAmount,
       totalOrderAmount: props.order.totalOrderAmount,
       finalTotalOrderAmount: props.order.finalTotalOrderAmount,
-      paymentMethod: payMethod
+      paymentMethod: payMethod,
     };
 
     OrderSummaryController.addOrderSummary(orderSummary);
@@ -104,7 +102,7 @@ function CashierPaymentDrawerContent(props) {
         </p>
         <p>
           <span>Service Charge {props.order.serviceChargeRate}%</span>
-          <span>IDR. {props.order.taxAmount}</span>
+          <span>IDR. {props.order.serviceChargeAmount}</span>
         </p>
         <hr />
         <p style={{ margin: "4px 0px" }}>
@@ -196,7 +194,6 @@ function CashierPaymentDrawerContent(props) {
         <button
           onClick={() => {
             if (props.paymentMethod) {
-              
               verifyPayment();
             } else {
               setIsError(true);
