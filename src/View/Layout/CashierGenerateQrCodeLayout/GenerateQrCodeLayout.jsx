@@ -207,8 +207,8 @@ function GenerateQrCodeLayout() {
             </Form.Item>
           )}
 
-          <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
-            <Button type="primary" htmlType="submit">
+          <Form.Item wrapperCol={{ span: 24 }}>
+            <Button type="primary" htmlType="submit" className="btn-generate-qr-code">
               Generate QR Code
             </Button>
           </Form.Item>
@@ -218,19 +218,19 @@ function GenerateQrCodeLayout() {
         {isGenerated && (
           <>
             <div ref={(el) => (componentRef = el)} className="qr-template">
-              <h3>
+            <p>
                 {isDineIn
                   ? `Table Number: ${orderTableNumber}`
                   : `Queue Number: ${orderQueueNumber}`}
-              </h3>
-              <h4>Printed: {`${date}`}</h4>
+              </p>
               <QRCode value={url}></QRCode>
-              <h4>{`${url}`}</h4>
+              <p>{`${url}`}</p>
+              <p className="printed-date-info">Generated : {`${date}`}</p>
             </div>
 
             <ReactToPrint
               trigger={() => {
-                return <Button type="primary">Print</Button>;
+                return <Button className="btn-print-qr-code" type="primary">Print</Button>;
               }}
               content={() => componentRef}
               pageStyle="print"

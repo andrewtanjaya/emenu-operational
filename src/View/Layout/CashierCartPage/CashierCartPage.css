@@ -31,7 +31,7 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 8px #CACACA;
+  border: 1px solid #CACACA;
 }
 .cart-summary-container h3 {
   margin: 0;
@@ -58,6 +58,20 @@
   align-self: center;
   padding: 8px 0px;
   cursor: pointer;
+}
+
+.cart-empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.cart-empty-state p {
+  margin: 0;
+  padding: 0;
+}
+.cart-empty-state img {
+  width: 200px;
 }
 
 .cart-item-content-container {
