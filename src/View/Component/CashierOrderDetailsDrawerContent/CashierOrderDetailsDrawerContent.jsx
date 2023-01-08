@@ -2,9 +2,9 @@ import React from "react";
 import "./CashierOrderDetailsDrawerContent.css";
 import { OrderType } from "../../../Enum/OrderType";
 import OrderItemDetail from "../OrderItemDetail/OrderItemDetail";
+import { rupiahWithoutDecimal } from "../../../Helper/Helper";
 
 function CashierOrderDetailsDrawerContent(props) {
-
   return (
     <div className="order-details-drawer-container">
       <div className="order-details-header-drawer">
@@ -21,8 +21,12 @@ function CashierOrderDetailsDrawerContent(props) {
       </div>
       <div className="order-details-order-items-list">
         {props.order.orderItems ? (
-          (props.order.orderItems).map((orderItem) => (
-            <OrderItemDetail key={orderItem.orderItemId} handleDeleteOrderItem={props.handleDeleteOrderItem} orderItem={orderItem} />
+          props.order.orderItems.map((orderItem) => (
+            <OrderItemDetail
+              key={orderItem.orderItemId}
+              handleDeleteOrderItem={props.handleDeleteOrderItem}
+              orderItem={orderItem}
+            />
           ))
         ) : (
           <></>
@@ -32,15 +36,15 @@ function CashierOrderDetailsDrawerContent(props) {
         <hr />
         <p>
           <span>Subtotal</span>
-          <span>IDR. {props.order.totalOrderAmount}</span>
+          <span>{rupiahWithoutDecimal(props.order.totalOrderAmount)}</span>
         </p>
         <p>
           <span>Tax {props.order.taxRate}%</span>
-          <span>IDR. {props.order.taxAmount}</span>
+          <span>{rupiahWithoutDecimal(props.order.taxAmount)}</span>
         </p>
         <p>
           <span>Service Charge {props.order.serviceChargeRate}%</span>
-          <span>IDR. {props.order.taxAmount}</span>
+          <span>{rupiahWithoutDecimal(props.order.taxAmount)}</span>
         </p>
         <hr />
         <p>
@@ -51,7 +55,9 @@ function CashierOrderDetailsDrawerContent(props) {
             <b>IDR. {props.order.finalTotalOrderAmount}</b>
           </span>
         </p>
-        <button onClick={() => props.setPage(1)}>Pay IDR. {props.order.finalTotalOrderAmount}</button>
+        <button onClick={() => props.setPage(1)}>
+          {rupiahWithoutDecimal(props.order.finalTotalOrderAmount)}
+        </button>
       </div>
     </div>
   );

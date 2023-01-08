@@ -26,13 +26,17 @@ function KitchenOrderQueueCard(props) {
       (obj) => obj.orderItemId === orderItemId
     );
     props.orderData.orderItems[index].orderItemStatus = status;
-    OrderController.updateOrderItems(props.orderData);
-    let isOrderDone = props.orderData.orderItems.filter((data) => {
-      return data.orderItemStatus === FoodStatus.DELIVERED;
+    OrderController.updateOrderItems(props.orderData).then(() => {
+      let isOrderDone = props.orderData.orderItems.filter((data) => {
+        return (
+          data.orderItemStatus === FoodStatus.DELIVERED &&
+          data.orderItemTimestamp === props.queueTimestamp
+        );
+      });
+      if (props.orderQueueItemCount === isOrderDone.length) {
+        OrderQueueController.deleteOrderQueueById(props.orderQueueId);
+      }
     });
-    if (props.orderQueueItemCount === isOrderDone.length) {
-      OrderQueueController.deleteOrderQueueById(props.orderQueueId);
-    }
   }
   return (
     <div className="order-queue-card-container">
@@ -94,7 +98,7 @@ function KitchenOrderQueueCard(props) {
               </div>
               {food.orderItemStatus === FoodStatus.PLACED && (
                 <div
-                  className="change-order-status-button on-progress"
+                  className="change-order-status-button order-placed"
                   onClick={() => {
                     changeItemStatus(FoodStatus.PROCESSED, food.orderItemId);
                   }}
@@ -104,7 +108,7 @@ function KitchenOrderQueueCard(props) {
               )}
               {food.orderItemStatus === FoodStatus.PROCESSED && (
                 <div
-                  className="change-order-status-button ready"
+                  className="change-order-status-button order-processed"
                   onClick={() => {
                     changeItemStatus(FoodStatus.READY, food.orderItemId);
                   }}
@@ -114,7 +118,7 @@ function KitchenOrderQueueCard(props) {
               )}
               {food.orderItemStatus === FoodStatus.READY && (
                 <div
-                  className="change-order-status-button deliver"
+                  className="change-order-status-button order-ready"
                   onClick={() => {
                     changeItemStatus(FoodStatus.DELIVERED, food.orderItemId);
                   }}
@@ -123,7 +127,7 @@ function KitchenOrderQueueCard(props) {
                 </div>
               )}
               {food.orderItemStatus === FoodStatus.DELIVERED && (
-                <div className="change-order-status-button delivered">
+                <div className="change-order-status-button order-delivered">
                   <b>DELIVERED</b>
                 </div>
               )}

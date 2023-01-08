@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { OrderController } from "../../../Controller/OrderController";
 import { UserController } from "../../../Controller/UserController";
+import { PaymentStatus } from "../../../Enum/PaymentStatus";
 import { RoleTypes } from "../../../Enum/RoleTypes";
+import { rupiahWithDecimal } from "../../../Helper/Helper";
 import AdminTransactionBrief from "../AdminTransactionBrief/AdminTransactionBrief";
 import "./AdminTransactionReportViewer.css";
 
@@ -43,11 +45,18 @@ function AdminTransactionReportViewer(props) {
           let totalTax = 0;
           res.docs.map((doc) => {
             let order = doc.data();
-            order.key = order.orderId;
-            totalServiceCharge += order.serviceChargeAmount;
-            totalSales += order.totalOrderAmount;
-            totalTax += order.taxAmount;
-            tempOrders = [...tempOrders, order];
+            if (
+              order.orderCreatedDate >= props.startDate &&
+              order.orderCreatedDate < props.endDate
+            ) {
+              order.key = order.orderId;
+              if (order.orderPaymentStatus == PaymentStatus.PAID) {
+                totalServiceCharge += order.serviceChargeAmount;
+                totalSales += order.totalOrderAmount;
+                totalTax += order.taxAmount;
+              }
+              tempOrders = [...tempOrders, order];
+            }
           });
           setBriefData({
             totalSales: totalSales,
@@ -148,7 +157,11 @@ function AdminTransactionReportViewer(props) {
       render: (_, record) => (
         <p>
           {record.orderCreatedDate
-            ? new Date(record.orderCreatedDate).toUTCString()
+            ? new Date(record.orderCreatedDate).toDateString() +
+              " at " +
+              new Date(record.orderCreatedDate).getHours() +
+              ":" +
+              new Date(record.orderCreatedDate).getMinutes()
             : "-"}
         </p>
       ),
@@ -164,7 +177,11 @@ function AdminTransactionReportViewer(props) {
       render: (_, record) => (
         <p>
           {record.orderPaidDate
-            ? new Date(record.orderPaidDate).toUTCString()
+            ? new Date(record.orderPaidDate).toDateString() +
+              " at " +
+              new Date(record.orderPaidDate).getHours() +
+              ":" +
+              new Date(record.orderPaidDate).getMinutes()
             : "-"}
         </p>
       ),
@@ -201,7 +218,9 @@ function AdminTransactionReportViewer(props) {
       title: "Subtotal",
       dataIndex: "totalOrderAmount",
       key: "totalOrderAmount",
-      render: (_, record) => <p>IDR. {record.totalOrderAmount}</p>,
+      render: (_, record) => (
+        <p>{rupiahWithDecimal(record.totalOrderAmount)}</p>
+      ),
       sorter: {
         compare: (a, b) => a.totalOrderAmount - b.totalOrderAmount,
         multiple: 9,
@@ -211,7 +230,9 @@ function AdminTransactionReportViewer(props) {
       title: "Service Charge",
       dataIndex: "serviceChargeAmount",
       key: "serviceChargeAmount",
-      render: (_, record) => <p>IDR. {record.serviceChargeAmount}</p>,
+      render: (_, record) => (
+        <p>{rupiahWithDecimal(record.serviceChargeAmount)}</p>
+      ),
       sorter: {
         compare: (a, b) => a.serviceChargeAmount - b.serviceChargeAmount,
         multiple: 10,
@@ -221,7 +242,7 @@ function AdminTransactionReportViewer(props) {
       title: "Tax",
       dataIndex: "taxAmount",
       key: "taxAmount",
-      render: (_, record) => <p>IDR. {record.taxAmount}</p>,
+      render: (_, record) => <p>{rupiahWithDecimal(record.taxAmount)}</p>,
       sorter: {
         compare: (a, b) => a.taxAmount - b.taxAmount,
         multiple: 11,
@@ -231,7 +252,9 @@ function AdminTransactionReportViewer(props) {
       title: "Grand Total",
       dataIndex: "finalTotalOrderAmount",
       key: "finalTotalOrderAmount",
-      render: (_, record) => <p>IDR. {record.finalTotalOrderAmount}</p>,
+      render: (_, record) => (
+        <p>{rupiahWithDecimal(record.finalTotalOrderAmount)}</p>
+      ),
       sorter: {
         compare: (a, b) => a.finalTotalOrderAmount - b.finalTotalOrderAmount,
         multiple: 12,

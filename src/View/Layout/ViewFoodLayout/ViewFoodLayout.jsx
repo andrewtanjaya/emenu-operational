@@ -6,6 +6,7 @@ import "./ViewFoodLayout.css";
 import { FoodController } from "../../../Controller/FoodController";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { CategoryController } from "../../../Controller/CategoryController";
+import { rupiahWithoutDecimal } from "../../../Helper/Helper";
 
 function ViewFoodLayout() {
   const columns = [
@@ -21,23 +22,17 @@ function ViewFoodLayout() {
       ),
     },
     {
-      title: "Food Id",
-      dataIndex: "foodId",
-      key: "foodId",
-      width: "12%",
-    },
-    {
       title: "Name",
       dataIndex: "foodName",
       key: "foodName",
-      width: "28%",
+      width: "20%",
     },
     {
       title: "Price",
       dataIndex: "foodPrice",
       key: "foodPrice",
       width: "10%",
-      render: (price) => <p>IDR. {price}</p>,
+      render: (price) => <p>{rupiahWithoutDecimal(price)}</p>,
     },
     {
       title: "Description",
@@ -125,16 +120,14 @@ function ViewFoodLayout() {
     if (!isFoodLoad) {
       setFoodFiltered(
         foods.filter((u) => {
+          let foodName = u.foodName.toLowerCase();
           if (categoryFilter !== "") {
-            if (keyword !== "") {
-              return (
-                u.categoryId.includes(categoryFilter) &&
-                u.foodName.includes(keyword.toLowerCase())
-              );
-            }
-            return u.categoryId.includes(categoryFilter);
+            return (
+              u.categoryId.includes(categoryFilter) &&
+              foodName.includes(keyword.toLowerCase())
+            );
           }
-          return u.foodName.includes(keyword.toLowerCase());
+          return foodName.includes(keyword.toLowerCase());
         })
       );
       setIsLoad(false);

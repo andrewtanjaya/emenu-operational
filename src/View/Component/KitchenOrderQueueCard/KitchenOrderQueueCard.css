@@ -59,19 +59,19 @@
   padding: 0;
 }
 
-.on-progress {
-  background-color: #F3CC43;
-}
-
-.ready {
+.order-placed {
   background-color: #F55353;
 }
 
-.deliver {
+.order-processed {
+  background-color: #F3CC43;
+}
+
+.order-ready {
   background-color: blue;
 }
 
-.delivered {
+.order-delivered {
   background-color: #36AB27;
 }
 

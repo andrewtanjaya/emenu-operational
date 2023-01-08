@@ -39,6 +39,7 @@ function KitchenOrderQueueGroup(props) {
           orderTable={props.orderData.orderTable}
           orderData={props.orderData}
           orderQueueItemCount={dineInItems.length + takeawayItems.length}
+          queueTimestamp={props.queueData.orderPlacedTimestamp}
         />
       )}
       {takeawayItems.length > 0 && (
@@ -52,6 +53,7 @@ function KitchenOrderQueueGroup(props) {
           orderTable={props.orderData.orderTable}
           orderData={props.orderData}
           orderQueueItemCount={dineInItems.length + takeawayItems.length}
+          queueTimestamp={props.queueData.orderPlacedTimestamp}
         />
       )}
 

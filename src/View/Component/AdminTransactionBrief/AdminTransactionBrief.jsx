@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  rupiahWithDecimal,
+  rupiahWithoutDecimal,
+} from "../../../Helper/Helper";
 import AdminTransactionBriefCard from "../AdminTransactionBriefCard/AdminTransactionBriefCard";
 import "./AdminTransactionBrief.css";
 
@@ -11,15 +15,15 @@ function AdminTransactionBrief(props) {
       />
       <AdminTransactionBriefCard
         title={"Total Sales"}
-        value={"IDR." + props.briefData.totalSales}
+        value={rupiahWithDecimal(props.briefData.totalSales)}
       />
       <AdminTransactionBriefCard
         title={"Total Service Charge"}
-        value={"IDR." + props.briefData.totalServiceCharge}
+        value={rupiahWithDecimal(props.briefData.totalServiceCharge)}
       />
       <AdminTransactionBriefCard
         title={"Total Tax"}
-        value={"IDR." + props.briefData.totalTax}
+        value={rupiahWithDecimal(props.briefData.totalTax)}
       />
     </div>
   );

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { FoodController } from "../../../Controller/FoodController";
 import { OrderSummaryController } from "../../../Controller/OrderSummaryController";
+import { rupiahWithDecimal } from "../../../Helper/Helper";
 
 function AdminDashboardLayout() {
   const { RangePicker } = DatePicker;
@@ -280,7 +281,7 @@ function AdminDashboardLayout() {
               description={"Total Order"}
             />
             <AdminReportCard
-              value={"IDR. " + todayBriefData.totalSales}
+              value={rupiahWithDecimal(todayBriefData.totalSales)}
               description={"Total Sales"}
               withDropdown={true}
               setTodayTotalSalesDropdown={setTodayTotalSalesDropdown}
@@ -311,7 +312,7 @@ function AdminDashboardLayout() {
             description={"Total Order"}
           />
           <AdminReportCard
-            value={"IDR. " + totalSalesByRange}
+            value={rupiahWithDecimal(totalSalesByRange)}
             description={"Total Sales"}
             withDropdown={true}
             setRangedTotalSalesDropdown={setRangedTotalSalesDropdown}

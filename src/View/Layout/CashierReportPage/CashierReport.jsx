@@ -15,8 +15,13 @@ import AddFoodDrawer from "../../Component/AddFoodDrawer/AddFoodDrawer";
 import { Button, Drawer, Dropdown, Space, Table, Typography } from "antd";
 import { PaymentStatus } from "../../../Enum/PaymentStatus";
 import { DownOutlined } from "@ant-design/icons";
+import { rupiahWithDecimal } from "../../../Helper/Helper";
 
 function CashierReport() {
+  let start = new Date();
+  start.setUTCHours(0, 0, 0, 0);
+  let end = new Date();
+  end.setUTCHours(23, 59, 59, 999);
   const columns = [
     {
       title: "Order Id",
@@ -41,9 +46,12 @@ function CashierReport() {
       sorter: (a, b) => a.orderCreatedDate - b.orderCreatedDate,
       render: (_, record) => (
         <>
-          {" "}
           {record.orderCreatedDate
-            ? new Date(record.orderCreatedDate).toDateString()
+            ? new Date(record.orderCreatedDate).toDateString() +
+              " at " +
+              new Date(record.orderCreatedDate).getHours() +
+              ":" +
+              new Date(record.orderCreatedDate).getMinutes()
             : "-"}
         </>
       ),
@@ -55,7 +63,11 @@ function CashierReport() {
       render: (_, record) => (
         <>
           {record.orderPaidDate
-            ? new Date(record.orderPaidDate).toDateString()
+            ? new Date(record.orderPaidDate).toDateString() +
+              " at " +
+              new Date(record.orderPaidDate).getHours() +
+              ":" +
+              new Date(record.orderPaidDate).getMinutes()
             : "-"}
         </>
       ),
@@ -114,21 +126,33 @@ function CashierReport() {
       title: "Total Amount",
       dataIndex: "totalOrderAmount",
       sorter: (a, b) => a.totalOrderAmount - b.totalOrderAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
     {
       title: "Tax Amount",
       dataIndex: "taxAmount",
       sorter: (a, b) => a.taxAmount - b.taxAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
     {
       title: "Service Charge Amount",
       dataIndex: "serviceChargeAmount",
       sorter: (a, b) => a.serviceChargeAmount - b.serviceChargeAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
     {
       title: "Final Total Amount",
       dataIndex: "finalTotalOrderAmount",
       sorter: (a, b) => a.finalTotalOrderAmount - b.finalTotalOrderAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
   ];
 
@@ -185,7 +209,11 @@ function CashierReport() {
 
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [orders, isLoading, error] = useCollectionData(
-    OrderController.getAllOrderByRestaurantIdQuery(userSession.restaurantId),
+    OrderController.getAllOrderByRestaurantIdAndBetweenDateQuery(
+      userSession.restaurantId,
+      start.getTime(),
+      end.getTime()
+    ),
     {
       idField: "id",
     }
@@ -199,6 +227,7 @@ function CashierReport() {
 
   useEffect(() => {
     if (!isLoading) {
+      console.log(orders);
       setOrderCount(orders.length);
       setPaidOrder(
         orders.filter((data) => {
@@ -242,7 +271,7 @@ function CashierReport() {
             Total Order
           </div>
           <div className="report-card">
-            <h3>{`IDR. ${totalSales}`}</h3>
+            <h3>{rupiahWithDecimal(totalSales)}</h3>
             <div className="card-title-container">
               Total Sales
               <div className="payment-type-dropdown-container">

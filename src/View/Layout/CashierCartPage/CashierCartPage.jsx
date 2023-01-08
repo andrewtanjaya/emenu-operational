@@ -10,7 +10,7 @@ import { RestaurantController } from "../../../Controller/RestaurantController";
 import { IdTypes } from "../../../Enum/IdTypes";
 import { OrderItemStatus } from "../../../Enum/OrderItemStatus";
 import { OrderType } from "../../../Enum/OrderType";
-import { generateRandomId } from "../../../Helper/Helper";
+import { generateRandomId, rupiahWithoutDecimal } from "../../../Helper/Helper";
 import { OrderItem } from "../../../Model/OrderItem";
 import { OrderQueue } from "../../../Model/OrderQueue";
 import CartItemCard from "../../Component/CartItemCard/CartItemCard";
@@ -346,17 +346,17 @@ function CashierCartPage() {
                     <p>Service Charge</p>
                   </div>
                   <div className="cart-summary-right-container">
-                    <p>{`IDR. ${cart.totalPrice}`}</p>
+                    <p>{rupiahWithoutDecimal(cart.totalPrice)}</p>
                     {taxAmount === 0 ? (
                       <p>IDR. -</p>
                     ) : (
-                      <p>{`IDR. ${taxAmount}`}</p>
+                      <p>{rupiahWithoutDecimal(taxAmount)}</p>
                     )}
 
                     {serviceChargeAmount === 0 ? (
                       <p>IDR. -</p>
                     ) : (
-                      <p>{`IDR. ${serviceChargeAmount}`}</p>
+                      <p>{rupiahWithoutDecimal(serviceChargeAmount)}</p>
                     )}
                   </div>
                 </div>
@@ -366,7 +366,7 @@ function CashierCartPage() {
                     <h3>Total</h3>
                   </div>
                   <div className="cart-summary-right-container">
-                    <p>{`IDR. ${totalPrice}`}</p>
+                    <p>{rupiahWithoutDecimal(totalPrice)}</p>
                   </div>
                 </div>
                 <button
