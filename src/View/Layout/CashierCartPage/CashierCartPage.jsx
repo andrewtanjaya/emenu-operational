@@ -305,13 +305,13 @@ function CashierCartPage() {
                   </div>
                 </>
               ) : (
-                <>
-                  <h3>Cart Empty</h3>
-                  {/* <img
+                <div className="cart-empty-state">
+                  <img
                     className="empty-logo"
-                    src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
-                  ></img> */}
-                </>
+                    src="https://firebasestorage.googleapis.com/v0/b/e-menu-appcation.appspot.com/o/App-Icon-Images%2FNoItemsCart%20(1).png?alt=media&token=1d5a8cd3-da50-4ec0-86dd-b656b14ec40c"
+                  ></img>
+                  <p>Your Cart Is Empty</p>
+                </div>
               )}
               <Drawer
                 className="atc-drawer"

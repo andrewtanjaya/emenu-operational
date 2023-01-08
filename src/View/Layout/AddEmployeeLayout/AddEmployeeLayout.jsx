@@ -67,11 +67,12 @@ const AddEmployeeLayout = () => {
             name="register"
             onFinish={onFinish}
             scrollToFirstError
+            layout="vertical"
             labelCol={{
-              span: 4,
+              span: 24,
             }}
             wrapperCol={{
-              span: 18,
+              span: 24,
             }}
           >
             <Form.Item
@@ -208,8 +209,8 @@ const AddEmployeeLayout = () => {
               <Input.Password />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 4, span: 24 }}>
-              <Button id="saveButton" type="primary" htmlType="submit">
+            <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+              <Button className="save-employee-button" id="saveButton" type="primary" htmlType="submit">
                 Save
               </Button>
             </Form.Item>

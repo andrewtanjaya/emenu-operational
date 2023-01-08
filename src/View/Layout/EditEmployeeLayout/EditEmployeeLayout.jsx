@@ -110,11 +110,12 @@ function EditEmployeeLayout() {
                 phoneNumber: userData.phoneNumber,
                 gender: userData.gender,
               }}
+              layout="vertical"
               labelCol={{
-                span: 4,
+                span: 24,
               }}
               wrapperCol={{
-                span: 18,
+                span: 24,
               }}
             >
               <Form.Item label="Email Address" name="email">
@@ -267,16 +268,17 @@ function EditEmployeeLayout() {
               >
                 <Input.Password />
               </Form.Item>
-              <Form.Item wrapperCol={{ offset: 4, span: 18 }}>
+              <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
                 <Button
                   type="primary"
                   danger
                   htmlType="button"
+                  className="delete-employee-button"
                   onClick={confirmDeleteModal}
                 >
                   Delete
                 </Button>
-                <Button id="saveButton" type="primary" htmlType="submit">
+                <Button className="save-employee-button" id="saveButton" type="primary" htmlType="submit">
                   Save
                 </Button>
               </Form.Item>

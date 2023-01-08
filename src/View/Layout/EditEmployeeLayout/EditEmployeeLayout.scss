@@ -6,7 +6,7 @@
     align-items: center;
     flex-direction: column;
     width: 100vw;
-    padding: 0 40px;
+    padding: 0 20px;
     box-sizing: border-box;
 }
 
@@ -15,10 +15,10 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    width: 1080px;
-    border: 3px solid inactive;
+    width: 100%;
+    max-width: 1000px;
+    border: 1px solid $inactive;
     border-radius: 16px;
-    box-shadow: 0px 0px 15px rgb(134, 134, 134);
     margin-top: 20px;
     padding: 20px 40px;
     Form{
@@ -27,5 +27,22 @@
 }
 
 .edit-employee-header{
-    width: 1080px;
+    width: 100%;
+}
+
+.delete-employee-button{
+    border-color: $red !important;
+    color: $red !important;
+    background-color: white !important;
+    width: 100px;
+    height: 40px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.save-employee-button{
+    background-color: $primary-color !important;
+    width: 100px;
+    height: 40px;
+    margin-top: 20px;
 }
