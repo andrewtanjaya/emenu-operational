@@ -361,7 +361,14 @@ const EditFoodLayout = () => {
                     setGroupIdToDelete={setGroupIdToDelete}
                   ></AdminFoodGroup>
                   <Form.Item wrapperCol={{ span: 24 }}>
-                    <Button id="saveButton" type="primary" htmlType="submit">
+                    <Button
+                      style={{
+                        width: "100%",
+                      }}
+                      id="saveButton"
+                      type="primary"
+                      htmlType="submit"
+                    >
                       Save
                     </Button>
                   </Form.Item>

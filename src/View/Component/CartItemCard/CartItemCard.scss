@@ -18,7 +18,7 @@
         font-size: 14px;
     }
     border-radius: 10px;
-    box-shadow: 0 0 8px $inactive;
+    border: 1px solid $inactive;
 }
 
 .cart-item-picture{
@@ -42,10 +42,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    margin: auto 0;
     color: $primary-color;
     p {
         font-size: 14px;
+        margin: 0;
     }
 }
 
