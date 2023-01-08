@@ -16,6 +16,14 @@
 .view-menu-container .active-button {
   background-color: #36AB27;
 }
+.view-menu-container .active-button:hover {
+  color: white !important;
+}
+
+.view-menu-tab-button-container Button:hover {
+  border-color: #36AB27 !important;
+  color: #36AB27 !important;
+}
 
 .content-container {
   width: 100%;

@@ -11,7 +11,7 @@
        column-gap: 10px;
   cursor: pointer;
   border-radius: 10px;
-  box-shadow: 0 0 8px #CACACA;
+  border: 1px solid #CACACA;
 }
 .cart-item-card-container p {
   font-size: 14px;
@@ -41,11 +41,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  margin: auto 0;
   color: #36AB27;
 }
 .cart-item-card-price p {
   font-size: 14px;
+  margin: 0;
 }
 
 .info-container {
