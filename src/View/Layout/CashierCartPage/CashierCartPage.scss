@@ -42,7 +42,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 8px $inactive;
+    border: 1px solid $inactive;
     h3{
         margin: 0;
         padding: 0;
@@ -68,6 +68,20 @@
     align-self: center;
     padding: 8px 0px;
     cursor: pointer;
+}
+
+.cart-empty-state{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    p{
+        margin: 0;
+        padding: 0;
+    }
+    img{
+        width: 200px;
+    }
 }
 
 .cart-item-content-container{

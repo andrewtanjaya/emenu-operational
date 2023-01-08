@@ -153,7 +153,7 @@ function CashierDashboardLayout() {
           categoryId=""
           setCategoryFilter={setCategoryFilter}
           active={categoryFilter === ""}
-          icon="https://img.icons8.com/fluency/48/null/cake.png"
+          icon="https://firebasestorage.googleapis.com/v0/b/e-menu-appcation.appspot.com/o/category-icon%2Finfinity_267e-fe0f.png?alt=media&token=156483b8-58b0-430a-96c6-0abee64299dc"
           categoryName="All Menu"
           countItem={filteredFood ? filteredFood.length : 0}
         />
@@ -162,7 +162,7 @@ function CashierDashboardLayout() {
           categoryId="RECOMMENDED"
           setCategoryFilter={setCategoryFilter}
           active={categoryFilter === "RECOMMENDED"}
-          icon="https://img.icons8.com/fluency/48/null/cake.png"
+          icon="https://firebasestorage.googleapis.com/v0/b/e-menu-appcation.appspot.com/o/category-icon%2Fthumbs-up_1f44d.png?alt=media&token=5c7be981-e1df-44fe-9bd7-683dc4e00f80"
           categoryName="Recommended"
           countItem={
             groupByTagData && groupByTagData["RECOMMENDED"]
