@@ -61,6 +61,7 @@ export class Order {
   }
 
   static async updateOrderItems(order) {
+    console.log(order.orderId);
     return await updateDoc(doc(ordersRef, order.orderId), {
       orderItems: order.orderItems,
       totalOrderAmount: order.totalOrderAmount,

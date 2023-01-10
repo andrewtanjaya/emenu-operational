@@ -9,7 +9,6 @@ export class OrderQueueController {
   }
 
   static async addOrderQueue(orderQueue) {
-    console.log(orderQueue);
     return OrderQueue.addOrderQueue(orderQueue);
   }
 
@@ -19,5 +18,9 @@ export class OrderQueueController {
 
   static getAllOrderQueueByRestaurantIdQuery(restaurantId) {
     return Database.getAllOrderQueueByRestaurantIdQuery(restaurantId);
+  }
+
+  static getAllOrderQueueByOrderId(orderId) {
+    return OrderQueue.getAllOrderQueueByOrderId(orderId);
   }
 }

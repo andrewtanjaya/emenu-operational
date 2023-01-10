@@ -115,7 +115,7 @@ export class Database {
       ordersRef,
       where("restaurantId", "==", restaurantId),
       where("orderCreatedDate", ">=", Number(startDate)),
-      where("orderCreatedDate", "<=", Number(endDate))
+      where("orderCreatedDate", "<", Number(endDate))
     );
   }
 

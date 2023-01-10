@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { OrderQueueController } from "../../../Controller/OrderQueueController";
 import { OrderType } from "../../../Enum/OrderType";
+import { PaymentStatus } from "../../../Enum/PaymentStatus";
 import KitchenOrderQueueCard from "../KitchenOrderQueueCard/KitchenOrderQueueCard";
 import "./KitchenOrderQueueGroup.css";
 
@@ -8,22 +10,27 @@ function KitchenOrderQueueGroup(props) {
   const [dineInItems, setDineInItems] = useState([]);
   const [takeawayItems, setTakeawayItems] = useState([]);
   useEffect(() => {
-    setDineInItems(
-      props.orderData.orderItems.filter((data) => {
-        return (
-          data.orderItemType === OrderType.DINE_IN &&
-          data.orderItemTimestamp === props.queueData.orderPlacedTimestamp
-        );
-      })
-    );
-    setTakeawayItems(
-      props.orderData.orderItems.filter((data) => {
-        return (
-          data.orderItemType === OrderType.TAKEAWAY &&
-          data.orderItemTimestamp === props.queueData.orderPlacedTimestamp
-        );
-      })
-    );
+    let dineIn = props.orderData.orderItems.filter((data) => {
+      return (
+        data.orderItemType === OrderType.DINE_IN &&
+        data.orderItemTimestamp === props.queueData.orderPlacedTimestamp
+      );
+    });
+
+    let takeaway = props.orderData.orderItems.filter((data) => {
+      return (
+        data.orderItemType === OrderType.TAKEAWAY &&
+        data.orderItemTimestamp === props.queueData.orderPlacedTimestamp
+      );
+    });
+    if (
+      dineIn.length + takeaway.length === 0 ||
+      props.orderData.orderPaymentStatus === PaymentStatus.CANCELED
+    ) {
+      OrderQueueController.deleteOrderQueueById(props.queueData.orderQueueId);
+    }
+    setDineInItems(dineIn);
+    setTakeawayItems(takeaway);
   }, [props.orderData, props.queueData]);
 
   return (
@@ -56,12 +63,13 @@ function KitchenOrderQueueGroup(props) {
           queueTimestamp={props.queueData.orderPlacedTimestamp}
         />
       )}
-
-      <div className="order-queue-group-footer">
-        <p>
-          <b>#{props.orderData.orderId}</b>
-        </p>
-      </div>
+      {dineInItems.length + takeawayItems.length > 0 && (
+        <div className="order-queue-group-footer">
+          <p>
+            <b>#{props.orderData.orderId}</b>
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -121,7 +121,7 @@ function CashierCartPage() {
         let timestamp = Date.now();
         let orderItems = cart.cartItems.map((item) => {
           let orderItem = new OrderItem(
-            item.cartItemId,
+            item.cartItemId + "-" + timestamp,
             OrderItemStatus.PLACED,
             timestamp,
             item.cartItemQuantity,
@@ -160,21 +160,24 @@ function CashierCartPage() {
         cart.totalPrice = 0;
 
         CartController.updateCart(cart).then(() => {
-          OrderController.updateOrderItems(orderData).then(() => {});
+          OrderController.updateOrderItems(orderData).then(() => {
+            let newOrderQueue = new OrderQueue(
+              newOrderQueueId,
+              orderData.orderId,
+              orderData.orderType,
+              orderData.orderType === OrderType.DINE_IN
+                ? values.tableNumber
+                : null,
+              orderData.orderType === OrderType.TAKEAWAY
+                ? values.queueNumber
+                : null,
+              orderData.restaurantId,
+              timestamp
+            );
+            OrderQueueController.addOrderQueue(newOrderQueue);
+          });
         });
 
-        let newOrderQueue = new OrderQueue(
-          newOrderQueueId,
-          orderData.orderId,
-          orderData.orderType,
-          orderData.orderType === OrderType.DINE_IN ? values.tableNumber : null,
-          orderData.orderType === OrderType.TAKEAWAY
-            ? values.queueNumber
-            : null,
-          orderData.restaurantId,
-          timestamp
-        );
-        OrderQueueController.addOrderQueue(newOrderQueue).then(() => {});
         form.resetFields();
       }
     }

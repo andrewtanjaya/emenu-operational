@@ -1,6 +1,7 @@
 import { Popconfirm } from "antd";
 import React from "react";
 import { OrderItemStatus } from "../../../Enum/OrderItemStatus";
+import { rupiahWithoutDecimal } from "../../../Helper/Helper";
 import "./OrderItemDetail.css";
 
 function OrderItemDetail(props) {
@@ -59,12 +60,17 @@ function OrderItemDetail(props) {
             {props.orderItem.orderItemStatus}
           </span>
         </div>
-        <p className="order-item-price">IDR. {props.orderItem.subTotalPrice}</p>
+        <p className="order-item-price">
+          {rupiahWithoutDecimal(props.orderItem.subTotalPrice)}
+        </p>
         <Popconfirm
           placement="bottom"
           title={"Are you sure want to delete?"}
           onConfirm={() =>
-            props.handleDeleteOrderItem(props.orderItem.orderItemId)
+            props.handleDeleteOrderItem(
+              props.orderItem.orderItemId,
+              props.order
+            )
           }
           okText="Yes"
           cancelText="No"

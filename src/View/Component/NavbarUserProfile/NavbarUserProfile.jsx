@@ -5,6 +5,7 @@ import { Avatar, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import AuthConsumer from "../../../hooks/auth";
 import "./NavbarUserProfile.css";
+import { CaretDownOutlined, DownOutlined } from "@ant-design/icons";
 
 function NavbarUserProfile(props) {
   const { Text } = Typography;
@@ -228,7 +229,7 @@ function NavbarUserProfile(props) {
         <p>{props.userData.userName}</p>
         <p>{props.userData.roleType}</p>
       </div>
-
+      <CaretDownOutlined />
       {props.userData ? (
         props.userData.roleType === "MANAGER" ? (
           renderManagerDropDown()
