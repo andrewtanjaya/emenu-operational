@@ -59,19 +59,19 @@
     cursor: pointer;
 }
 
-.on-progress{
-    background-color: $yellow;
-}
-
-.ready{
+.order-placed{
     background-color: $red;
 }
 
-.deliver{
-    background-color: blue;
+.order-processed{
+    background-color: $yellow;
 }
 
-.delivered{
+.order-ready{
+    background-color: $blue;
+}
+
+.order-delivered{
     background-color: $primary-color;
 }
 

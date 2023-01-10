@@ -3,6 +3,10 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { FoodController } from "../../../Controller/FoodController";
+import {
+  rupiahWithDecimal,
+  rupiahWithoutDecimal,
+} from "../../../Helper/Helper";
 import "./CashierKitchenUpdateMenuAvailableLayout.css";
 
 function CashierKitchenUpdateMenuAvailableLayout() {
@@ -25,6 +29,7 @@ function CashierKitchenUpdateMenuAvailableLayout() {
           totalSales: foods[i].totalSales,
           foodPrice: foods[i].foodPrice,
           foodAvailability: foods[i].foodAvailability,
+          orderCount: foods[i].orderCount,
         };
         tempFoodData = [...tempFoodData, food];
       }
@@ -60,6 +65,7 @@ function CashierKitchenUpdateMenuAvailableLayout() {
           totalSales: result[i].totalSales,
           foodPrice: result[i].foodPrice,
           foodAvailability: result[i].foodAvailability,
+          orderCount: result[i].orderCount,
         };
         tempResultData = [...tempResultData, food];
       }
@@ -88,11 +94,11 @@ function CashierKitchenUpdateMenuAvailableLayout() {
       width: "60%",
     },
     {
-      title: "Total Sold",
-      dataIndex: "totalSales",
-      key: "totalSales",
+      title: "Quantity Sold",
+      dataIndex: "orderCount",
+      key: "orderCount",
       sorter: {
-        compare: (a, b) => a.totalSales - b.totalSales,
+        compare: (a, b) => a.orderCount - b.orderCount,
         multiple: 1,
       },
       width: "10%",
@@ -106,6 +112,7 @@ function CashierKitchenUpdateMenuAvailableLayout() {
         multiple: 2,
       },
       width: "20%",
+      render: (_, record) => <>{rupiahWithoutDecimal(record.foodPrice)}</>,
     },
     {
       title: "Availability",
@@ -143,9 +150,9 @@ function CashierKitchenUpdateMenuAvailableLayout() {
           dataSource={foodsData}
           bordered
           pagination={{
-            defaultPageSize: 3,
+            defaultPageSize: 5,
             showSizeChanger: true,
-            pageSizeOptions: ["3", "10", "50", "100"],
+            pageSizeOptions: ["5", "10", "50", "100"],
           }}
         />
       </div>

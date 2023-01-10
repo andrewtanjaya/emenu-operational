@@ -10,7 +10,7 @@ import { RestaurantController } from "../../../Controller/RestaurantController";
 import { IdTypes } from "../../../Enum/IdTypes";
 import { OrderItemStatus } from "../../../Enum/OrderItemStatus";
 import { OrderType } from "../../../Enum/OrderType";
-import { generateRandomId } from "../../../Helper/Helper";
+import { generateRandomId, rupiahWithoutDecimal } from "../../../Helper/Helper";
 import { OrderItem } from "../../../Model/OrderItem";
 import { OrderQueue } from "../../../Model/OrderQueue";
 import CartItemCard from "../../Component/CartItemCard/CartItemCard";
@@ -121,7 +121,7 @@ function CashierCartPage() {
         let timestamp = Date.now();
         let orderItems = cart.cartItems.map((item) => {
           let orderItem = new OrderItem(
-            item.cartItemId,
+            item.cartItemId + "-" + timestamp,
             OrderItemStatus.PLACED,
             timestamp,
             item.cartItemQuantity,
@@ -160,21 +160,24 @@ function CashierCartPage() {
         cart.totalPrice = 0;
 
         CartController.updateCart(cart).then(() => {
-          OrderController.updateOrderItems(orderData).then(() => {});
+          OrderController.updateOrderItems(orderData).then(() => {
+            let newOrderQueue = new OrderQueue(
+              newOrderQueueId,
+              orderData.orderId,
+              orderData.orderType,
+              orderData.orderType === OrderType.DINE_IN
+                ? values.tableNumber
+                : null,
+              orderData.orderType === OrderType.TAKEAWAY
+                ? values.queueNumber
+                : null,
+              orderData.restaurantId,
+              timestamp
+            );
+            OrderQueueController.addOrderQueue(newOrderQueue);
+          });
         });
 
-        let newOrderQueue = new OrderQueue(
-          newOrderQueueId,
-          orderData.orderId,
-          orderData.orderType,
-          orderData.orderType === OrderType.DINE_IN ? values.tableNumber : null,
-          orderData.orderType === OrderType.TAKEAWAY
-            ? values.queueNumber
-            : null,
-          orderData.restaurantId,
-          timestamp
-        );
-        OrderQueueController.addOrderQueue(newOrderQueue).then(() => {});
         form.resetFields();
       }
     }
@@ -346,17 +349,17 @@ function CashierCartPage() {
                     <p>Service Charge</p>
                   </div>
                   <div className="cart-summary-right-container">
-                    <p>{`IDR. ${cart.totalPrice}`}</p>
+                    <p>{rupiahWithoutDecimal(cart.totalPrice)}</p>
                     {taxAmount === 0 ? (
                       <p>IDR. -</p>
                     ) : (
-                      <p>{`IDR. ${taxAmount}`}</p>
+                      <p>{rupiahWithoutDecimal(taxAmount)}</p>
                     )}
 
                     {serviceChargeAmount === 0 ? (
                       <p>IDR. -</p>
                     ) : (
-                      <p>{`IDR. ${serviceChargeAmount}`}</p>
+                      <p>{rupiahWithoutDecimal(serviceChargeAmount)}</p>
                     )}
                   </div>
                 </div>
@@ -366,7 +369,7 @@ function CashierCartPage() {
                     <h3>Total</h3>
                   </div>
                   <div className="cart-summary-right-container">
-                    <p>{`IDR. ${totalPrice}`}</p>
+                    <p>{rupiahWithoutDecimal(totalPrice)}</p>
                   </div>
                 </div>
                 <button

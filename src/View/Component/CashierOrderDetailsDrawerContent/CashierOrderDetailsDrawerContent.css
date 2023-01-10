@@ -15,8 +15,8 @@
 }
 
 .order-details-order-items-list {
-  max-height: calc(100% - 340px);
-  min-height: calc(100% - 340px);
+  max-height: calc(100% - 400px);
+  min-height: calc(100% - 400px);
   overflow-y: auto;
   padding: 0 10px;
   box-sizing: border-box;
@@ -25,7 +25,7 @@
 
 .order-details-footer-drawer {
   width: 100%;
-  height: 240px;
+  height: 300px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -50,13 +50,24 @@
   width: 100%;
   height: 0px;
 }
-.order-details-footer-drawer button {
+.order-details-footer-drawer #payBtn {
   margin-top: 20px;
   padding: 18px 20px;
   border-radius: 4px;
   border: none;
   background-color: #36AB27;
-  color: white;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+.order-details-footer-drawer #cancelOrderBtn {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: 4px;
+  border: 1px solid #36AB27;
+  background-color: white;
+  color: #36AB27;
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;

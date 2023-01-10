@@ -15,8 +15,11 @@ import AddFoodDrawer from "../../Component/AddFoodDrawer/AddFoodDrawer";
 import { Button, Drawer, Dropdown, Space, Table, Typography } from "antd";
 import { PaymentStatus } from "../../../Enum/PaymentStatus";
 import { DownOutlined } from "@ant-design/icons";
+import { rupiahWithDecimal } from "../../../Helper/Helper";
 
 function CashierReport() {
+  let start = new Date().setHours(0, 0, 0, 0);
+  let end = new Date().setHours(23, 59, 59, 999);
   const columns = [
     {
       title: "Order Id",
@@ -41,9 +44,12 @@ function CashierReport() {
       sorter: (a, b) => a.orderCreatedDate - b.orderCreatedDate,
       render: (_, record) => (
         <>
-          {" "}
           {record.orderCreatedDate
-            ? new Date(record.orderCreatedDate).toDateString()
+            ? new Date(record.orderCreatedDate).toDateString() +
+              " at " +
+              new Date(record.orderCreatedDate).getHours() +
+              ":" +
+              new Date(record.orderCreatedDate).getMinutes()
             : "-"}
         </>
       ),
@@ -55,7 +61,11 @@ function CashierReport() {
       render: (_, record) => (
         <>
           {record.orderPaidDate
-            ? new Date(record.orderPaidDate).toDateString()
+            ? new Date(record.orderPaidDate).toDateString() +
+              " at " +
+              new Date(record.orderPaidDate).getHours() +
+              ":" +
+              new Date(record.orderPaidDate).getMinutes()
             : "-"}
         </>
       ),
@@ -111,24 +121,43 @@ function CashierReport() {
       sorter: (a, b) => a.orderQueue - b.orderQueue,
     },
     {
+      title: "Order Payment Method",
+      dataIndex: "paymentMethod",
+      render: (_, record) => (
+        <>{record.paymentMethod ? <p>{record.paymentMethod}</p> : <p>-</p>}</>
+      ),
+    },
+    {
       title: "Total Amount",
       dataIndex: "totalOrderAmount",
       sorter: (a, b) => a.totalOrderAmount - b.totalOrderAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
     {
       title: "Tax Amount",
       dataIndex: "taxAmount",
       sorter: (a, b) => a.taxAmount - b.taxAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
     {
       title: "Service Charge Amount",
       dataIndex: "serviceChargeAmount",
       sorter: (a, b) => a.serviceChargeAmount - b.serviceChargeAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
     {
       title: "Final Total Amount",
       dataIndex: "finalTotalOrderAmount",
       sorter: (a, b) => a.finalTotalOrderAmount - b.finalTotalOrderAmount,
+      render: (_, record) => (
+        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+      ),
     },
   ];
 
@@ -182,10 +211,13 @@ function CashierReport() {
       ),
     },
   ];
-
   const userSession = JSON.parse(sessionStorage.getItem("userData"));
   const [orders, isLoading, error] = useCollectionData(
-    OrderController.getAllOrderByRestaurantIdQuery(userSession.restaurantId),
+    OrderController.getAllOrderByRestaurantIdAndBetweenDateQuery(
+      userSession.restaurantId,
+      start,
+      end
+    ),
     {
       idField: "id",
     }
@@ -193,6 +225,7 @@ function CashierReport() {
 
   const [orderCount, setOrderCount] = useState(0);
   const [unpaidOrder, setUnpaidOrder] = useState([]);
+  const [canceledOrder, setCanceledOrder] = useState([]);
   const [paidOrder, setPaidOrder] = useState([]);
   const [totalSales, setTotalSales] = useState(0);
   const [filterPaymentType, setFilterPaymentType] = useState("All");
@@ -210,6 +243,11 @@ function CashierReport() {
           return data.orderPaymentStatus === PaymentStatus.UNPAID;
         })
       );
+      setCanceledOrder(
+        orders.filter((data) => {
+          return data.orderPaymentStatus === PaymentStatus.CANCELED;
+        })
+      );
     }
   }, [orders]);
 
@@ -224,7 +262,7 @@ function CashierReport() {
       } else {
         let totalSales = 0;
         orders.forEach((data) => {
-          if (data.paymentMethod === filterPaymentType)
+          if (data.paymentMethod.includes(filterPaymentType))
             totalSales += data.finalTotalOrderAmount;
           setTotalSales(totalSales);
         });
@@ -242,7 +280,7 @@ function CashierReport() {
             Total Order
           </div>
           <div className="report-card">
-            <h3>{`IDR. ${totalSales}`}</h3>
+            <h3>{rupiahWithDecimal(totalSales)}</h3>
             <div className="card-title-container">
               Total Sales
               <div className="payment-type-dropdown-container">
@@ -267,6 +305,10 @@ function CashierReport() {
           <div className="report-card">
             <h3>{unpaidOrder.length}</h3>
             Pending Order
+          </div>
+          <div className="report-card">
+            <h3>{canceledOrder.length}</h3>
+            Canceled Order
           </div>
           <div className="report-card">
             <h3>{paidOrder.length}</h3>

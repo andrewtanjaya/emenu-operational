@@ -106,6 +106,19 @@ export class Database {
     return query(ordersRef, where("restaurantId", "==", restaurantId));
   }
 
+  static getAllOrderByRestaurantIdAndBetweenDateQuery(
+    restaurantId,
+    startDate,
+    endDate
+  ) {
+    return query(
+      ordersRef,
+      where("restaurantId", "==", restaurantId),
+      where("orderCreatedDate", ">=", Number(startDate)),
+      where("orderCreatedDate", "<", Number(endDate))
+    );
+  }
+
   static getAllOrderQueueByRestaurantIdQuery(restaurantId) {
     return query(orderQueuesRef, where("restaurantId", "==", restaurantId));
   }

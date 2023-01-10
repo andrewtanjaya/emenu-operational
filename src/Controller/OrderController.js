@@ -52,6 +52,18 @@ export class OrderController {
     return Database.getAllOrderByRestaurantIdQuery(restaurantId);
   }
 
+  static getAllOrderByRestaurantIdAndBetweenDateQuery(
+    restaurantId,
+    startDate,
+    endDate
+  ) {
+    return Database.getAllOrderByRestaurantIdAndBetweenDateQuery(
+      restaurantId,
+      startDate,
+      endDate
+    );
+  }
+
   static async updateOrderItems(order) {
     return Order.updateOrderItems(order);
   }

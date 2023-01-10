@@ -1,4 +1,12 @@
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { orderQueuesRef } from "../Config/Firebase";
 
 export class OrderQueue {
@@ -34,5 +42,11 @@ export class OrderQueue {
 
   static async deleteOrderQueueById(orderQueueId) {
     return await deleteDoc(doc(orderQueuesRef, orderQueueId));
+  }
+
+  static async getAllOrderQueueByOrderId(orderId) {
+    return await getDocs(
+      query(orderQueuesRef, where("orderId", "==", orderId))
+    );
   }
 }

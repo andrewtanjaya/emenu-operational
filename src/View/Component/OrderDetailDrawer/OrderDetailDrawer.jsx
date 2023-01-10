@@ -1,6 +1,9 @@
+import { async } from "@firebase/util";
 import { Button, Drawer, Space } from "antd";
 import React, { useState } from "react";
 import { OrderController } from "../../../Controller/OrderController";
+import { OrderQueueController } from "../../../Controller/OrderQueueController";
+import { PaymentStatus } from "../../../Enum/PaymentStatus";
 import CashierOrderDetailsDrawerContent from "../CashierOrderDetailsDrawerContent/CashierOrderDetailsDrawerContent";
 import CashierPaymentDrawerContent from "../CashierPaymentDrawerContent/CashierPaymentDrawerContent";
 import CashierThankyouDrawerContent from "../CashierThankyouDrawerContent/CashierThankyouDrawerContent";
@@ -9,15 +12,48 @@ function OrderDetailDrawer(props) {
   const [page, setPage] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
 
-  const handleDeleteOrderItem = (orderItemId) => {
-    let updatedOrder = props.selectedOrder;
+  function calculateTotalPrice(orderItem) {
+    let totalPrice = 0;
+    orderItem.forEach((item) => {
+      totalPrice += item.subTotalPrice;
+    });
+    return totalPrice;
+  }
+
+  const handleDeleteOrderItem = (orderItemId, order) => {
+    let updatedOrder = order;
     updatedOrder.orderItems = updatedOrder.orderItems.filter(
       (orderItem) => orderItem.orderItemId !== orderItemId
     );
-    console.log(updatedOrder);
-    OrderController.updateOrder(props.selectedOrder);
-    console.log(orderItemId);
+    let totalOrderAmount = calculateTotalPrice(updatedOrder.orderItems);
+    updatedOrder.totalOrderAmount = totalOrderAmount;
+    updatedOrder.serviceChargeAmount =
+      totalOrderAmount * (updatedOrder.serviceChargeRate / 100);
+    updatedOrder.taxAmount = totalOrderAmount * (updatedOrder.taxRate / 100);
+    updatedOrder.finalTotalOrderAmount =
+      totalOrderAmount +
+      updatedOrder.serviceChargeAmount +
+      updatedOrder.taxAmount;
+    OrderController.updateOrderItems(updatedOrder);
   };
+
+  const handleCancelOrder = (order) => {
+    OrderQueueController.getAllOrderQueueByOrderId(order.orderId).then(
+      (resp) => {
+        setPage(0);
+        setPaymentMethod("");
+        props.onClose();
+        //UPDATE ORDER STATUS CANCELED
+        order.orderPaymentStatus = PaymentStatus.CANCELED;
+        OrderController.updateOrder(order);
+        //DELETE ALL ORDER QUEUE RELATED TO THIS ORDER
+        resp.forEach((doc) => {
+          OrderQueueController.deleteOrderQueueById(doc.data().orderQueueId);
+        });
+      }
+    );
+  };
+
   return (
     <div>
       <Drawer
@@ -41,9 +77,11 @@ function OrderDetailDrawer(props) {
       >
         {page === 0 ? (
           <CashierOrderDetailsDrawerContent
+            allOrder={props.allOrder}
             page={page}
             setPage={setPage}
             handleDeleteOrderItem={handleDeleteOrderItem}
+            handleCancelOrder={handleCancelOrder}
             order={props.selectedOrder}
           />
         ) : page === 1 ? (

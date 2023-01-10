@@ -52,12 +52,6 @@ function ViewCategoryLayout() {
       ),
     },
     {
-      title: "Category Id",
-      dataIndex: "categoryId",
-      key: "categoryId",
-      width: "20%",
-    },
-    {
       title: "Category Name",
       dataIndex: "categoryName",
       key: "categoryName",

@@ -1,4 +1,12 @@
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  FieldValue,
+  getDoc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { foodsRef } from "../Config/Firebase";
 
 export class Food {
@@ -52,6 +60,13 @@ export class Food {
       foodPrice: food.foodPrice,
       foodDescription: food.foodDescription,
       tags: food.tags,
+    });
+  }
+
+  static async updateFoodSoldQuantity(foodId, orderCount, totalSold) {
+    return await updateDoc(doc(foodsRef, foodId), {
+      orderCount: orderCount,
+      totalSold: totalSold,
     });
   }
 

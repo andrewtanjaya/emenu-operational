@@ -1,4 +1,5 @@
 import React from "react";
+import { rupiahWithoutDecimal } from "../../../Helper/Helper";
 import "./CashierMenuCard.css";
 
 function CashierMenuCard(props) {
@@ -18,7 +19,7 @@ function CashierMenuCard(props) {
       <img src={props.foodImage} />
       <p>{props.foodName}</p>
       <p>
-        <b>IDR. {props.foodPrice}</b>
+        <b>{rupiahWithoutDecimal(props.foodPrice)}</b>
       </p>
     </div>
   );

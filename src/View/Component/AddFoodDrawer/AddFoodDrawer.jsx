@@ -199,25 +199,6 @@ const AddFoodDrawer = (props) => {
               </div>
             )}
             <Form className="form-atc" form={form} onFinish={onFinish}>
-              <div className="detail-menu-page-group-container">
-                {groupData ? (
-                  groupData.map((group) => (
-                    <GroupOptionComponent key={group.groupId} group={group} />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </div>
-
-              <div className="detail-menu-page-food-notes">
-                <p>
-                  <b>Notes</b>
-                </p>
-                <Form.Item name="notes">
-                  <TextArea rows={6} placeholder="Notes" />
-                </Form.Item>
-              </div>
-
               <div className="detail-menu-page-food-notes">
                 <p>
                   <b>Food Order Type</b>
@@ -235,6 +216,24 @@ const AddFoodDrawer = (props) => {
                     <Radio value={OrderType.DINE_IN}> Dine In </Radio>
                     <Radio value={OrderType.TAKEAWAY}> Takeaway </Radio>
                   </Radio.Group>
+                </Form.Item>
+              </div>
+              <div className="detail-menu-page-group-container">
+                {groupData ? (
+                  groupData.map((group) => (
+                    <GroupOptionComponent key={group.groupId} group={group} />
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              <div className="detail-menu-page-food-notes">
+                <p>
+                  <b>Notes</b>
+                </p>
+                <Form.Item name="notes">
+                  <TextArea rows={6} placeholder="Notes" />
                 </Form.Item>
               </div>
 

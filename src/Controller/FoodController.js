@@ -20,6 +20,10 @@ export class FoodController {
     return Food.updateFood(food);
   }
 
+  static async updateFoodSoldQuantity(foodId, orderCount, totalSold) {
+    return Food.updateFoodSoldQuantity(foodId, orderCount, totalSold);
+  }
+
   static getAllFoodsByRestaurantId(restaurantId) {
     return Database.getAllFoodsByRestaurantId(restaurantId);
   }
