@@ -79,10 +79,11 @@ export class Database {
     return orderSnap;
   }
 
-  static async getOrderSummaryByDateBetween(startDate, endDate) {
+  static async getOrderSummaryByDateBetween(restaurantId, startDate, endDate) {
     return await getDocs(
       query(
         orderSummaryRef,
+        where("restaurantId", "==", restaurantId),
         where("orderPaidDate", ">=", startDate),
         where("orderPaidDate", "<=", endDate)
       )
