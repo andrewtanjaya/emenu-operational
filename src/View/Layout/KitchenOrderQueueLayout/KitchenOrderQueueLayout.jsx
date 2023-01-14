@@ -72,31 +72,34 @@ function KitchenOrderQueueLayout() {
       );
 
       setSortedQueue(sortedOrderQueue);
+      console.log(orderQueue)
     }
   }, [orderQueue]);
 
-  return (
-    !isOrderLoading &&
-    sortedQueue.length > 0 && (
-      <div className="order-queue-wrapper">
-        <h1>ORDER QUEUE LIST</h1>
-        <div className="order-queue-container">
-          {sortedQueue.map((queueData) => {
-            let orderData = orders.filter((data) => {
-              return data.orderId === queueData.orderId;
-            });
+  return !isOrderLoading && sortedQueue.length > 0 ? (
+    <div className="order-queue-wrapper">
+      <h1>ORDER QUEUE LIST</h1>
+      <div className="order-queue-container">
+        {sortedQueue.map((queueData) => {
+          let orderData = orders.filter((data) => {
+            return data.orderId === queueData.orderId;
+          });
 
-            return (
-              <KitchenOrderQueueGroup
-                key={queueData.orderQueueId}
-                queueData={queueData}
-                orderData={orderData[0]}
-              ></KitchenOrderQueueGroup>
-            );
-          })}
-        </div>
+          return (
+            <KitchenOrderQueueGroup
+              key={queueData.orderQueueId}
+              queueData={queueData}
+              orderData={orderData[0]}
+            ></KitchenOrderQueueGroup>
+          );
+        })}
       </div>
-    )
+    </div>
+  ) : (
+    <div className="order-queue-wrapper">
+      <h1>ORDER QUEUE LIST</h1>
+      <div style={{ margin: "0 auto" }}>No Data</div>
+    </div>
   );
 }
 

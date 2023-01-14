@@ -38,6 +38,12 @@ function KitchenOrderQueueCard(props) {
       }
     });
   }
+
+  function leadingZero(time) {
+    time = time + "";
+    if (time < 10) return "0" + time;
+    return time;
+  }
   return (
     <div className="order-queue-card-container">
       <div
@@ -57,13 +63,13 @@ function KitchenOrderQueueCard(props) {
               }`}
         </p>
         <p>
-          {props.date.getDate() +
+          {leadingZero(props.date.getDate()) +
             " " +
-            months[props.date.getMonth()] +
+            leadingZero(months[props.date.getMonth()]) +
             " " +
-            props.date.getHours() +
+            leadingZero(props.date.getHours()) +
             ":" +
-            props.date.getMinutes()}
+            leadingZero(props.date.getMinutes())}
         </p>
       </div>
       {props.foods ? (

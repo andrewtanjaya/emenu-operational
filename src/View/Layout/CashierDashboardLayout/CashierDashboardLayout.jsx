@@ -99,8 +99,8 @@ function CashierDashboardLayout() {
 
   useEffect(() => {
     if (categoryData && !isCategoryLoad && filteredFood) {
-      setGroupByCategoryData(groupBy(filteredFood, "categoryId"));
-      setGroupByTagData(groupBy(filteredFood, "tags"));
+      setGroupByCategoryData(groupBy(foodData, "categoryId"));
+      setGroupByTagData(groupBy(foodData, "tags"));
     }
   }, [categoryData, filteredFood]);
 
@@ -155,7 +155,7 @@ function CashierDashboardLayout() {
           active={categoryFilter === ""}
           icon="https://firebasestorage.googleapis.com/v0/b/e-menu-appcation.appspot.com/o/category-icon%2Finfinity_267e-fe0f.png?alt=media&token=156483b8-58b0-430a-96c6-0abee64299dc"
           categoryName="All Menu"
-          countItem={filteredFood ? filteredFood.length : 0}
+          countItem={foodData ? foodData.length : 0}
         />
         <CashierCategoryCard
           key="recommended"

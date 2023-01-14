@@ -46,6 +46,7 @@ function AdminDashboardLayout() {
   useEffect(() => {
     if (startDateMenu && endDateMenu) {
       OrderSummaryController.getOrderSummaryByDateBetween(
+        userSession.restaurantId,
         startDateMenu,
         endDateMenu
       ).then((res) => {
@@ -91,7 +92,7 @@ function AdminDashboardLayout() {
                   orderSummaryData[i].soldItemSummary[
                     Object.keys(orderSummaryData[i].soldItemSummary)[j]
                   ].totalSoldQty,
-                totalSales:
+                totalSales: 
                   orderSummaryData[i].soldItemSummary[
                     Object.keys(orderSummaryData[i].soldItemSummary)[j]
                   ].totalSales,
@@ -101,16 +102,15 @@ function AdminDashboardLayout() {
       }
       menuRankTemp = Object.keys(menuRankTemp).map((k) => ({
         key: k,
-        foodName: k,
+        foodName: foods.filter((food)=> food.foodId === k)[0] ? foods.filter((food)=> food.foodId === k)[0].foodName : k,
         totalSold: menuRankTemp[k].totalSoldQty,
         totalSales: menuRankTemp[k].totalSales,
       }));
-      console.log("before", menuRankTemp);
       menuRankTemp = menuRankTemp.sort((a, b) =>
         a.totalSold > b.totalSold ? -1 : 1
       );
       menuRankTemp = menuRankTemp.slice(0, 5);
-      console.log("after", menuRankTemp);
+      
       setMenuRankData(menuRankTemp);
     }
   }, [orderSummaryData]);
@@ -151,7 +151,6 @@ function AdminDashboardLayout() {
   }, []);
 
   useEffect(() => {
-    console.log(foods);
     let tempTodayData = todayOrderData;
     if (todayTotalSalesDropdown !== "All") {
       tempTodayData = todayOrderData.filter((order) =>
@@ -191,6 +190,7 @@ function AdminDashboardLayout() {
   useEffect(() => {
     if (startDateReport && endDateReport) {
       OrderSummaryController.getOrderSummaryByDateBetween(
+        userSession.restaurantId,
         startDateReport,
         endDateReport
       ).then((res) => {
@@ -266,7 +266,7 @@ function AdminDashboardLayout() {
       title: "Total Sales",
       dataIndex: "totalSales",
       key: "totalSales",
-      render: (_, record) => <p>IDR. {record.totalSales}</p>,
+      render: (_, record) => <p>{rupiahWithDecimal(record.totalSales)}</p>,
     },
   ];
 
