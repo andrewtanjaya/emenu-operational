@@ -138,7 +138,7 @@ function GenerateQrCodeLayout() {
     );
 
     OrderController.addOrder(newOrder).then(() => {
-      setUrl(`http://localhost:3000/welcome?orderId=${orderId}`);
+      setUrl(`https://menu-eatsy.netlify.app/welcome?orderId=${orderId}`);
       if (values.orderTable) {
         setOrderTableNumber(values.orderTable);
       } else {
@@ -208,7 +208,11 @@ function GenerateQrCodeLayout() {
           )}
 
           <Form.Item wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit" className="btn-generate-qr-code">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="btn-generate-qr-code"
+            >
               Generate QR Code
             </Button>
           </Form.Item>
@@ -218,7 +222,7 @@ function GenerateQrCodeLayout() {
         {isGenerated && (
           <>
             <div ref={(el) => (componentRef = el)} className="qr-template">
-            <p>
+              <p>
                 {isDineIn
                   ? `Table Number: ${orderTableNumber}`
                   : `Queue Number: ${orderQueueNumber}`}
@@ -230,7 +234,11 @@ function GenerateQrCodeLayout() {
 
             <ReactToPrint
               trigger={() => {
-                return <Button className="btn-print-qr-code" type="primary">Print</Button>;
+                return (
+                  <Button className="btn-print-qr-code" type="primary">
+                    Print
+                  </Button>
+                );
               }}
               content={() => componentRef}
               pageStyle="print"
