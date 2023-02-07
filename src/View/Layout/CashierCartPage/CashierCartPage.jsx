@@ -1,4 +1,4 @@
-import { Drawer, Form, InputNumber, Radio } from "antd";
+import { Drawer, Form, InputNumber, Modal, Radio } from "antd";
 import Input from "antd/es/input/Input";
 import md5 from "md5";
 import React, { useEffect, useState } from "react";
@@ -115,73 +115,105 @@ function CashierCartPage() {
     form.submit();
   }
   function onFinish(values) {
-    if (cart.cartItems.length > 0) {
-      if (values.orderId && values.orderId !== "Order Not Found") {
-        let newOrderQueueId = generateRandomId(IdTypes.ORDER_QUEUE);
-        let timestamp = Date.now();
-        let orderItems = cart.cartItems.map((item) => {
-          let orderItem = new OrderItem(
-            item.cartItemId + "-" + timestamp,
-            OrderItemStatus.PLACED,
-            timestamp,
-            item.cartItemQuantity,
-            item.cartItemName,
-            item.cartItemPrice,
-            item.cartItemPicUrl,
-            item.cartItemType,
-            item.cartItemOption,
-            item.cartItemNotes,
-            item.subTotalFoodPrice,
-            item.subTotalAddedValuePrice,
-            item.subTotalPrice
-          );
-          return Object.assign({}, orderItem);
-        });
+    // Modal.error({
+    //   centered: true,
+    //   title: "test",
+    //   content: "test",
+    // });
 
-        orderData.orderItems = [...orderData.orderItems, ...orderItems];
-
-        let totalOrderAmount = 0;
-        orderData.orderItems.forEach((item) => {
-          totalOrderAmount += item.subTotalPrice;
-        });
-
-        let taxAmount = Math.ceil(totalOrderAmount * (orderData.taxRate / 100));
-        let serviceChargeAmount = Math.ceil(
-          totalOrderAmount * (orderData.serviceChargeRate / 100)
-        );
-
-        orderData.taxAmount = taxAmount;
-        orderData.serviceChargeAmount = serviceChargeAmount;
-        orderData.totalOrderAmount = totalOrderAmount;
-        orderData.finalTotalOrderAmount =
-          totalOrderAmount + taxAmount + serviceChargeAmount;
-
-        cart.cartItems = [];
-        cart.totalPrice = 0;
-
-        CartController.updateCart(cart).then(() => {
-          OrderController.updateOrderItems(orderData).then(() => {
-            let newOrderQueue = new OrderQueue(
-              newOrderQueueId,
-              orderData.orderId,
-              orderData.orderType,
-              orderData.orderType === OrderType.DINE_IN
-                ? values.tableNumber
-                : null,
-              orderData.orderType === OrderType.TAKEAWAY
-                ? values.queueNumber
-                : null,
-              orderData.restaurantId,
-              timestamp
-            );
-            OrderQueueController.addOrderQueue(newOrderQueue);
-          });
-        });
-
-        form.resetFields();
-      }
+    if (!orderType) {
+      errorModal("Choose Order Type", "Please Choose Order Type !");
+    } else if (!tableOrQueueNumber) {
+      errorModal(
+        "Fill Table or Queue Number",
+        "Please fill table or queue number !"
+      );
+    } else if (cart.cartItems.length <= 0) {
+      errorModal("Empty Cart Item", "Your Cart is still empty !");
+    } else if (values.orderId && values.orderId === "Order Not Found") {
+      errorModal(
+        "Order Not Found",
+        "No order found with this table or queue number !"
+      );
+    } else {
+      successModal("Order Place Confirmation", "", values);
     }
   }
+
+  function processOrder(values) {
+    let newOrderQueueId = generateRandomId(IdTypes.ORDER_QUEUE);
+    let timestamp = Date.now();
+    let orderItems = cart.cartItems.map((item) => {
+      let orderItem = new OrderItem(
+        item.cartItemId + "-" + timestamp,
+        OrderItemStatus.PLACED,
+        timestamp,
+        item.cartItemQuantity,
+        item.cartItemName,
+        item.cartItemPrice,
+        item.cartItemPicUrl,
+        item.cartItemType,
+        item.cartItemOption,
+        item.cartItemNotes,
+        item.subTotalFoodPrice,
+        item.subTotalAddedValuePrice,
+        item.subTotalPrice
+      );
+      return Object.assign({}, orderItem);
+    });
+    orderData.orderItems = [...orderData.orderItems, ...orderItems];
+    let totalOrderAmount = 0;
+    orderData.orderItems.forEach((item) => {
+      totalOrderAmount += item.subTotalPrice;
+    });
+    let taxAmount = Math.ceil(totalOrderAmount * (orderData.taxRate / 100));
+    let serviceChargeAmount = Math.ceil(
+      totalOrderAmount * (orderData.serviceChargeRate / 100)
+    );
+    orderData.taxAmount = taxAmount;
+    orderData.serviceChargeAmount = serviceChargeAmount;
+    orderData.totalOrderAmount = totalOrderAmount;
+    orderData.finalTotalOrderAmount =
+      totalOrderAmount + taxAmount + serviceChargeAmount;
+    cart.cartItems = [];
+    cart.totalPrice = 0;
+    CartController.updateCart(cart).then(() => {
+      OrderController.updateOrderItems(orderData).then(() => {
+        let newOrderQueue = new OrderQueue(
+          newOrderQueueId,
+          orderData.orderId,
+          orderData.orderType,
+          orderData.orderType === OrderType.DINE_IN ? values.tableNumber : null,
+          orderData.orderType === OrderType.TAKEAWAY
+            ? values.queueNumber
+            : null,
+          orderData.restaurantId,
+          timestamp
+        );
+        OrderQueueController.addOrderQueue(newOrderQueue);
+      });
+    });
+    form.resetFields();
+  }
+
+  const successModal = (title, content, values) => {
+    Modal.confirm({
+      onOk: () => {
+        processOrder(values);
+      },
+      title: title,
+      content: content,
+      centered: true,
+    });
+  };
+
+  const errorModal = (title, content) => {
+    Modal.error({
+      title: title,
+      content: content,
+      centered: true,
+    });
+  };
 
   const [open, setOpen] = useState(false);
   const [selectedCartItem, setSelectedCartItem] = useState(null);

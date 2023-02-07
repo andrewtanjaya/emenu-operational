@@ -6,6 +6,9 @@ import { Button, Form, Input, Modal, Radio, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./AddEmployeeLayout.css";
 import { Gender } from "../../../Enum/Gender";
+import { Cart } from "../../../Model/Cart";
+import md5 from "md5";
+import { CartController } from "../../../Controller/CartController";
 const { Option } = Select;
 
 const AddEmployeeLayout = () => {
@@ -34,6 +37,20 @@ const AddEmployeeLayout = () => {
         UserController.addUser(newUser).then(() => {
           successModal("Success", "New Employee Added");
         });
+
+        if (newUser.roleType === RoleTypes.CASHIER) {
+          let cartId = "CRT" + "-" + md5(newUser.email);
+          let cart = new Cart(
+            cartId,
+            newUser.restaurantId,
+            "",
+            null,
+            null,
+            [],
+            0
+          );
+          CartController.addCart(cart).then(() => {});
+        }
       }
     });
   };
@@ -45,6 +62,7 @@ const AddEmployeeLayout = () => {
       },
       title: title,
       content: content,
+      centered: true,
     });
   };
 
@@ -52,6 +70,7 @@ const AddEmployeeLayout = () => {
     Modal.error({
       title: title,
       content: content,
+      centered: true,
     });
   };
 
@@ -210,7 +229,12 @@ const AddEmployeeLayout = () => {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
-              <Button className="save-employee-button" id="saveButton" type="primary" htmlType="submit">
+              <Button
+                className="save-employee-button"
+                id="saveButton"
+                type="primary"
+                htmlType="submit"
+              >
                 Save
               </Button>
             </Form.Item>
