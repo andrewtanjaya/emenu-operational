@@ -29,7 +29,7 @@ function CashierPaymentDrawerContent(props) {
     updatedOrder.orderCheckoutBy = userSession.email;
     OrderController.updateOrder(updatedOrder).then(() => {
       resetCounterIfAllPaid();
-      generateSummaryMenuRankingAndUpdateFoodData();
+      generateSummaryMenuRankingAndUpdateFoodData(payMethod);
     });
   };
 
@@ -70,7 +70,7 @@ function CashierPaymentDrawerContent(props) {
       }
     }
   };
-  const generateSummaryMenuRankingAndUpdateFoodData = () => {
+  const generateSummaryMenuRankingAndUpdateFoodData = (paymentMethod) => {
     let soldItemSummary = {};
     for (let i = 0; i < selectedOrder[0].orderItems.length; i++) {
       if (
@@ -108,12 +108,6 @@ function CashierPaymentDrawerContent(props) {
       });
     });
 
-    let payMethod = props.paymentMethod;
-    if (props.paymentMethod === "Others") {
-      payMethod =
-        "Others (" + document.getElementById("otherPaymentMethod").value + ")";
-    }
-
     let orderSummary = {
       orderSummaryId: selectedOrder[0].orderId,
       restaurantId: selectedOrder[0].restaurantId,
@@ -123,7 +117,7 @@ function CashierPaymentDrawerContent(props) {
       serviceChargeAmount: selectedOrder[0].serviceChargeAmount,
       totalOrderAmount: selectedOrder[0].totalOrderAmount,
       finalTotalOrderAmount: selectedOrder[0].finalTotalOrderAmount,
-      paymentMethod: payMethod,
+      paymentMethod: paymentMethod,
     };
 
     OrderSummaryController.addOrderSummary(orderSummary).then(() => {
