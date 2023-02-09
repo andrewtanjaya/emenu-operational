@@ -126,8 +126,9 @@ function CashierPaymentDrawerContent(props) {
       paymentMethod: payMethod,
     };
 
-    OrderSummaryController.addOrderSummary(orderSummary);
-    props.setPage(2);
+    OrderSummaryController.addOrderSummary(orderSummary).then(() => {
+      props.setPage(2);
+    });
   };
 
   useEffect(() => {
