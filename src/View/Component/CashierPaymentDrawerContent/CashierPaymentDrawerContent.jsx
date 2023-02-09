@@ -116,6 +116,7 @@ function CashierPaymentDrawerContent(props) {
 
     let orderSummary = {
       orderSummaryId: selectedOrder[0].orderId,
+      restaurantId: selectedOrder[0].restaurantId,
       orderPaidDate: new Date().getTime(),
       soldItemSummary: Object.assign({}, soldItemSummary),
       taxAmount: selectedOrder[0].taxAmount,
