@@ -131,24 +131,20 @@ function CashierReport() {
       title: "Total Amount",
       dataIndex: "totalOrderAmount",
       sorter: (a, b) => a.totalOrderAmount - b.totalOrderAmount,
-      render: (_, record) => (
-        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
-      ),
+      render: (_, record) => <>{rupiahWithDecimal(record.totalOrderAmount)}</>,
     },
     {
       title: "Tax Amount",
       dataIndex: "taxAmount",
       sorter: (a, b) => a.taxAmount - b.taxAmount,
-      render: (_, record) => (
-        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
-      ),
+      render: (_, record) => <>{rupiahWithDecimal(record.taxAmount)}</>,
     },
     {
       title: "Service Charge Amount",
       dataIndex: "serviceChargeAmount",
       sorter: (a, b) => a.serviceChargeAmount - b.serviceChargeAmount,
       render: (_, record) => (
-        <>{rupiahWithDecimal(record.finalTotalOrderAmount)}</>
+        <>{rupiahWithDecimal(record.serviceChargeAmount)}</>
       ),
     },
     {
